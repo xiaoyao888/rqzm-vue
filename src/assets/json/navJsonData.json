@@ -1,0 +1,1560 @@
+[
+  {
+    "id": "6e7e5a6098cc42ddbf42278c7fee0370",
+    "name": "主页",
+    "nameEn": "Home",
+    "icon": "home",
+    "children": [
+      {
+        "id": "6e7e5a6098cc42ddbf42278c7fee0371",
+        "url": "https://rqzm.cn/",
+        "type": "icon",
+        "name": "人气桌面",
+        "nameEn": "RenQi Desktop",
+        "src": "logo.png",
+        "backgroundColor": "#fff",
+        "size": "1x1"
+      },
+      {
+        "id": "0d7bbef0e9f94c93999ff5c3ba637298",
+        "url": "https://www.sqlfather.com/",
+        "type": "icon",
+        "name": "SQL之父",
+        "nameEn": "SQL Father",
+        "src": "sqlfather.png",
+        "backgroundColor": "#eb6f2d",
+        "size": "1x1"
+      },
+      {
+        "id": "4fb906f7bb9a4fdba6a0c81d652858d1",
+        "url": "https://www.bejson.com/",
+        "type": "icon",
+        "name": "bejson",
+        "nameEn": "Bejson",
+        "src": "bejson.svg",
+        "backgroundColor": "#000",
+        "size": "1x1"
+      },
+      {
+        "name": "每日一言",
+        "nameEn": "Daily Word",
+        "component": "yiyan",
+        "type": "component",
+        "insetType": "",
+        "src": "yiyan.svg",
+        "size": "1x1",
+        "id": "a5f51a862bfd408ba456b8d6c7afcd77"
+      },
+      {
+        "id": "95740bf8f356427d8a42d8a31a2f8b53",
+        "url": "https://ai.taobao.com?pid=mm_54561194_2536750027_111828300388&union_lens=lensId%3APUB%401644727921%4021057ef3_09a7_17ef16c69e2_05aa%4001",
+        "type": "icon",
+        "name": "爱淘宝",
+        "nameEn": "Taobao",
+        "src": "taobao.svg",
+        "backgroundColor": "#eb6f2d",
+        "size": "1x1"
+      },
+      {
+        "id": "e15fd6b4fab9475a910a4451799db857",
+        "url": "https://www.jd.com",
+        "type": "icon",
+        "name": "京东商城",
+        "nameEn": "JD Shop",
+        "src": "jd.svg",
+        "backgroundColor": "#ff0000"
+      },
+      {
+        "id": "a81ff05dd2b247ca87e9b34f9037e23c",
+        "url": "https://js.design?source=rqzm&plan=1",
+        "type": "icon",
+        "name": "即时设计",
+        "nameEn": "JS Design",
+        "src": "jsdesign.svg",
+        "backgroundColor": "#cf3d35"
+      },
+      {
+        "id": "98fed5c0d82a485bb780013e12bf6640",
+        "name": "FlowUs",
+        "nameEn": "FlowUs",
+        "src": "flowus.svg",
+        "type": "icon",
+        "url": "https://flowus.cn/?promotionChannel=WZ_it_01",
+        "backgroundColor": "#fff"
+      },
+      {
+        "name": "待办事项",
+        "nameEn": "Todo List",
+        "component": "notes",
+        "src": "todo.svg",
+        "type": "component",
+        "size": "1x1",
+        "id": "96eb2b757ec54b35b1d2a5d6bf13311a",
+        "view": null,
+        "backgroundColor": "#1581ff"
+      },
+      {
+        "url": "https://xiezuocat.com/#/?s=rqzm",
+        "type": "icon",
+        "name": "秘塔写作猫",
+        "nameEn": "XieZuo Cat",
+        "src": "xiezuocat.com.svg",
+        "id": "7a9e56d963cc45c0aa254338791021b1",
+        "view": 1,
+        "backgroundColor": "#fefefe"
+      },
+      {
+        "url": "https://www.islide.cc/ppt?utm_source=rqzm.cn&utm_medium=web&utm_campaign=1",
+        "type": "icon",
+        "name": "iSlide PPT神器",
+        "nameEn": "iSlide",
+        "src": "islide.svg",
+        "id": "9c09d7d0cdee40698c4270b7cda3e444",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "vwLnQvDMr",
+        "url": "http://www.bilibili.com/",
+        "type": "icon",
+        "name": "哔哩哔哩",
+        "nameEn": "Bilibili",
+        "src": "bilibili2.svg",
+        "backgroundColor": "#fe65a6"
+      },
+      {
+        "id": "86e0e088ab594f35a2a82086922dc9dd",
+        "url": "https://www.douyin.com/?ug_source=rqzm_zmsy",
+        "type": "icon",
+        "name": "抖音",
+        "nameEn": "Tiktok",
+        "src": "douyin.svg",
+        "backgroundColor": "#1c0b1a"
+      },
+      {
+        "id": "5a9364f8fd4744b3bde1f912f7925a52",
+        "url": "http://www.douyu.com/",
+        "type": "icon",
+        "name": "斗鱼",
+        "nameEn": "Dou Yu",
+        "src": "douyu.svg",
+        "backgroundColor": "#ff6a2d",
+        "view": null
+      },
+      {
+        "id": "d59555c85c8445998eb752fabee2700c",
+        "url": "http://www.iqiyi.com",
+        "type": "icon",
+        "name": "爱奇艺",
+        "nameEn": "iqiyi",
+        "src": "iqiyi.svg",
+        "backgroundColor": "#00cc4c"
+      },
+      {
+        "id": "3aa1c65264754ef482578769b8af258a",
+        "url": "http://weibo.com/",
+        "type": "icon",
+        "name": "新浪微博",
+        "nameEn": "Weibo",
+        "src": "weibo.svg",
+        "backgroundColor": "#ffd850"
+      },
+      {
+        "id": "93ced548ce45473397a8cd8540551104",
+        "url": "https://www.zhihu.com/",
+        "type": "icon",
+        "name": "知乎",
+        "nameEn": "Zhihu",
+        "src": "zhihu.svg",
+        "backgroundColor": "#0c6dfe"
+      },
+      {
+        "id": "1e7e181cfcd944a6bd87fa012e72900b",
+        "url": "https://music.163.com/?from=rqzm",
+        "type": "icon",
+        "name": "网易云音乐",
+        "nameEn": "Music 163",
+        "src": "music163.svg",
+        "backgroundColor": "#fe1816"
+      },
+      {
+        "id": "0eeb7a1fa87f4430b01b4e341a413f3e",
+        "url": "http://y.qq.com/",
+        "type": "icon",
+        "name": "QQ音乐",
+        "nameEn": "QQ music",
+        "src": "qqmusic.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "efd8b78bfbd4410ba27d8ba5e4d9be8f",
+        "type": "icon",
+        "url": "https://www.tmall.com/",
+        "name": "天猫精选",
+        "nameEn": "Tmall",
+        "src": "tmall.svg",
+        "backgroundColor": "#ff0030"
+      },
+      {
+        "id": "71fb963152104b078084099b72279112",
+        "url": "https://www.apipost.cn/?utm_source=10147",
+        "type": "icon",
+        "name": "Apipost",
+        "nameEn": "Apipost",
+        "src": "apipost.svg",
+        "backgroundColor": "#ee5601"
+      },
+      {
+        "id": "8aa6b3c126a94b939988e184a2c10f26",
+        "type": "component",
+        "name": "设置",
+        "nameEn": "Setting",
+        "src": "setting.svg",
+        "view": null,
+        "backgroundColor": "#fff",
+        "size": "1x1"
+      },
+      {
+        "id": "83536f7c49b6426f8a6fcaab8d0cd03e",
+        "url": "https://www.baidu.com/?tn=68018901_2_oem_dg",
+        "type": "icon",
+        "name": "百度",
+        "nameEn": "Baidu",
+        "src": "baidu.svg",
+        "backgroundColor": "#346efd"
+      },
+      {
+        "id": "94093f2cea1c4c5d9887daa544ae889c",
+        "url": "https://translate.volcengine.com/translate&from=rqzm2",
+        "type": "icon",
+        "name": "火山翻译",
+        "nameEn": "HS Translate",
+        "src": "translate.volcengine.com.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "fb9934a62e194e67ab46102c05ee45ce",
+        "type": "component",
+        "name": "添加图标",
+        "nameEn": "Add Icon",
+        "src": "add.svg",
+        "backgroundColor": "#fff",
+        "view": null,
+        "size": "1x1"
+      },
+      {
+        "id": "5fcbe3b2481f49ed8aeb23c9c728e2e8",
+        "type": "icon",
+        "name": "电子木鱼",
+        "nameEn": "Wooden Fish",
+        "url": "/muyu",
+        "src": "muyu.svg",
+        "backgroundColor": "#fff",
+        "view": null,
+        "size": "1x1"
+      },
+      {
+        "name": "今天吃什么",
+        "nameEn": "What's eat",
+        "component": "eat",
+        "type": "component",
+        "insetType": "",
+        "src": "eat.svg",
+        "size": "1x1",
+        "id": "1445d3b195564a7192605ecf5c9f9935",
+        "view": null
+      },
+      {
+        "component": "daysMatter",
+        "name": "倒计时",
+        "nameEn": "Countdown",
+        "size": "2x2",
+        "type": "countdown",
+        "config": {
+          "name": "结婚倒计时",
+          "title": "结婚倒计时",
+          "target": "2022-12-04",
+          "repeat": "festival",
+          "bgColor": "#2d4f59",
+          "textColor": "#ffffff",
+          "family": "",
+          "icon": ""
+        },
+        "id": "da0ebd0b0f2142c7b56827df80d911f7",
+        "view": null
+      }
+    ]
+  },
+  {
+    "name": "程序员",
+    "nameEn": "developer",
+    "icon": "code",
+    "children": [
+      {
+        "name": "日历",
+        "nameEn": "Calendar",
+        "component": "calendar",
+        "type": "calendar",
+        "size": "2x2",
+        "id": "134df2c360e14809b15054a0be4eb57b"
+      },
+      {
+        "component": "daysMatter",
+        "name": "倒计时",
+        "nameEn": "Countdown",
+        "size": "2x2",
+        "type": "countdown",
+        "config": {
+          "name": "恋爱日期",
+          "title": "和她❤️恋爱已经",
+          "target": "2021-10-25",
+          "repeat": "",
+          "bgColor": "#fff",
+          "textColor": "#eb8197",
+          "family": "",
+          "icon": "3"
+        },
+        "id": "3693ac9d24b745549edfc83075da1e01"
+      },
+      {
+        "name": "股市",
+        "nameEn": "stock",
+        "component": "stock",
+        "type": "component",
+        "size": "2x2",
+        "id": "f63eede61e36446fafcea5f1b3fba089",
+        "view": null
+      },
+      {
+        "name": "倒数日",
+        "nameEn": "Countdown",
+        "component": "daysMatter",
+        "type": "countdown",
+        "size": "2x2",
+        "id": "45045452fae042b28da4524b91eda919",
+        "config": {
+          "name": "节日倒计时",
+          "title": "万圣节前夜",
+          "target": "2022-10-31",
+          "repeat": "festival",
+          "bgColor": "#eee1d9",
+          "textColor": "#8e726f",
+          "family": "",
+          "icon": ""
+        }
+      },
+      {
+        "component": "daysMatter",
+        "name": "倒计时",
+        "nameEn": "Countdown",
+        "size": "2x2",
+        "type": "countdown",
+        "config": {
+          "name": "纪念日",
+          "title": "发工资还有",
+          "target": "2021-11-15",
+          "repeat": "month",
+          "bgColor": "#fff",
+          "textColor": "#1890ff",
+          "family": "",
+          "icon": "2"
+        },
+        "id": "0433bd855c5746e2bfae0a616717c0fd"
+      },
+      {
+        "component": "daysMatter",
+        "name": "倒计时",
+        "nameEn": "Countdown",
+        "size": "2x2",
+        "type": "countdown",
+        "config": {
+          "name": "下班倒计时",
+          "title": "下班还有",
+          "target": "2022-11-11 18:00:00",
+          "repeat": "",
+          "bgColor": "#63a099",
+          "textColor": "#fff",
+          "family": "",
+          "icon": "4"
+        },
+        "id": "6e5f4de765b74ab99dec129700473a33",
+        "view": 1
+      },
+      {
+        "name": "电影日历",
+        "nameEn": "Movies",
+        "component": "movieCalendar",
+        "type": "component",
+        "insetType": "",
+        "src": "movieCalendar.svg",
+        "size": "2x2",
+        "id": "006e4b384ffb4e60b89c761bb60a8d15"
+      },
+      {
+        "name": "壁纸",
+        "nameEn": "wallpaper",
+        "component": "wallpaper",
+        "type": "icon",
+        "size": "1x1",
+        "id": "58aeab7272774245a5f61fcad70be124",
+        "src": "wallpaper.svg"
+      },
+      {
+        "id": "98faf3b8ac6446cd8f3c4ee7c6d429ad",
+        "url": "https://github.com/",
+        "type": "icon",
+        "name": "GitHub",
+        "nameEn": "GitHub",
+        "src": "github.svg",
+        "backgroundColor": "#000"
+      },
+      {
+        "id": "55d1de1a69404774bdcfad4f674decbc",
+        "url": "https://www.apipost.cn/?utm_source=10147",
+        "type": "icon",
+        "name": "Apipost",
+        "nameEn": "Apipost",
+        "src": "apipost.svg",
+        "backgroundColor": "#ee5601"
+      },
+      {
+        "id": "f7d4e12eff184d68ba0a369c49a6acca",
+        "url": "https://developer.mozilla.org/zh-CN/docs/Learn",
+        "type": "icon",
+        "name": "MDN",
+        "nameEn": "MDN",
+        "src": "mdn-web-docs.svg",
+        "backgroundColor": "#373737"
+      },
+      {
+        "id": "5fb024c9a6b3461fb4d12eb59ccbd8db",
+        "url": "http://www.v2ex.com/",
+        "type": "icon",
+        "name": "V2EX",
+        "nameEn": "V2EX",
+        "src": "v2ex.svg",
+        "backgroundColor": "#222222"
+      },
+      {
+        "id": "96232ecfd1304941a4fd0db2c66a9d0f",
+        "url": "https://zh-hans.reactjs.org/",
+        "type": "icon",
+        "name": "React",
+        "nameEn": "React",
+        "src": "react.svg",
+        "backgroundColor": "#27333b"
+      },
+      {
+        "id": "7e8942085240438ba85478c3aa17ae67",
+        "url": "https://mrjokersince1997.github.io/My-Notes/#/",
+        "type": "icon",
+        "name": "Java学习",
+        "nameEn": "Java Study",
+        "src": "mrjokersince-java.svg",
+        "backgroundColor": "#1c1c1c"
+      },
+      {
+        "id": "f5a579d2cfc64e8081be3028df8953ff",
+        "url": "https://nuxtjs.org/",
+        "type": "icon",
+        "name": "Nuxt.js",
+        "nameEn": "Nuxt.js",
+        "src": "nuxtjs.svg",
+        "backgroundColor": "#0e4740"
+      },
+      {
+        "id": "ed023aea885b43e9acfd3eaec11bb578",
+        "url": "https://electronjs.org/",
+        "type": "icon",
+        "name": "Electron",
+        "nameEn": "Electron",
+        "src": "electronjs.svg",
+        "backgroundColor": "#303240"
+      },
+      {
+        "id": "26ed03ea2550494b80fbef4d5e7f97ce",
+        "url": "https://gitee.com/",
+        "type": "icon",
+        "name": "码云Gitee",
+        "nameEn": "Gitee",
+        "src": "gitee.svg",
+        "backgroundColor": "#bb2124"
+      },
+      {
+        "id": "48acea3b5027469bb81f5980b95091e8",
+        "url": "http://www.csdn.net/",
+        "type": "icon",
+        "name": "CSDN",
+        "nameEn": "CSDN",
+        "src": "csdn.svg",
+        "backgroundColor": "#cc001b"
+      },
+      {
+        "id": "c99d1ffce9b54b229ce69a5ee6e3d086",
+        "url": "http://www.w3school.com.cn",
+        "type": "icon",
+        "name": "w3school在线教程",
+        "nameEn": "w3school",
+        "src": "w3school.svg",
+        "backgroundColor": "#cc3333"
+      },
+      {
+        "id": "809f3482ab92478692bfb8be43d20221",
+        "url": "http://codepen.io",
+        "type": "icon",
+        "name": "CodePen",
+        "nameEn": "CodePen",
+        "src": "codepen.svg",
+        "backgroundColor": "#000000"
+      },
+      {
+        "id": "08860c3de77c47648287b84bb214e4be",
+        "url": "https://stackoverflow.com/",
+        "type": "icon",
+        "name": "Stack Overflow",
+        "nameEn": "Stack Overflow",
+        "src": "stackoverflow.svg",
+        "backgroundColor": "#444444"
+      },
+      {
+        "id": "e3dacccba53845d4b6c9c98549ac34fd",
+        "url": "https://www.apifox.cn/a1itabweb",
+        "type": "icon",
+        "name": "Apifox",
+        "nameEn": "Apifox",
+        "src": "apifoxcn.svg",
+        "backgroundColor": "#f4425f"
+      },
+      {
+        "id": "28af7acbe58f45239d2b3f953e598a28",
+        "url": "https://typescript.bootcss.com/",
+        "type": "icon",
+        "name": "TypeScript",
+        "nameEn": "TypeScript",
+        "src": "typescript.svg",
+        "backgroundColor": "#0b7fcf"
+      },
+      {
+        "id": "4a4bf66fa72948a3a4830328ce52f8d3",
+        "url": "https://juejin.cn/",
+        "type": "icon",
+        "name": "掘金",
+        "nameEn": "Juejin",
+        "src": "juejin.svg",
+        "backgroundColor": "#0984fe"
+      },
+      {
+        "id": "fb63a462e5c749e7983fc92d31f0b3b6",
+        "url": "https://www.zhihu.com/",
+        "type": "icon",
+        "name": "知乎",
+        "nameEn": "Zhihu",
+        "src": "zhihu.svg",
+        "backgroundColor": "#0c6dfe"
+      },
+      {
+        "id": "242cb9ce57bd4d10b95db89db7174f2f",
+        "url": "http://www.36kr.com",
+        "type": "icon",
+        "name": "36氪",
+        "nameEn": "36KR",
+        "src": "36kr.svg",
+        "backgroundColor": "#1380d8"
+      },
+      {
+        "id": "8427af737b7a427e89ee75e8444ee072",
+        "url": "https://leetcode.cn/",
+        "type": "icon",
+        "name": "力扣",
+        "nameEn": "Leetcode",
+        "src": "leetcode.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "url": "https://vitejs.dev/",
+        "name": "Vite",
+        "nameEn": "Vite",
+        "type": "icon",
+        "src": "vitejs.svg",
+        "id": "a92efd1959d2426f88d0be0ee2d72008",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "afe36554f44848ceb83fe1866649c082",
+        "url": "https://cn.vuejs.org/",
+        "type": "icon",
+        "name": "Vue2",
+        "nameEn": "Vue2",
+        "src": "vuejs.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "a99de19b4d5645e9bdffa9784441613b",
+        "url": "https://arco.design",
+        "type": "icon",
+        "name": "Arco Design",
+        "nameEn": "Arco Design",
+        "src": "arco-design.svg",
+        "backgroundColor": "#fdfef7"
+      },
+      {
+        "id": "0c8a31cc35224dfa877221ed373e0c76",
+        "url": "https://www.antdv.com/docs/vue/introduce-cn/",
+        "type": "icon",
+        "name": "Ant Design Vue",
+        "nameEn": "Ant Design Vue",
+        "src": "ant-design-vue.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "e51908c702f64c01a342b6d2188f2588",
+        "url": "https://flutter.cn/",
+        "type": "icon",
+        "name": "Flutter 中文官方",
+        "nameEn": "Flutter",
+        "src": "flutter.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "a729dfcafccc4409bf7d8cfaf7e4cc38",
+        "url": "https://element.eleme.cn/",
+        "type": "icon",
+        "name": "Element-UI",
+        "nameEn": "Element-UI",
+        "src": "elementui.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "e0e2c6b986604f4aada14f7611134933",
+        "url": "https://s.qiniu.com/naaI7f",
+        "type": "icon",
+        "name": "七牛云存储",
+        "nameEn": "Qiniu",
+        "src": "qiniu.svg",
+        "backgroundColor": "#17ade0"
+      },
+      {
+        "id": "c388a04573ce43c8ba7dcface376a41b",
+        "url": "http://www.oschina.net/",
+        "type": "icon",
+        "name": "开源中国",
+        "nameEn": "OSchina",
+        "src": "oschina.svg",
+        "backgroundColor": "#34b960"
+      },
+      {
+        "id": "334c416df51c49ac8ee2346a51df5fb3",
+        "url": "https://uniapp.dcloud.io/collocation/pages",
+        "type": "icon",
+        "name": "uniapp",
+        "nameEn": "uniapp",
+        "src": "uniapp.svg",
+        "backgroundColor": "#419f4e"
+      },
+      {
+        "id": "3bd6d6da268344a2b398fc379cfb9497",
+        "url": "https://www.asiayun.com/",
+        "type": "icon",
+        "name": "亚云",
+        "nameEn": "Asiayun",
+        "src": "asiayun.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "4dab9312c470463eae47437d58257adb",
+        "url": "https://time.geekbang.org/?utm_term=rqzm&utm_source=rqzm.cn&utm_medium=rqzm&utm_campaign=rqzm&utm_content=rqzm",
+        "type": "icon",
+        "name": "极客时间",
+        "nameEn": "GeekBang",
+        "src": "geekbang.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "49240d221201429fa2edcb02b5b4e2e5",
+        "url": "https://translate.volcengine.com/translate&from=rqzm2",
+        "type": "icon",
+        "name": "火山翻译",
+        "nameEn": "HS Translate",
+        "src": "translate.volcengine.com.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "4ced33a882bc41b5adb26df269e78e8e",
+        "url": "https://kaifa.baidu.com/",
+        "type": "icon",
+        "name": "开发者搜索",
+        "nameEn": "Baidu Develop",
+        "src": "kaifa.baidu.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "4ced33a882bc41b5adb26df269e78e8a",
+        "url": "http://www.cyc2018.xyz/",
+        "type": "icon",
+        "name": "CS-Notes",
+        "nameEn": "CS-Notes",
+        "src": "csnote.svg",
+        "backgroundColor": "#fff"
+      },{
+        "backgroundColor": "#ffffff",
+        "iconWord": "菜鸟",
+        "id": "4ced33a882bc41b5adb26df269e78e1b",
+        "name": "菜鸟教程",
+        "nameEn": "Runoob",
+        "size": "1x1",
+        "src": "",
+        "type": "text",
+        "url": "https://www.runoob.com"
+      },{
+        "backgroundColor": "#ffffff",
+        "iconWord": "易百",
+        "id": "4ced33a882bc41b5adb26df269e78e1c",
+        "name": "易百教程",
+        "nameEn": "Yiibai",
+        "size": "1x1",
+        "src": "",
+        "type": "text",
+        "url": "https://www.yiibai.com"
+      }
+
+    ],
+    "id": "883018ac3517490b92abfe1739103672"
+  },
+  {
+    "id": "nav_yepAOU0lK",
+    "name": "设计",
+    "nameEn": "Design",
+    "icon": "app",
+    "children": [
+      {
+        "id": "c047576123c34d7da9951b84a1a23f94",
+        "url": "https://js.design/square?sort=downloadNum&source=rqzm&plan=4",
+        "type": "icon",
+        "name": "即时设计",
+        "nameEn": "JS Design",
+        "src": "jsdesign.svg",
+        "backgroundColor": "#cf3d35"
+      },
+      {
+        "id": "76296e35ed044812a572eee8cc0ddd15",
+        "url": "http://huaban.com/",
+        "type": "icon",
+        "name": "花瓣",
+        "nameEn": "Huaban",
+        "src": "huaban.svg",
+        "backgroundColor": "#ea2936"
+      },
+      {
+        "id": "1413293f5a1248919db52a864a77b920",
+        "url": "https://s.gd-share.cn/4ftn",
+        "type": "icon",
+        "name": "花瓣好课",
+        "nameEn": "Huaban Ke",
+        "src": "ke-huaban.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "31d010c0466d42d7ab5b022e82539149",
+        "url": "https://www.zcool.com.cn/",
+        "type": "icon",
+        "name": "站酷",
+        "nameEn": "Zcool",
+        "src": "zcool.svg",
+        "backgroundColor": "#e6be1c"
+      },
+      {
+        "id": "804f0691291f411ca336487b60f7708c",
+        "url": "https://dribbble.com",
+        "type": "icon",
+        "name": "Dribbble",
+        "nameEn": "Dribbble",
+        "src": "dribbble.svg",
+        "backgroundColor": "#f24e7c"
+      },
+      {
+        "id": "dfad0b3de91d474b8c25e33864aafa50",
+        "url": "http://www.uisdc.com/",
+        "type": "icon",
+        "name": "优设网",
+        "nameEn": "Uisdc",
+        "src": "uisdc.svg",
+        "backgroundColor": "#ee3c17"
+      },
+      {
+        "id": "9d86a982edcc42eb9d116fadf84f5305",
+        "url": "http://www.qijishow.com/Brand/Brand23/index.htm",
+        "type": "icon",
+        "name": "绘画艺术",
+        "nameEn": "Qiji Show",
+        "src": "60b9f0baae5a9ba4024b4c49.png",
+        "backgroundColor": "#000"
+      },
+      {
+        "id": "cab88bbd87c04ad0a3b3ce30994e3fa3",
+        "url": "https://www.skypixel.com/",
+        "type": "icon",
+        "name": "天空之城 | 全球航拍爱好者和专业摄影师的社交平台",
+        "nameEn": "Skypixel",
+        "src": "60b9eea2ae5a9ba4024b4597.png",
+        "backgroundColor": "#000"
+      },
+      {
+        "id": "8f2addd223f6448398b773c5b1fe55cb",
+        "url": "https://www.bigbigwork.com",
+        "type": "icon",
+        "name": "大作免费图片",
+        "nameEn": "Big Work",
+        "src": "bigbigwork.svg",
+        "backgroundColor": "#ff4d4d"
+      },
+      {
+        "id": "188152aec4d248de8a5cb409922aacfd",
+        "url": "https://www.btbat.com/",
+        "type": "icon",
+        "name": "R站",
+        "nameEn": "R Site",
+        "src": "btbat.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "213ef273f3164e63907e930a6beaf38c",
+        "url": "https://thenounproject.com/",
+        "type": "icon",
+        "name": "Noun Project",
+        "nameEn": "Noun Project",
+        "src": "thenounproject.svg",
+        "backgroundColor": "#171717"
+      },
+      {
+        "id": "f132e4a2fb8b4db29e81bc43989989d6",
+        "url": "https://www.artstation.com/",
+        "type": "icon",
+        "name": "ArtStation",
+        "nameEn": "ArtStation",
+        "src": "artstation.svg",
+        "backgroundColor": "#151d17"
+      },
+      {
+        "id": "c935b5023f794173856b721bdd37afac",
+        "url": "http://www.nipic.com/index.html",
+        "type": "icon",
+        "name": "昵图网",
+        "nameEn": "Ni Pic",
+        "src": "nipic.svg",
+        "backgroundColor": "#dd137b"
+      },
+      {
+        "id": "cb3dabd4e264416caf84b572964d73b5",
+        "url": "https://www.kuque.com/",
+        "type": "icon",
+        "name": "酷雀",
+        "nameEn": "Kuque",
+        "src": "kuque.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "ab49eb51b80b41379603017b7dfeb701",
+        "url": "https://uidesigndaily.com/",
+        "type": "icon",
+        "name": "每日ui设计",
+        "nameEn": "Ui Design Daily",
+        "src": "uidesigndaily.svg",
+        "backgroundColor": "#fafefe"
+      },
+      {
+        "id": "bf9b0122c90f4977bc799179cb923395",
+        "url": "https://wallhaven.cc/",
+        "type": "icon",
+        "name": "Wallhaven",
+        "nameEn": "Wallhaven",
+        "src": "wallhave.svg",
+        "backgroundColor": "#0c4061"
+      },
+      {
+        "url": "https://unsplash.dogedoge.com/",
+        "type": "icon",
+        "name": "Unsplash加速版",
+        "nameEn": "Unsplash",
+        "src": "unsplash.svg",
+        "backgroundColor": "#FFFFFF",
+        "id": "cb574204a6e74342a97675861d1ca1a8",
+        "iconText": ""
+      },
+      {
+        "id": "d2dcc1eeb1164a04b65cec384fd3bbfb",
+        "url": "https://tinypng.com",
+        "type": "icon",
+        "name": "TinyPNG",
+        "nameEn": "TinyPNG",
+        "src": "60b9eba2ae5a9ba4024b3bfc.png",
+        "backgroundColor": "#cde7f0"
+      },
+      {
+        "id": "6be178248068457e8abe130eb510cc3f",
+        "url": "https://www.91sotu.com/",
+        "type": "icon",
+        "name": "搜图导航",
+        "nameEn": "91sotu",
+        "src": "www.91sotu.com.svg",
+        "backgroundColor": "#fec20a"
+      },
+      {
+        "id": "2572f1f2999c48f0b3aa6b172cfc540b",
+        "url": "https://webgradients.com/",
+        "type": "icon",
+        "name": "WebGradients",
+        "nameEn": "WebGradients",
+        "src": "webgradients.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "5cd7648c96af495d9a73cbbb78119a3d",
+        "url": "https://www.iconfont.cn/",
+        "type": "icon",
+        "name": "Iconfont",
+        "nameEn": "Iconfont",
+        "src": "iconfont.svg",
+        "backgroundColor": "#ffffff"
+      },
+      {
+        "id": "fb9374bda67b45198f8cc591ebbecfde",
+        "url": "http://zhongguose.com/",
+        "type": "icon",
+        "name": "中国色",
+        "nameEn": "Zhongguose",
+        "src": "zhongguose.com.svg",
+        "backgroundColor": "#dadada"
+      },
+      {
+        "id": "7b8c92f8a7c442078bf954055a519a20",
+        "url": "https://pixabay.com/",
+        "type": "icon",
+        "name": "Pixabay",
+        "nameEn": "Pixabay",
+        "src": "pixabay.svg",
+        "backgroundColor": "#14a052"
+      },
+      {
+        "id": "71e1d662fa584361bf5fa2c681cde641",
+        "url": "http://www.58pic.com/",
+        "type": "icon",
+        "name": "千图网",
+        "nameEn": "58pic",
+        "src": "58pic.svg",
+        "backgroundColor": "#00a46b"
+      },
+      {
+        "id": "35e5312d0b7c44eb86b3b7183e5e629e",
+        "url": "https://colorhub.me",
+        "type": "icon",
+        "name": "Colorhub",
+        "nameEn": "Colorhub",
+        "src": "colorhub.svg",
+        "backgroundColor": "#ec8e01"
+      },
+      {
+        "id": "ddf9cfe34fcc4e3f80b2cfe9023bc9f7",
+        "url": "https://www.gaoding.com?from=rqzm",
+        "type": "icon",
+        "name": "稿定设计",
+        "nameEn": "Gaoding",
+        "src": "gaoding.svg",
+        "backgroundColor": "#2455f4"
+      },
+      {
+        "id": "ad639c920a574003b6a6c7fdaee13a92",
+        "url": "http://www.ui.cn",
+        "type": "icon",
+        "name": "UI中国",
+        "nameEn": "UICN",
+        "src": "uicn.svg",
+        "backgroundColor": "#418af8"
+      },
+      {
+        "id": "6885e9bcef1a438aa8e09f59be4a14f4",
+        "url": "http://freepik.com",
+        "type": "icon",
+        "name": "Freepik",
+        "nameEn": "Freepik",
+        "src": "freepik.svg",
+        "backgroundColor": "#1373eb"
+      },
+      {
+        "id": "ca86b104f62e4cdabc023efa6b08c5d6",
+        "url": "http://ibaotu.com/",
+        "type": "icon",
+        "name": "包图网",
+        "nameEn": "Ibaotu",
+        "src": "ibaotu.svg",
+        "backgroundColor": "#fff5c8"
+      },
+      {
+        "id": "d4b734ef7d98411e8c45fb047276178d",
+        "url": "http://www.qijishow.com/down/index.html",
+        "type": "icon",
+        "name": "奇迹秀",
+        "nameEn": "qijishow",
+        "src": "qijishow.svg",
+        "backgroundColor": "#122441"
+      },
+      {
+        "id": "cf0cd047f9b64204a83d335287561273",
+        "url": "https://www.67tool.com/?from=rqzm.cn",
+        "type": "icon",
+        "name": "即时工具",
+        "nameEn": "JS Tools",
+        "src": "67tool.svg",
+        "backgroundColor": "#369dfc"
+      }
+    ]
+  },
+  {
+    "name": "产品",
+    "nameEn": "Product",
+    "icon": "zan",
+    "children": [
+      {
+        "id": "89d953dcbe7249e7bff5c9006c3a9506",
+        "url": "http://www.woshipm.com/",
+        "type": "icon",
+        "name": "人人都是产品经理",
+        "nameEn": "woshipm",
+        "src": "woshipm.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "fff57c6ff35d470aa96191dddce7c2f8",
+        "url": "https://flowus.cn/?promotionChannel=WZ_it_01",
+        "type": "icon",
+        "name": "FlowUs",
+        "nameEn": "FlowUs",
+        "src": "flowus.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "6f6ab36256c04b7eb6bd3562f2d44058",
+        "url": "https://www.notion.so/",
+        "type": "icon",
+        "name": "Notion",
+        "nameEn": "Notion",
+        "src": "notion.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "0cef0526e8794ef9925de917ccfe628d",
+        "url": "https://u.tools/?from=rqzm",
+        "type": "icon",
+        "name": "uTools",
+        "nameEn": "uTools",
+        "src": "utools.svg",
+        "backgroundColor": "#fff",
+        "view": null
+      },
+      {
+        "id": "d43c4e1b9ee94e8b86fb62c7f6bdfe68",
+        "url": "https://www.dida365.com/",
+        "type": "icon",
+        "name": "滴答清单",
+        "nameEn": "dida365",
+        "src": "dida365.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "fb4c82983d054782a7ec2c6e3b3cf126",
+        "url": "https://shimo.im/desktop",
+        "type": "icon",
+        "name": "石墨文档",
+        "nameEn": "Shimo",
+        "src": "shimo.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "b4c3876e70024c8088f7c080a7ca5314",
+        "url": "https://www.teambition.com/projects",
+        "type": "icon",
+        "name": "Teambition",
+        "nameEn": "Teambition",
+        "src": "teambition.svg",
+        "backgroundColor": "#494949"
+      },
+      {
+        "id": "dac6f96a44154469b8c51ccd6d425bc5",
+        "url": "https://www.iconfont.cn/",
+        "type": "icon",
+        "name": "Iconfont",
+        "nameEn": "Iconfont",
+        "src": "iconfont.svg",
+        "backgroundColor": "#ffffff"
+      },
+      {
+        "id": "04105fe484b145a4ac33ed15e3404465",
+        "url": "http://www.36kr.com",
+        "type": "icon",
+        "name": "36氪",
+        "nameEn": "36KR",
+        "src": "36kr.svg",
+        "backgroundColor": "#1380d8"
+      },
+      {
+        "id": "027d312c4df14c46af053156740f453d",
+        "url": "https://www.processon.com/?utm_source=rqzm.cn1",
+        "type": "icon",
+        "name": "流程图思维导图",
+        "nameEn": "processon",
+        "src": "processon.svg",
+        "backgroundColor": "#1985f0"
+      },
+      {
+        "id": "8cdc8825354443c8916bd1e81a01399f",
+        "url": "https://www.zhihu.com/",
+        "type": "icon",
+        "name": "知乎",
+        "nameEn": "Zhihu",
+        "src": "zhihu.svg",
+        "backgroundColor": "#0c6dfe"
+      },
+      {
+        "id": "e2b4f626de574120ba95d996ef166030",
+        "url": "https://www.zhixi.com/space?src=rqzm",
+        "type": "icon",
+        "name": " 知犀思维导图",
+        "nameEn": "Zhixi",
+        "src": "zhixi.svg",
+        "backgroundColor": "#4dec7c"
+      },
+      {
+        "id": "10609d20c88f4f6bad908577484da6e2",
+        "url": "http://www.pmcaff.com/",
+        "type": "icon",
+        "name": "PMCAFF",
+        "nameEn": "PMCAFF",
+        "src": "pmcaff.svg",
+        "backgroundColor": "#8dbb5d"
+      },
+      {
+        "id": "e61c0f812ef94f04b710da640e775ec1",
+        "url": "https://datayi.cn/w/EoZAmJyP",
+        "type": "icon",
+        "name": "cowtransfer",
+        "nameEn": "cowtransfer",
+        "src": "cowtransfer.svg",
+        "backgroundColor": "#ffd95a"
+      },
+      {
+        "url": "https://lusun.com/?utm_source=rqzm.cn",
+        "type": "icon",
+        "name": "芦笋在线录制",
+        "nameEn": "lusun",
+        "src": "lusun.svg",
+        "id": "6e858370e9d4473aa447b9adfbd18013",
+        "backgroundColor": "#fff"
+      },
+      {
+        "url": "https://sspai.com/?utm_source=rqzm.cn.ink",
+        "type": "icon",
+        "name": "少数派",
+        "nameEn": "sspai",
+        "src": "sspai.svg",
+        "id": "1995698cfd3949e0afe0ee8c3f9a18bd",
+        "backgroundColor": "#d7191a"
+      },
+      {
+        "url": "https://www.crxsoso.com/?utm=rqzm",
+        "type": "icon",
+        "name": "扩展搜搜",
+        "nameEn": "crxsoso",
+        "src": "crxsoso.com.svg",
+        "id": "4b555bb685d04e5593168dbc87d33b3f",
+        "backgroundColor": "#fff"
+      },
+      {
+        "url": "https://www.islide.cc/ppt?utm_source=rqzm.cn&utm_medium=web&utm_campaign=1",
+        "type": "icon",
+        "name": "iSlide PPT神器",
+        "nameEn": "iSlide",
+        "src": "islide.svg",
+        "id": "92be373a214c4f94a7c8e6b51816f1da",
+        "backgroundColor": "#fff"
+      },
+      {
+        "url": "https://abcdpdf.com/zh-cn/?utm_medium=rqzm",
+        "type": "icon",
+        "name": "ABCD PDF",
+        "nameEn": "ABCD PDF",
+        "src": "abcdpdf.svg",
+        "id": "22b1879dea8a4c7e995d896781b44190",
+        "backgroundColor": "#28364d"
+      }
+    ],
+    "id": "8965a7cb50a7462ab78414b6b79ebc49"
+  },
+  {
+    "name": "休闲",
+    "nameEn": "Amusement",
+    "icon": "entertainment",
+    "children": [
+      {
+        "id": "e39deda28fc8432fb42a5d53f9eccec4",
+        "url": "https://weibo.com/",
+        "type": "icon",
+        "name": "新浪微博",
+        "nameEn": "Weibo",
+        "src": "weibo.svg",
+        "backgroundColor": "#ffd850"
+      },
+      {
+        "id": "8e0906d653334ef39e72c823536f6c3d",
+        "url": "http://www.iqiyi.com",
+        "type": "icon",
+        "name": "爱奇艺",
+        "nameEn": "iqiyi",
+        "src": "iqiyi.svg",
+        "backgroundColor": "#00cc4c"
+      },
+      {
+        "id": "98b669e16c014ed98aa2b27dfbe43bfe",
+        "url": "http://www.youku.com",
+        "type": "icon",
+        "name": "优酷",
+        "nameEn": "Youku",
+        "src": "youku.svg",
+        "backgroundColor": "#ffffff"
+      },
+      {
+        "id": "3eb376b7ef7d476d8d52c85391b53d5c",
+        "url": "http://v.qq.com/",
+        "type": "icon",
+        "name": "腾讯视频",
+        "nameEn": "QQ Video",
+        "src": "qqvideo.svg",
+        "backgroundColor": "#ffffff"
+      },
+      {
+        "id": "1eab2c6fbb1c4158ab78cd8ab8984752",
+        "url": "http://y.qq.com/",
+        "type": "icon",
+        "name": "QQ音乐",
+        "nameEn": "QQ Music",
+        "src": "qqmusic.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "141228c6df234095a4c0e86a8190d9c5",
+        "url": "http://music.163.com/?from=rqzm",
+        "type": "icon",
+        "name": "网易云音乐",
+        "nameEn": "Music 163",
+        "src": "music163.svg",
+        "backgroundColor": "#fe1816"
+      },
+      {
+        "id": "dc2b780f7a264779aa7b211e80d76c12",
+        "url": "https://www.bilibili.com/",
+        "type": "icon",
+        "name": "Bilibili",
+        "nameEn": "Bilibili",
+        "src": "bilibili2.svg",
+        "backgroundColor": "#fe65a6"
+      },
+      {
+        "id": "361a08549a2b41db94b0ceebabcdfdcd",
+        "url": "https://www.zhihu.com/",
+        "type": "icon",
+        "name": "知乎",
+        "nameEn": "Zhihu",
+        "src": "zhihu.svg",
+        "backgroundColor": "#0c6dfe"
+      },
+      {
+        "id": "269597dc56b44ae3bcde4d3414b8441d",
+        "url": "https://maimai.cn/feed_list",
+        "type": "icon",
+        "name": "脉脉",
+        "nameEn": "Maimai",
+        "src": "maimai.svg",
+        "backgroundColor": "#2c4ffe"
+      },
+      {
+        "id": "cf350ffe459740cb8ccdbda8ec488a4e",
+        "url": "https://store.steampowered.com/",
+        "type": "icon",
+        "name": "Steam",
+        "nameEn": "Steam",
+        "src": "steam.svg",
+        "backgroundColor": "#000000"
+      },
+      {
+        "id": "45bc8c407d3f4d9e8f5edc799f8bce7f",
+        "url": "https://www.douyin.com/?ug_source=rqzm_zmsy",
+        "type": "icon",
+        "name": "抖音",
+        "nameEn": "Douyin",
+        "src": "douyin.svg",
+        "backgroundColor": "#1c0b1a"
+      },
+      {
+        "id": "bd7d45152b59405d9e110ad65066331b",
+        "url": "http://meiriyiwen.com",
+        "type": "icon",
+        "name": "每日一文",
+        "nameEn": "Daily Article",
+        "src": "meiriyiwen.svg",
+        "backgroundColor": "#29505b"
+      },
+      {
+        "id": "8bbfa15f578740fdaede07f07e73f553",
+        "url": "https://web.okjike.com",
+        "type": "icon",
+        "name": "即刻网页版",
+        "nameEn": "okjike",
+        "src": "okjike.svg",
+        "backgroundColor": "#f3db2b"
+      },
+      {
+        "id": "33e9d2b1133f4bed9658d3a1b07dcbdb",
+        "url": "https://www.yikm.net/",
+        "type": "icon",
+        "name": "小霸王",
+        "nameEn": "yikm",
+        "src": "www.yikm.net.svg",
+        "backgroundColor": "#1499b5"
+      },
+      {
+        "id": "c00cd0932dc44f319c1a4135006705e4",
+        "url": "https://www.4399.com/",
+        "type": "icon",
+        "name": "4399小游戏",
+        "nameEn": "4399 Game",
+        "src": "4399.svg",
+        "backgroundColor": "#f19425"
+      },
+      {
+        "id": "10a4bd891efd4876a5fed3eaa5d9cf7f",
+        "url": "http://www.huya.com/",
+        "type": "icon",
+        "name": "虎牙直播",
+        "nameEn": "Huya",
+        "src": "huya.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "82dd140c99674f80b0831b66faf2bc6b",
+        "url": "https://www.douyu.com/",
+        "type": "icon",
+        "name": "斗鱼",
+        "nameEn": "Douyu",
+        "src": "douyu.svg",
+        "backgroundColor": "#ff6a2d"
+      },
+      {
+        "id": "0a434bb971eb44e2be156b3ed949b456",
+        "url": "https://bgmlist.com/",
+        "type": "icon",
+        "name": "番组放送",
+        "nameEn": "fzfs",
+        "src": "59f86644d8bf9277d70b3f60.png",
+        "backgroundColor": "#1abc9c"
+      },
+      {
+        "id": "d1cff44ede494e8c96fa83fdf97e2d2e",
+        "url": "http://mo.fish",
+        "type": "icon",
+        "name": "摸鱼",
+        "nameEn": "Amusement",
+        "src": "mo.fish.svg",
+        "backgroundColor": "#fefdf8"
+      },
+      {
+        "id": "56f907f70228409e9bc8fce574324bab",
+        "url": "https://fanqienovel.com/",
+        "type": "icon",
+        "name": "番茄小说网",
+        "nameEn": "fqxsw",
+        "src": "fanqienovel.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "b707b6960abe4cb484b99d104f213b95",
+        "url": "https://bcy.net",
+        "type": "icon",
+        "name": "半次元",
+        "nameEn": "bcy",
+        "src": "60b9ee2cae5a9ba4024b4415.png",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "0da7d5e9d06545539cc0b35ae5eb2688",
+        "url": "https://www.xiaozhongjishu.com/?from=rqzm",
+        "type": "icon",
+        "name": "小众技术资源库",
+        "nameEn": "xzjszyk",
+        "src": "xiaozhongjishu.com.png",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "24a34fd1048d4a848a44cf76122048a5",
+        "url": "http://jandan.net/",
+        "type": "icon",
+        "name": "煎蛋",
+        "nameEn": "jiandan",
+        "src": "jandan.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "442650386c4543c2b2e3e07db02ce136",
+        "url": "http://www.douban.com",
+        "type": "icon",
+        "name": "豆瓣",
+        "nameEn": "Douban",
+        "src": "douban.svg",
+        "backgroundColor": "#00c117"
+      },
+      {
+        "id": "c4ddaae5183849778107578e4b5888e5",
+        "url": "https://ac.qq.com/",
+        "type": "icon",
+        "name": "腾讯动漫",
+        "nameEn": "qq-ac",
+        "src": "qq-ac.svg",
+        "backgroundColor": "#ec7a36"
+      },
+      {
+        "id": "49d9ce2087384c95a9f4e1987a34a0ea",
+        "url": "http://dig.chouti.com/",
+        "type": "icon",
+        "name": "抽屉新热榜",
+        "nameEn": "ChouTi",
+        "src": "60b9eb7bae5a9ba4024b3b7e.png",
+        "backgroundColor": "#f8aa00"
+      },
+      {
+        "id": "79fd51af12d54ad58ea4020bf130deec",
+        "url": "https://shenmezhidedu.com/?from=rqzm",
+        "type": "icon",
+        "name": "什么值得读",
+        "nameEn": "smzdd",
+        "src": "www.shenmezhidedu.com.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "a304852bb57642c8bbae4d2908718a8a",
+        "url": "http://www.mop.com/",
+        "type": "icon",
+        "name": "猫扑",
+        "nameEn": "Mop",
+        "src": "mop.svg",
+        "backgroundColor": "#fbe036"
+      },
+      {
+        "id": "cb9619152da74df9ac9c17342f529b12",
+        "url": "https://www.qidian.com/rank",
+        "type": "icon",
+        "name": "起点中文网",
+        "nameEn": "QiDian",
+        "src": "qidian.svg",
+        "backgroundColor": "#ff3333"
+      },
+      {
+        "id": "ab34be9a3b9f40b380bdbcb519fd0ae9",
+        "url": "http://www.smzdm.com/?from=rqzm.cn",
+        "type": "icon",
+        "name": "什么值得买",
+        "nameEn": "smzdm",
+        "src": "smzdm.svg",
+        "backgroundColor": "#ed1c24"
+      },
+      {
+        "id": "902c6e355f6d4b228f0964b20c3c7be4",
+        "url": "https://weread.qq.com/",
+        "type": "icon",
+        "name": "微信读书",
+        "nameEn": "Wechat Read",
+        "src": "weread-qq.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "75d841ef5d4c4562962841a76be90259",
+        "url": "http://www.tianya.cn",
+        "type": "icon",
+        "name": "天涯",
+        "nameEn": "Tianya",
+        "src": "tianyacn.svg",
+        "backgroundColor": "#2fadf3"
+      },
+      {
+        "id": "a74ededf409845c6a55be1dd2ee0801b",
+        "url": "https://manhua.dmzj.com/",
+        "type": "icon",
+        "name": "动漫之家",
+        "nameEn": "dmzj",
+        "src": "dmzj.com.svg",
+        "backgroundColor": "#0d7cfe"
+      },
+      {
+        "id": "461e62b3b02d4771804baa94006c8889",
+        "url": "https://www.ghxi.com/",
+        "type": "icon",
+        "name": "果核剥壳",
+        "nameEn": "ghxi",
+        "src": "ghxi.svg",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "5d15dafbb57b4638a4705e340c869a20",
+        "url": "https://toonme.com/",
+        "type": "icon",
+        "name": "漫画生成",
+        "nameEn": "Toonme",
+        "src": "toonme.png",
+        "backgroundColor": "#ffb329"
+      },
+      {
+        "id": "5729b9901bd84caa99d2e9d4d40198a2",
+        "url": "https://tikolu.net/emojimix/",
+        "type": "icon",
+        "name": "emoji合成",
+        "nameEn": "Emoji",
+        "src": "59f723c85138415abdea365b.png",
+        "backgroundColor": "#fff"
+      },
+      {
+        "id": "385c0826934a4a5c858d9965701d3dff",
+        "insetType": "iframe",
+        "component": "2048",
+        "type": "icon",
+        "name": "2048",
+        "nameEn": "2048",
+        "size": "1x1",
+        "src": "2048.svg"
+      },
+      {
+        "id": "c5457a6c89644471b7f87e04f75e9a88",
+        "insetType": "iframe",
+        "component": "dino",
+        "type": "icon",
+        "name": "恐龙快跑",
+        "nameEn": "Dino",
+        "size": "1x1",
+        "src": "dino.svg"
+      },
+      {
+        "id": "2c34b619d8e140e0a6a4c897fdf40021",
+        "url": "https://www.cikeee.com/?u_sour=rqzm",
+        "type": "icon",
+        "name": "此刻电影日历",
+        "nameEn": "Cikeee",
+        "src": "cikeee.svg",
+        "backgroundColor": "#2c2f30"
+      },
+      {
+        "url": "https://jikipedia.com/",
+        "type": "icon",
+        "name": "小鸡词典",
+        "nameEn": "Jiki Pedia",
+        "src": "jikipedia.svg",
+        "backgroundColor": "#fdd502",
+        "id": "e531c212f20d4344bdf72db0dcafb924"
+      }
+    ],
+    "id": "9035f5b66f274627ae8acab69b1379cc"
+  }
+]
