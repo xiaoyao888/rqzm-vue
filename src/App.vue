@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Desktop from './components/desktop.vue'
+import Desktop from '@/views/desktop/desktop.vue'
 
 export default {
   name: 'App',

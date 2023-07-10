@@ -162,8 +162,8 @@
 <!--		<search-icon ref="searchIcon"></search-icon>-->
 <!--		<login ref="userLogin" @success="initUserInfo()"></login>-->
 <!--		<todo-list ref="todoList"></todo-list>-->
-<!--		<support-author ref="supportAuthor"></support-author>-->
-<!--		<privatization ref="privatization"></privatization>-->
+		<support-author ref="supportAuthor"></support-author>
+		<privatization ref="privatization"></privatization>
 <!--		<countdown ref="countdown" @ok="initIconList()"></countdown>-->
 <!--		<calendar ref="calendar"></calendar>-->
 <!--		<translate ref="translate"></translate>-->
@@ -204,18 +204,18 @@
 		dateFormat,
 		parseTime
 	} from '@/utils/util'
-	// import {
-	// 	getLunar
-	// } from '@/utils/getLunar.js'
+	import {
+		getLunar
+	} from '@/utils/getLunar.js'
 	// import {waves} from '@/directive/waves'
 	// import setting from './setting';
 	// import {person} from './person';
 	// import {addAppItem} from './addAppItem';
 	// import {searchIcon} from './searchIcon';
-	// import login from '@/views/login/login';
+	import login from '@/views/login/login';
 	// import {todoList} from '@/views/widgets/todoList';
-	// import supportAuthor from './supportAuthor';
-	// import privatization from './privatization';
+	import supportAuthor from './supportAuthor';
+	import privatization from './privatization';
 	// import {Countdown} from "@/views/widgets/countdown";
 	// import {CountdownWidget} from "../widgets/countdownWidget";
 	// import {calendar} from "@/views/widgets/calendar";
@@ -244,10 +244,10 @@
 			// setting,
 			// addAppItem,
 			// searchIcon,
-			// login,
+			login,
 			// todoList,
-			// supportAuthor,
-			// privatization,
+			supportAuthor,
+			privatization,
 			// calendar,
 			// calendarWidget,
 			// translate,
@@ -378,7 +378,7 @@
 					}
 					if (data.dateTimeConfig.lunar) {
 						let date = new Date();
-						// data.nowLunar = getLunar(date);
+						data.nowLunar = getLunar(date);
 					}
 				},
 				initIconList: () => {
