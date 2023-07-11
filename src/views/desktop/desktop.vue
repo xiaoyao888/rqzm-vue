@@ -160,7 +160,7 @@
 <!--			@changeNavBarMode="initNavbar"></setting>-->
 <!--		<add-app-item ref="addAppItem" @ok="initIconList()"></add-app-item>-->
 <!--		<search-icon ref="searchIcon"></search-icon>-->
-<!--		<login ref="userLogin" @success="initUserInfo()"></login>-->
+		<login ref="userLogin" @success="initUserInfo()"></login>
 <!--		<todo-list ref="todoList"></todo-list>-->
 		<support-author ref="supportAuthor"></support-author>
 		<privatization ref="privatization"></privatization>
