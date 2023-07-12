@@ -3,18 +3,44 @@
 		:style="'background: url('+background+');background-color:rgb(0,0,0,0.8);background-size:100% 100%;'">
 		<!--    <full-page ref="fullpage" :options="options">-->
 		<!-- style="backdrop-filter: blur(1px)" -->
-		<div :id="'section'+(index+1)" class="section" :class="'section'+(index+1)"
-			v-for="(item,index) in iconDefaultData" @contextmenu.prevent="openMenu($event)">
+    <div :id="'section'+(index+1)" class="section" :class="'section'+(index+1)" v-for="(item,index) in iconDefaultData.value" @contextmenu.prevent="openMenu($event)">
 			<div class="app-grid" :style="currentIconPage === index?'':'display:none'">
-				<vuedraggable class="wrapper" v-model="item.children">
+        <draggable
+            class="wrapper"
+            v-model="item.children"
+            @start="drag = true"
+            @end="drag = false"
+            item-key="index"
+        >
+          <template #item="{ element }">
+            <div class="item">
+<!--              {{element.id}}-->
+              <div v-if="batchDeleteAppItemVisible" style="position: absolute;top:-7px;right:7px;z-index:1000">
+                <i class="el-icon-error" style="font-size:18px;color:#ffffff;" @click="deleteAppItem(element,index,i,'appItem')"></i>
+              </div>
+               <div :id="'appItem'+element.id" :data-index="i" class="app-icon" @click="appClick(element,index,i)"
+                   :style="'background:'+iconBackground(element)"
+                   @contextmenu.prevent="openMenu($event,index,i,element)">
+								<span v-if="element.type==='text'"
+                      :class="'widget-'+(element.size?element.size:'1x1')">{{ element.iconWord }}</span>
+                <img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon">
+                <img v-else-if="element.type==='component' && element.size==='1x1'" :src="getImgUrl(element)"
+                     class="icon">
+                <countdown-widget v-else-if="element.type==='countdown'" :size="element.size?element.size:'1x1'"
+                                  :form="element"></countdown-widget>
+                <calendar-widget v-else-if="element.type==='calendar'"
+                                 :size="element.size?element.size:'1x1'"></calendar-widget>
+              </div>
+              <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
+            </div>
+          </template>
+        </draggable>
+<!--				<draggable class="wrapper" v-model="item.children">
 					<transition-group name="flip-list" tag="div" class="transitionGroup" @drop="dropEvent($event)">
-						<div v-for="(app,i) in item.children" :key="app.id" class="app-item"
-							:class="'icon-size-'+(app.size?app.size:'1x1')" draggable="true"
+						<div v-for="(app,i) in item.children" :key="app.id" class="app-item" :class="'icon-size-'+(app.size?app.size:'1x1')" draggable="true"
 							@dragstart="dragEnterEvent($event, app)" @dragend="dragEnterOver($event,1)">
-							<div v-if="batchDeleteAppItemVisible"
-								style="position: absolute;top:-7px;right:7px;z-index:1000">
-								<i class="el-icon-error" style="font-size:18px;color:#ffffff;"
-									@click="deleteAppItem(app,index,i,'appItem')"></i>
+							<div v-if="batchDeleteAppItemVisible" style="position: absolute;top:-7px;right:7px;z-index:1000">
+								<i class="el-icon-error" style="font-size:18px;color:#ffffff;" @click="deleteAppItem(app,index,i,'appItem')"></i>
 							</div>
 							<div :id="'appItem'+app.id" :data-index="i" class="app-icon" @click="appClick(app,index,i)"
 								:style="'background:'+iconBackground(app)"
@@ -32,7 +58,7 @@
 							<div class="app-title">{{ $i18n.locale === 'zh_cn' ? app.name : app.nameEn }}</div>
 						</div>
 					</transition-group>
-				</vuedraggable>
+				</draggable>-->
 			</div>
 		</div>
 		<!--    </full-page>-->
@@ -65,7 +91,7 @@
 				
 					<!-- <i class="el-icon-user-solid"></i><a @click="showDialog('userLogin')">{{ $t('common.login') }}</a> -->
 				
-				<div v-for="(item,index) in iconDefaultData" @click="selectDesktop(item,index)">
+				<div v-for="(item,index) in iconDefaultData.value" @click="selectDesktop(item,index)">
 					<a><i :class="'el-icon-'+item.icon"></i>{{ locale === 'zh_cn' ? item.name : item.nameEn }}</a>
 				</div>
 			</div>
@@ -191,13 +217,12 @@
 <script>
 	import {
 		ref,
+    toRefs,
 		reactive,
 		onMounted,
 		watch
 	} from 'vue'
-	import {
-		vuedraggable
-	} from 'vuedraggable';
+  import draggable from 'vuedraggable'
 	import drawClock from '@/utils/clock'
 	import {
 		randomNumber,
@@ -240,7 +265,7 @@
 			UserOutlined,
 			// Countdown,
 			// CountdownWidget,
-			vuedraggable,
+      draggable,
 			// setting,
 			// addAppItem,
 			// searchIcon,
@@ -291,7 +316,7 @@
 				nowWeek: ref(''),
 				nowLunar: ref(''),
 				currentIconPage: ref(0),
-				iconDefaultData: [],
+				iconDefaultData: reactive([]),
 				navAppItems: reactive([]),
 				searchEngine: defaultEngine,
 				searchEngineList: reactive([{
@@ -342,7 +367,10 @@
 				userLogin
 			}
 
-
+      const state = reactive({
+        drag: false,
+        list: [1, 2, 3, 4, 5, 6]
+      })
 			// themePicker.methods.themeChange(data.themeColor);
 
 			const methods = {
@@ -391,7 +419,7 @@
 							iconDefaultData = require('@/assets/json/navJsonData.json');
 							localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData));
 						}
-						data.iconDefaultData = iconDefaultData;
+						data.iconDefaultData.value = iconDefaultData;
 					}
 				},
 				initUserInfo: () => {
@@ -455,7 +483,7 @@
 				dragEnterOver: (event, type) => {
 					data.dragNav = null;
 					if (type === 1) {
-						localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData))
+						localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
 					} else {
 						localStorage.setItem("navAppItems", JSON.stringify(data.navAppItems))
 					}
@@ -559,13 +587,13 @@
 							parentIndex = data.selectSectionAppItemParentIndex;
 							appIndex = data.selectSectionAppItemIndex;
 						}
-						for (let it of data.iconDefaultData[parentIndex].children) {
+						for (let it of data.iconDefaultData.value[parentIndex].children) {
 							if (it.name === item.name && it.id === item.id) {
-								data.iconDefaultData[parentIndex].children.splice(appIndex, 1);
+								data.iconDefaultData.value[parentIndex].children.splice(appIndex, 1);
 								break;
 							}
 						}
-						localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData))
+						localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
 					}
 				},
 				search: () => {
@@ -606,17 +634,17 @@
 					}
 				},
 				moveToFirstPage: () => {
-					data.iconDefaultData[0].children.push(data.selectSectionAppItem);
-					data.iconDefaultData[data.selectSectionAppItemParentIndex].children.splice(data
+					data.iconDefaultData.value[0].children.push(data.selectSectionAppItem);
+					data.iconDefaultData.value[data.selectSectionAppItemParentIndex].children.splice(data
 						.selectSectionAppItemIndex, 1);
-					localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData));
+					localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value));
 				},
 				changeAppIconlayout: (value) => {
 					let parentIndex = data.selectSectionAppItemParentIndex;
 					let appIndex = data.selectSectionAppItemIndex;
 					data.selectSectionAppItem.size = value;
-					data.iconDefaultData[parentIndex].children[appIndex].size = value;
-					localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData));
+					data.iconDefaultData.value[parentIndex].children[appIndex].size = value;
+					localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value));
 				},
 				whiteOrBlack: () => {
 					var hour = new Date().getHours()
@@ -646,7 +674,8 @@
 			document.body.addEventListener('click', methods.closeMenu)
 			return {
 				...data,
-				...methods
+				...methods,
+        ...toRefs(state)
 			};
 		}
 	}
@@ -678,63 +707,61 @@
 			margin-left: 10%;
 
 			.wrapper {
-				.transitionGroup {
-					display: grid;
-					grid-template-columns: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-y)));
-					grid-template-rows: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-x)));
-					grid-auto-flow: dense;
-					justify-content: center;
-					box-sizing: border-box;
-					margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-y)));
+        grid-template-rows: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-x)));
+        grid-auto-flow: dense;
+        justify-content: center;
+        box-sizing: border-box;
+        margin-top: 20px;
 
-					.app-item {
-						//width: calc(var(--item-size) + var(--item-gap-x));
-						//height: calc(var(--item-size) + var(--item-gap-y));
-						padding: 0 calc(var(--item-gap-y) / 2) calc(var(--item-gap-x));
-						position: relative;
-						box-sizing: border-box;
-						cursor: pointer;
+        .item {
+          width: calc(var(--item-size) + var(--item-gap-x));
+          height: calc(var(--item-size) + var(--item-gap-y));
+          padding: 0 calc(var(--item-gap-y) / 2) calc(var(--item-gap-x));
+          position: relative;
+          box-sizing: border-box;
+          cursor: pointer;
 
-						.app-icon {
-							position: relative;
-							width: 100%;
-							height: 100%;
-							overflow: hidden;
-							border-radius: var(--icon-bg-radius);
-							background-color: #fff;
-							text-align: center;
-							font-size: 18px;
+          .app-icon {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: var(--icon-bg-radius);
+            background-color: #fff;
+            text-align: center;
+            font-size: 18px;
 
-							img {
-								position: absolute;
-								width: 100%;
-								height: 100%;
-								transform: translate3d(-50%, -50%, 0);
-								top: 50%;
-								left: 50%
-							}
-						}
+            img {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              transform: translate3d(-50%, -50%, 0);
+              top: 50%;
+              left: 50%
+            }
+          }
 
-						.app-icon:hover {
-							//margin-top:-5px;
-							//margin-left:-5px;
-							//height:65px;
-							//width:65px;
-							//width:calc(var(--icon-size) + 5);
-							//height:calc(var(--icon-size) + 5);
-						}
+          .app-icon:hover {
+            //margin-top:-5px;
+            //margin-left:-5px;
+            //height:65px;
+            //width:65px;
+            //width:calc(var(--icon-size) + 5);
+            //height:calc(var(--icon-size) + 5);
+          }
 
-						.app-title {
-							font-size: 12px;
-							color: #ffffff;
-							text-align: center;
-							padding-top: 10px;
-							white-space: nowrap;
-							overflow: hidden;
-							//text-overflow: ellipsis
-						}
-					}
-				}
+          .app-title {
+            font-size: 12px;
+            color: #ffffff;
+            text-align: center;
+            padding-top: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            //text-overflow: ellipsis
+          }
+        }
 			}
 		}
 	}

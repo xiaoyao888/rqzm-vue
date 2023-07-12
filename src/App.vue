@@ -1,5 +1,6 @@
 <template>
-  <Desktop msg="Welcome to Your Vue.js App"/>
+<!--  <Desktop msg="Welcome to Your Vue.js App"/>-->
+  <router-view />
 </template>
 
 <script>
