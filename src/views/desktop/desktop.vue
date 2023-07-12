@@ -16,11 +16,11 @@
             <div class="item">
 <!--              {{element.id}}-->
               <div v-if="batchDeleteAppItemVisible" style="position: absolute;top:-7px;right:7px;z-index:1000">
-                <i class="el-icon-error" style="font-size:18px;color:#ffffff;" @click="deleteAppItem(element,index,i,'appItem')"></i>
+                <close-circle-filled style="font-size:18px;color:#ffffff;" @click="deleteAppItem()"/>
               </div>
-               <div :id="'appItem'+element.id" :data-index="i" class="app-icon" @click="appClick(element,index,i)"
+               <div :id="'appItem'+element.id" :data-index="element.id" class="app-icon" @click="appClick(element,index,i)"
                    :style="'background:'+iconBackground(element)"
-                   @contextmenu.prevent="openMenu($event,index,i,element)">
+                   @contextmenu.prevent="openMenu($event,index,element)">
 								<span v-if="element.type==='text'"
                       :class="'widget-'+(element.size?element.size:'1x1')">{{ element.iconWord }}</span>
                 <img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon">
@@ -35,30 +35,6 @@
             </div>
           </template>
         </draggable>
-<!--				<draggable class="wrapper" v-model="item.children">
-					<transition-group name="flip-list" tag="div" class="transitionGroup" @drop="dropEvent($event)">
-						<div v-for="(app,i) in item.children" :key="app.id" class="app-item" :class="'icon-size-'+(app.size?app.size:'1x1')" draggable="true"
-							@dragstart="dragEnterEvent($event, app)" @dragend="dragEnterOver($event,1)">
-							<div v-if="batchDeleteAppItemVisible" style="position: absolute;top:-7px;right:7px;z-index:1000">
-								<i class="el-icon-error" style="font-size:18px;color:#ffffff;" @click="deleteAppItem(app,index,i,'appItem')"></i>
-							</div>
-							<div :id="'appItem'+app.id" :data-index="i" class="app-icon" @click="appClick(app,index,i)"
-								:style="'background:'+iconBackground(app)"
-								@contextmenu.prevent="openMenu($event,index,i,app)">
-								<span v-if="app.type==='text'"
-									:class="'widget-'+(app.size?app.size:'1x1')">{{ app.iconWord }}</span>
-								<img v-else-if="app.type==='icon'" :src="getImgUrl(app)" class="icon">
-								<img v-else-if="app.type==='component' && app.size==='1x1'" :src="getImgUrl(app)"
-									class="icon">
-								<countdown-widget v-else-if="app.type==='countdown'" :size="app.size?app.size:'1x1'"
-									:form="app"></countdown-widget>
-								<calendar-widget v-else-if="app.type==='calendar'"
-									:size="app.size?app.size:'1x1'"></calendar-widget>
-							</div>
-							<div class="app-title">{{ $i18n.locale === 'zh_cn' ? app.name : app.nameEn }}</div>
-						</div>
-					</transition-group>
-				</draggable>-->
 			</div>
 		</div>
 		<!--    </full-page>-->
@@ -83,7 +59,7 @@
 						<template #title>
 							<span>{{$t('common.login')}}</span>
 						</template>
-						<user-outlined />
+            <Icon class="icon" icon="UserOutlined"/>
 					</a-tooltip>
 				</div>
 			</div>
@@ -100,7 +76,7 @@
 					<template #title>
 						<span>{{$t('common.setting')}}</span>
 					</template>
-					<setting-outlined />
+          <Icon icon="SettingOutlined"/>
 				</a-tooltip>
 			</div>
 		</div>
@@ -131,29 +107,26 @@
 				</span>
 			</div>
 		</div>
-		<ul class="contextmenu v-contextmenu section-contextmenu" id="menuhome_section" v-show="rightKeyMenuVisible"
+    <!--图标应用右键菜单-->
+		<ul class="contextmenu" id="menuhome_section" v-show="rightKeyMenuVisible"
 			:style="{left:rightKeyMenuLeft+'px',top:rightKeyMenuTop+'px'}">
-			<li class="contextmenu-item hover" @click="addAppItem()"><i class="el-icon-plus"></i>
-				{{ $t("action.addIcon") }}
+			<li class="contextmenu-item hover" @click="addAppItem()">
+        <Icon class="icon" icon="PlusCircleOutlined"/>{{ $t("action.addIcon") }}
 			</li>
 			<li class="contextmenu-item hover" @click="showDialog('translate')">
-				<i class="el-icon-refresh"></i> {{ $t("common.translate") }}
+        <Icon class="icon" icon="SyncOutlined"/>{{ $t("common.translate") }}
 			</li>
-			<li class="contextmenu-item hover" @click="rotate()"><i class="el-icon-sort"></i>
-				{{ $t("action.changeWallpaper") }}</li>
-			<li class="contextmenu-item hover"><i class="el-icon-download"></i> <a :href="background"
-					target="_blank">{{ $t("action.downWallpaper") }}</a></li>
+			<li class="contextmenu-item hover" @click="rotate()">
+        <Icon class="icon" icon="SlackOutlined"/>{{ $t("action.changeWallpaper") }}</li>
+			<li class="contextmenu-item hover"><a :href="background"
+					target="_blank">
+        <Icon class="icon" icon="DownloadOutlined"/>{{ $t("action.downWallpaper") }}</a>
+      </li>
 			<li class="contextmenu-item hover" @click="showDialog('searchIcon')">
-				<i class="el-icon-search"></i> {{ $t("action.localSearch") }}
+        <Icon class="icon" icon="SearchOutlined"/>{{ $t("action.localSearch") }}
 			</li>
 		</ul>
-		<ul class="contextmenu v-contextmenu" id="menuhome_nav_bar" v-show="navRightMenuVisible"
-			:style="{left:rightKeyMenuLeft+'px',top:rightKeyMenuTop+'px'}">
-			<li class="contextmenu-item hover" @click="batchDeleteNavAppItemVisible = !batchDeleteNavAppItemVisible">
-				{{ batchDeleteNavAppItemVisible ? $t("common.cancelEdit") : $t("common.edit") }}
-			</li>
-		</ul>
-		<ul class="contextmenu v-contextmenu" id="menuhome_icon" v-show="iconRightMenuVisible"
+		<ul class="contextmenu" id="menuhome_icon" v-show="iconRightMenuVisible"
 			:style="{left:rightKeyMenuLeft+'px',top:rightKeyMenuTop+'px'}">
 			<li class="contextmenu-item hover" @click="moveToFirstPage()"><i class="el-icon-sort"></i>
 				{{ $t("action.moveToHome") }}
@@ -174,7 +147,7 @@
 				<i class="el-icon-delete"></i>
 				{{ batchDeleteAppItemVisible ? $t("common.cancelBatchDelete") : $t("common.batchDelete") }}
 			</li>
-			<li class="contextmenu-item hover" @click="deleteAppItem(null,null,null,'appItem')">
+			<li class="contextmenu-item hover" @click="deleteAppItem()">
 				<i class="el-icon-delete"></i>
 				{{ $t("common.delete") }}
 			</li>
@@ -220,7 +193,8 @@
     toRefs,
 		reactive,
 		onMounted,
-		watch
+		watch,
+    createVNode
 	} from 'vue'
   import draggable from 'vuedraggable'
 	import drawClock from '@/utils/clock'
@@ -251,18 +225,22 @@
 	import {
 		useI18n
 	} from "vue-i18n";
-	import {
-		SettingOutlined,
-		UserOutlined
-	} from '@ant-design/icons-vue';
-	export default {
+	// import {
+  //   ExclamationCircleOutlined,
+  //   CloseCircleFilled,
+	// 	SettingOutlined,
+	// 	UserOutlined
+	// } from '@ant-design/icons-vue';
+  import Icon from "@/components/icon"
+  import {Modal} from "ant-design-vue";
+
+  export default {
 		name: "desktopIndex",
 		directives: {
 			// waves
 		},
 		components: {
-			SettingOutlined,
-			UserOutlined,
+      Icon,
 			// Countdown,
 			// CountdownWidget,
       draggable,
@@ -317,7 +295,6 @@
 				nowLunar: ref(''),
 				currentIconPage: ref(0),
 				iconDefaultData: reactive([]),
-				navAppItems: reactive([]),
 				searchEngine: defaultEngine,
 				searchEngineList: reactive([{
 						"name": "百度",
@@ -345,13 +322,11 @@
 				selectSectionAppItemParentIndex: ref(0),
 				selectSectionAppItemIndex: ref(0),
 				rightKeyMenuVisible: ref(false),
-				navRightMenuVisible: ref(false),
 				iconRightMenuVisible: ref(false),
 				rightKeyMenuTop: ref(0),
 				rightKeyMenuLeft: ref(0),
 				dragNav: reactive({}),
 				batchDeleteAppItemVisible: ref(false),
-				batchDeleteNavAppItemVisible: ref(false),
 				userInfo: reactive({
 					nickName: "",
 					avatarUrl: "",
@@ -429,18 +404,6 @@
 						this.userInfo = JSON.parse(userInfo);
 					}
 				},
-				initNavbar: () => {
-					// if(this.$store.state.settings.showNavBar){
-					//   //鍒ゆ柇��艰埅鏉℃槸鍚︽湁搴旂敤鏁版嵁鏈夊垯鍔犺��
-					let navAppItems = localStorage.getItem('navAppItems') || []
-					if (navAppItems) {
-						if (navAppItems.length > 0) {
-							navAppItems = JSON.parse(navAppItems);
-						}
-						data.navAppItems.value = navAppItems;
-					}
-					// }
-				},
 				initWallPaper: () => {
 					data.background.value = localStorage.getItem('background') || 'background.jpg'
 				},
@@ -485,7 +448,7 @@
 					if (type === 1) {
 						localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
 					} else {
-						localStorage.setItem("navAppItems", JSON.stringify(data.navAppItems))
+
 					}
 				},
 				dropEvent: (event) => {
@@ -493,24 +456,6 @@
 					if (!data.dragNav.id) {
 						return;
 					}
-					if (event.currentTarget.id !== 'navBar' || event.target.parentElement.id !== 'navAppItem') {
-						for (let item of data.navAppItems) {
-							if (item.name === data.dragNav.name && item.id === data.dragNav.id) {
-								// data.$message.warning("宸插瓨鍦ㄨ搴旂敤锛)
-								return;
-							}
-						}
-					}
-					data.navAppItems.push(data.dragNav);
-					let navAppItems = localStorage.getItem('navAppItems') || []
-					if (navAppItems) {
-						if (navAppItems.length > 0) {
-							navAppItems = JSON.parse(navAppItems);
-						}
-						navAppItems.push(data.dragNav);
-					}
-					localStorage.setItem("navAppItems", JSON.stringify(navAppItems))
-					data.dragNav = null;
 				},
 				iconBackground: (app) => {
 					if (app.backgroundColor) {
@@ -523,21 +468,9 @@
 						}
 					}
 				},
-				openMenu: (e, parentIndex, appIndex, app) => {
+				openMenu: (e, parentIndex, app) => {
 					data.rightKeyMenuVisible.value = false;
-					data.navRightMenuVisible.value = false;
 					data.iconRightMenuVisible.value = false;
-					// if (e.currentTarget.id !== 'navBar' && e.currentTarget.offsetHeight - e.pageY < 300) {
-					// 	data.rightKeyMenuTop.value = e.pageY - 240;
-					// } else {
-					// 	data.rightKeyMenuTop.value = e.pageY;
-					// }
-					// if (e.currentTarget.id !== 'navBar' && e.currentTarget.offsetWidth - e.pageX < 110) {
-					// 	data.rightKeyMenuLeft.value = e.pageX - 120;
-					// } else {
-					// 	data.rightKeyMenuLeft.value = e.pageX;
-
-					// }
 					if (e.currentTarget.offsetHeight - e.pageY < 110) {
 						data.rightKeyMenuTop.value = e.pageY;
 					} else {
@@ -549,52 +482,56 @@
 						data.rightKeyMenuLeft.value = e.pageX;
 					}
 
-					// if (e.currentTarget.id === 'section') {
-					data.rightKeyMenuVisible.value = true; //在这里控制右键菜单的打开
-					// }
-					// if (e.currentTarget.id === 'navBar') {
-					// 	data.navRightMenuVisible.value = true; //在这里控制右键菜单的打开
-					// 	// this.selectSectionAppItem = app;
-					// 	// this.selectSectionAppItemParentIndex = index;
-					// }
+          data.selectSectionAppItemParentIndex.value = parentIndex;
 					if (e.currentTarget.id && e.currentTarget.id.startsWith("appItem")) {
-						data.selectSectionAppItem.value = app;
-						data.selectSectionAppItemParentIndex.value = parentIndex;
-						data.selectSectionAppItemIndex.value = appIndex;
+            let appIndex = 0
+            if(app){
+              for (let it of data.iconDefaultData.value[parentIndex].children) {
+                if (it.name === app.name && it.id === app.id) {
+                  break;
+                }
+                appIndex++;
+              }
+              data.selectSectionAppItemIndex.value = appIndex;
+              data.selectSectionAppItem.value = app;
+            }
 						data.iconRightMenuVisible.value = true; //在这里控制右键菜单的打开
 						if (event && event.stopPropagation) { //W3C
 							event.stopPropagation();
 						}
-					}
+					}else{
+            data.rightKeyMenuVisible.value = true; //在这里控制右键菜单的打开
+          }
 				},
 				closeMenu: (e) => {
 					data.rightKeyMenuVisible.value = false;
-					data.navRightMenuVisible.value = false;
 					data.iconRightMenuVisible.value = false;
 				},
-				deleteAppItem: (item, parentIndex, appIndex, type) => {
-					if (type === 'navBar') {
-						for (let it of data.navAppItems) {
-							if (it.name === item.name && it.id === item.id) {
-								data.navAppItems.splice(appIndex, 1);
-								break;
-							}
-						}
-						localStorage.setItem("navAppItems", JSON.stringify(data.navAppItems))
-					} else {
-						if (item === null) {
-							item = data.selectSectionAppItem;
-							parentIndex = data.selectSectionAppItemParentIndex;
-							appIndex = data.selectSectionAppItemIndex;
-						}
-						for (let it of data.iconDefaultData.value[parentIndex].children) {
-							if (it.name === item.name && it.id === item.id) {
-								data.iconDefaultData.value[parentIndex].children.splice(appIndex, 1);
-								break;
-							}
-						}
-						localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
-					}
+				deleteAppItem: () => {
+            Modal.confirm({
+              title: t('common.confirmDelete'),
+              icon: Icon("ExclamationCircleOutlined"),
+              okText: '确认',
+              cancelText: '取消',
+              onOk() {
+                return new Promise((resolve, reject) => {
+                  let i = 0;
+                  let item = data.selectSectionAppItem.value
+                  let parentIndex = data.selectSectionAppItemParentIndex.value
+                  for (let it of data.iconDefaultData.value[parentIndex].children) {
+                    if (it.name === item.name && it.id === item.id) {
+                      data.iconDefaultData.value[parentIndex].children.splice(i, 1);
+                      break;
+                    }
+                    i++;
+                  }
+                  localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
+                }).catch(() => console.log('Oops errors!'));
+              },
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              onCancel() {},
+            });
+
 				},
 				search: () => {
 					if (data.searchEngine && data.keyword) {
@@ -655,7 +592,6 @@
 			methods.initDateTime();
 			methods.initIconList();
 			methods.initUserInfo();
-			methods.initNavbar();
 			methods.initWallPaper();
 			onMounted(() => {
 				//
@@ -1004,27 +940,24 @@
 		font-weight: 400;
 		//color: #ffffff;
 		box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+    width: 100px;
 
 	}
 
-	.section-contextmenu {
-		width: 100px;
-	}
-
-	.section-contextmenu li {
-		margin-lefts: 10px;
-	}
 
 	.contextmenu li {
-		margin: 0;
-		padding: 5px 5px 0px 10px;
+    margin-left: 10px;
+    line-height:20px;
 		cursor: pointer;
-
+    text-align: left;
 		.contextmenu-layout {
-			width: 105px;
+			//width: 105px;
+      margin-right:10px;
 			background-color: rgba(var(--alpha-bg), .9);
 		}
-
+    .icon {
+      margin-right:5px;
+    }
 		.contextmenu-layout em {
 			display: inline-block;
 			font-size: 12px;

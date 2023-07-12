@@ -6,4 +6,5 @@ import i18n from './i18n'
 import '@/styles/index.less' // global css
 import router from './router'
 
-createApp(App).use(Antd).use(i18n).use(router).mount('#app')
+let app = createApp(App);
+app.use(Antd).use(i18n).use(router).mount('#app')
