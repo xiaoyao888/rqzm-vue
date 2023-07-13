@@ -67,7 +67,7 @@
         <a><i :class="'el-icon-'+item.icon"></i>{{ locale === 'zh_cn' ? item.name : item.nameEn }}</a>
       </div>
       <a><Icon class="leftBarPlus" icon="PlusCircleOutlined"/></a>
-			<div class="settingVisible" @click="setting('setting')">
+			<div class="settingVisible" @click="showDialog('setting')">
 				<a-tooltip placement="right">
 					<template #title>
 						<span>{{$t('common.setting')}}</span>
@@ -91,8 +91,7 @@
 			</div>
 			<div class="dateTime" :style="(dateTimeConfig.weight?'font-weight:bold':'')"
 				@click="showDialog('calendar')">
-				<span v-if="dateTimeConfig.showTime"
-					:style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">{{ nowDateTime }} </span>
+				<span v-if="dateTimeConfig.showTime" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">{{ nowDateTime }} </span>
 				<span v-if="dateTimeConfig.week" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
 					{{ nowWeek }}
 				</span>
@@ -154,8 +153,7 @@
 		<div style="position:absolute;right:10px;bottom:10px;">
 			<canvas style="border-radius:60px;" ref="clock" width="120" height="120"></canvas>
 		</div>
-<!--		<setting ref="settingModal" @changeThemeMode="changeThemeMode" @changeDateTime="changeDateTime"-->
-<!--			@changeNavBarMode="initNavbar"></setting>-->
+		<setting ref="settingModal" @changeThemeMode="changeThemeMode" @changeDateTime="changeDateTime"></setting>
 <!--		<add-app-item ref="addAppItem" @ok="initIconList()"></add-app-item>-->
 <!--		<search-icon ref="searchIcon"></search-icon>-->
 		<login ref="userLogin" @success="initUserInfo()"></login>
@@ -206,7 +204,7 @@
 		getLunar
 	} from '@/utils/getLunar.js'
 	// import {waves} from '@/directive/waves'
-	// import setting from './setting';
+	import setting from './setting';
 	// import {person} from './person';
 	// import {addAppItem} from './addAppItem';
 	// import {searchIcon} from './searchIcon';
@@ -237,7 +235,7 @@
 			// Countdown,
 			// CountdownWidget,
       draggable,
-			// setting,
+			setting,
 			// addAppItem,
 			// searchIcon,
 			login,
@@ -253,7 +251,7 @@
 			const clock = ref(null);
 			const supportAuthor = ref(null);
 			const privatization = ref(null);
-			// const settingModal = ref(null);
+			const settingModal = ref(null);
       const userLogin = ref(null);
       const translate = ref(null);
 			const {
@@ -421,7 +419,7 @@
 				clock,
 				supportAuthor,
 				privatization,
-				// settingModal,
+				settingModal,
 				userLogin,
         translate,
 			}
@@ -461,7 +459,7 @@
 					}
 					if (data.dateTimeConfig.week) {
 						let date = new Date();
-						data.nowWeek = parseTime(date, '{a}')
+						data.nowWeek = parseTime(date, '{a}',locale.value)
 					}
 					if (data.dateTimeConfig.lunar) {
 						let date = new Date();
@@ -497,8 +495,11 @@
 				changeThemeMode: (mode) => {
 					this.themeMode = mode;
 				},
-				changeDateTime: (mode) => {
-					this.dateTimeConfig.showTime = mode;
+				changeDateTime: (value) => {
+					data.dateTimeConfig = value;
+          if(data.dateTimeConfig.showTime){
+            methods.initDateTime()
+          }
 				},
 				showDialog: (value) => {
 					if (value === 'supportAuthor') {
@@ -510,11 +511,10 @@
           } else if (value === 'translate') {
             translate.value.visible = true;
             translate.value.inputValue = data.keyword.value
+          } else if (value === 'setting') {
+            settingModal.value.visible = true;
           }
 				},
-				// setting: (value) => {
-				// 	settingModal.value.showModal();
-				// },
 				getImgUrl: (item) => {
 					if (!item.src) {
 						return;
@@ -662,7 +662,7 @@
 							// this.$refs['todoList'].dialogVisible = true
 						}
 						if (item.id === '8aa6b3c126a94b939988e184a2c10f26') {
-							drawer('setting');
+							methods.showDialog('setting');
 						}
 					} else if (item.type === 'countdown') {
 						// this.$refs['countdown'].dialogVisible = true;

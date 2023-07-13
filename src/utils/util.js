@@ -1,6 +1,5 @@
 // import XLSX from 'xlsx'
 // import fs from 'file-saver'
-import { useI18n } from "vue-i18n";
 export function randomNumber() {
   // 生成 最小值 到 最大值 区间的随机数
   const random = (min, max) => {
@@ -46,7 +45,7 @@ export function diff(startDate, endDate) {
  * @param {string} cFormat
  * @returns {string | null}
  */
-export function parseTime(time, cFormat) {
+export function parseTime(time, cFormat,lang) {
   if (arguments.length === 0) {
     return null
   }
@@ -72,13 +71,11 @@ export function parseTime(time, cFormat) {
     s: date.getSeconds(),
     a: date.getDay()
   }
-  const {locale} = useI18n();
-  const bool = locale.value === 'zh_cn'
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
     if (key === 'a') {
-      if (bool) {
+      if (lang === 'zh_cn') {
         return '星期' + (['日', '一', '二', '三', '四', '五', '六'][value ])
       } else {
         return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][value ]
