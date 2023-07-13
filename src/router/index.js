@@ -34,11 +34,6 @@ export const constantRoutes = [
         component: () => import('@/views/desktop/desktop'),
         hidden: true
     },
-    {
-        path: '/drag',
-        component: () => import('@/views/desktop/drag'),
-        hidden: true
-    },
     // {
     //     path: '/muyu',
     //     component: () => import('@/views/muyu/muyu'),
