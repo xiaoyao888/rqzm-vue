@@ -114,8 +114,7 @@
 			</li>
 			<li class="contextmenu-item hover" @click="rotate()">
         <Icon class="icon" icon="SlackOutlined"/>{{ $t("action.changeWallpaper") }}</li>
-			<li class="contextmenu-item hover"><a :href="background"
-					target="_blank">
+			<li class="contextmenu-item hover"><a :href="background" target="_blank">
         <Icon class="icon" icon="DownloadOutlined"/>{{ $t("action.downWallpaper") }}</a>
       </li>
 			<li class="contextmenu-item hover" @click="showDialog('searchIcon')">
@@ -170,23 +169,6 @@
 		<!--    <div class="wallpaper"></div>-->
 	</div>
 </template>
-<style lang="less">
-	.windmill {
-		img {
-			animation: rotate 1s linear infinite;
-		}
-	}
-
-	@keyframes rotate {
-		from {
-			transform: rotate(0deg);
-		}
-
-		to {
-			transform: rotate(360deg);
-		}
-	}
-</style>
 <script>
 	import {
 		ref,
@@ -258,6 +240,7 @@
       const userLogin = ref(null);
       const translate = ref(null);
       const calendar = ref(null);
+      const countdown = ref(null);
 			const {
 				t,
 				locale
@@ -269,7 +252,9 @@
         userLogin,
         translate,
         calendar,
-        calendarWidget
+        calendarWidget,
+        countdown,
+        countdownWidget
       }
 			let data = {
         keyword: ref(''),
@@ -668,6 +653,8 @@
 							methods.showDialog('setting');
 						}
 					} else if (item.type === 'countdown') {
+            countdown.value.showModal();
+            countdown.value.form = item
 						// this.$refs['countdown'].dialogVisible = true;
 						// this.$refs['countdown'].groupIndex = index;
 						// this.$refs['countdown'].appIndex = appIndex;
@@ -734,7 +721,23 @@
 		}
 	}
 </script>
+<style lang="less">
+.windmill {
+  img {
+    animation: rotate 1s linear infinite;
+  }
+}
 
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
 <style lang="less">
 	/* <768px */
 	@media screen and (max-width: 768px) {

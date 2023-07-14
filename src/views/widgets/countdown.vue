@@ -1,75 +1,82 @@
 <template>
   <a-modal v-model:visible="visible" class="dialogWidth" width="60%" :title="$t('action.countDown')" :footer="null">
     <div class="d-layout-content ml50" data-v-b9c2b6cb="">
-      <div class="countdown icon-size-2x2" style="margin:0 auto;" :style="'color:'+form.config.textColor">
-        <div class="app-icon" :style="'background:'+form.config.bgColor">
-          <div style="width:100%;margin-top:20px;" :style="'color:'+form.config.textColor">{{ form.config.name }}</div>
-          <div style="margin-top:20px;"><span style="font-size:30px;">{{ days }}</span>天</div>
-          <div style="margin-top:20px;">{{ form.config.target }}</div>
-        </div>
-        <div class="app-title">{{ form.name }}</div>
-      </div>
-      <a-form ref="form" :rules="rules" :model="form" label-width="100px">
-        <a-form-item label="图标名称">
-          <a-input
-            v-model="form.name"
-            maxlength="20"
-            type="text"
-            autocomplete="off"
-            tabindex="0"
-          />
-        </a-form-item>
-        <a-form-item label="事件名称">
-          <a-input
-            v-model="form.config.name"
-            maxlength="20"
-            type="text"
-            autocomplete="off"
-            tabindex="0"
-          />
-        </a-form-item>
-        <a-form-item label="目标时间">
-          <a-date-picker
-            v-model="targetDate"
-            type="datetime"
-            placeholder="选择时间"
-            @change="change"
-          />
-        </a-form-item>
-        <a-form-item label="事件重复">
-          <a-input
-            v-model="form.iconName"
-            maxlength="20"
-            type="text"
-            autocomplete="off"
-            tabindex="0"
-          />
-        </a-form-item>
-        <a-form-item label="背景颜色">
-          <div class="iconStyle">
-            <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectBackgroundColor(item)" />
-            <a-color-picker
-              v-model="backgroundColor"
-              show-alpha
-              :predefine="predefineColors"
-            />
+      <a-row >
+        <a-col :span="6">
+          <div class="countdown icon-size-2x2" style="margin:0 auto;" :style="'color:'+config.textColor">
+            <div class="app-icon" :style="'background:'+config.bgColor">
+              <div style="width:100%;margin-top:20px;" :style="'color:'+config.textColor">{{ config.name }}</div>
+              <div style="margin-top:20px;"><span style="font-size:30px;">{{ days }}</span>天</div>
+              <div style="margin-top:20px;">{{ config.target }}</div>
+            </div>
+            <div class="app-title">{{ name }}</div>
           </div>
-        </a-form-item>
-        <a-form-item label="文字颜色">
-          <div class="iconStyle">
-            <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectFontColor(item)" />
-            <a-color-picker
-              v-model="fontColor"
-              show-alpha
-              :predefine="predefineColors"
-            />
-          </div>
-        </a-form-item>
-      </a-form>
-      <div style="text-align: center">
-        <a-button type="primary" @click="save">保存</a-button>
+        </a-col>
+        <a-col :span="18">
+          <a-form ref="form" :rules="rules" :model="form" label-width="100px">
+            <a-form-item label="图标名称">
+              <a-input
+                v-model="name"
+                maxlength="20"
+                type="text"
+                autocomplete="off"
+                tabindex="0"
+              />
+            </a-form-item>
+            <a-form-item label="事件名称">
+              <a-input
+                v-model="config.name"
+                maxlength="20"
+                type="text"
+                autocomplete="off"
+                tabindex="0"
+              />
+            </a-form-item>
+            <a-form-item label="目标时间">
+              <a-date-picker
+                v-model="targetDate"
+                type="datetime"
+                placeholder="选择时间"
+                @change="change"
+              />
+            </a-form-item>
+            <a-form-item label="事件重复">
+              <a-input
+                v-model="iconName"
+                maxlength="20"
+                type="text"
+                autocomplete="off"
+                tabindex="0"
+              />
+            </a-form-item>
+            <a-form-item label="背景颜色">
+              <div class="iconStyle">
+                <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectBackgroundColor(item)" />
+                <a-color-picker
+                  v-model="backgroundColor"
+                  show-alpha
+                  :predefine="predefineColors"
+                />
+              </div>
+            </a-form-item>
+            <a-form-item label="文字颜色">
+              <div class="iconStyle">
+                <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectFontColor(item)" />
+                <a-color-picker
+                  v-model="fontColor"
+                  show-alpha
+                  :predefine="predefineColors"
+                />
+              </div>
+            </a-form-item>
+          </a-form>
+          <div style="text-align: center">
+            <a-button type="primary" @click="save">保存</a-button>
 
-      </div>
+          </div>
+
+        </a-col>
+      </a-row>
     </div>
   </a-modal>
 </template>
@@ -80,26 +87,27 @@ import {reactive,toRefs} from "vue";
 
 export default {
   name: 'Countdown',
-  data() {
-    const data = reactive({
-      form: {
-        'component': 'daysMatter',
-        'name': '倒计时',
-        'size': '2x2',
-        'type': 'countdown',
-        'config': {
-          'name': '节日倒计时',
-          'title': '',
-          'target': '',
-          'repeat': 'festival',
-          'bgColor': '#2d4f59',
-          'textColor': '#ffffff',
-          'family': '',
-          'icon': ''
-        },
-        'id': '',
-        'view': null
+  props:['form'],
+  setup(props,{expose}) {
+    const form = reactive({
+      component: 'daysMatter',
+      name: '倒计时',
+      size: '2x2',
+      type: 'countdown',
+      config: {
+        name: '节日倒计时',
+        title: '',
+        target: '',
+        repeat: 'festival',
+        bgColor: '#2d4f59',
+        textColor: '#ffffff',
+        family: '',
+        icon: ''
       },
+      id: '',
+      view: null
+    })
+    const data = reactive({
       targetDate: null,
       days: '',
       rules: {
@@ -130,16 +138,20 @@ export default {
         '#c7158577'
       ]
     })
+
+    const showModal = () => {
+      data.visible = true;
+    };
     const methods = {
       change:(value)=>{
-        data.form.config.target = dateFormat('yyyy-MM-dd', value)
-        data.days = Math.ceil(Math.abs(diff(new Date(), value)))
+        // data.form.config.target = dateFormat('yyyy-MM-dd', value)
+        // data.days = Math.ceil(Math.abs(diff(new Date(), value)))
       },
       selectFontColor:(value)=> {
-        data.form.config.textColor = value
+        // data.form.config.textColor = value
       },
       selectBackgroundColor:(value)=> {
-        data.form.config.bgColor = value
+        // data.form.config.bgColor = value
       },
       save:()=> {
         this.$refs['form'].validate((valid) => {
@@ -158,7 +170,11 @@ export default {
         })
       }
     }
-    return {...toRefs(data), ...methods}
+    expose({
+      form,
+      showModal
+    })
+    return {showModal,...toRefs(form),...toRefs(data), ...methods}
   },
   // watch: {
   //   fontColor(value) {
