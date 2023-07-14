@@ -49,7 +49,7 @@
 			width: 100% !important;
 		}
 
-		::v-deep .el-dialog {
+		:deep .el-dialog {
 			width: 100% !important;
 		}
 	}

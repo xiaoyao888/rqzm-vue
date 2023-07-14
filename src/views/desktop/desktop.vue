@@ -5,11 +5,14 @@
 		<!-- style="backdrop-filter: blur(1px)" -->
     <div :id="'section'+(index+1)" class="section" :class="'section'+(index+1)" v-for="(item,index) in iconDefaultData.value" @contextmenu.prevent="openMenu($event)">
 			<div class="app-grid" :style="currentIconPage === index?'':'display:none'">
+
+        <!--            @start="drag = true"-->
+        <!--            @end="drag = false"-->
         <draggable
             class="wrapper"
             v-model="item.children"
-            @start="drag = true"
-            @end="drag = false"
+            @start="dragEnterEvent"
+            @end="dragEnterOver"
             item-key="index"
         >
           <template #item="{ element }">
@@ -63,7 +66,7 @@
 					</a-tooltip>
 				</div>
 			</div>
-      <div v-for="(item,index) in iconDefaultData.value" @click="selectDesktop(item,index)" class="leftBarItem">
+      <div v-for="(item,index) in iconDefaultData.value" @click="selectDesktop(item,index)" class="leftBarItem" :class="currentIconPage === index?'leftBarItemSelected':''">
         <a><i :class="'el-icon-'+item.icon"></i>{{ locale === 'zh_cn' ? item.name : item.nameEn }}</a>
       </div>
       <a><Icon class="leftBarPlus" icon="PlusCircleOutlined"/></a>
@@ -160,8 +163,8 @@
 <!--		<todo-list ref="todoList"></todo-list>-->
 		<support-author ref="supportAuthor"></support-author>
 		<privatization ref="privatization"></privatization>
-<!--		<countdown ref="countdown" @ok="initIconList()"></countdown>-->
-<!--		<calendar ref="calendar"></calendar>-->
+		<countdown ref="countdown" @ok="initIconList()"></countdown>
+		<calendar ref="calendar"></calendar>
 		<translate ref="translate"></translate>
 <!--		<person ref="person" :user-info="userInfo"></person>-->
 		<!--    <div class="wallpaper"></div>-->
@@ -205,20 +208,20 @@
 	} from '@/utils/getLunar.js'
 	// import {waves} from '@/directive/waves'
 	import setting from './setting';
-	// import {person} from './person';
-	// import {addAppItem} from './addAppItem';
-	// import {searchIcon} from './searchIcon';
+	// import person from './person';
+	// import addAppItem from './addAppItem';
+	// import searchIcon from './searchIcon';
 	import login from '@/views/login/login';
-	// import {todoList} from '@/views/widgets/todoList';
+	// import todoList from '@/views/widgets/todoList';
 	import supportAuthor from './supportAuthor';
 	import privatization from './privatization';
-	// import {Countdown} from "@/views/widgets/countdown";
-	// import {CountdownWidget} from "../widgets/countdownWidget";
-	// import {calendar} from "@/views/widgets/calendar";
-	import translate from "@/views/widgets/translate";
-	// import {calendarWidget} from "../widgets/calendarWidget";
-	// import {themePicker} from "@/components/ThemePicker";
-	// import {crypto} from "@/utils/crypto";
+	import countdown from "@/views/widgets/countdown";
+	import countdownWidget from "@/views/widgets/countdownWidget";
+	import calendar from "@/views/widgets/calendar";
+	import calendarWidget from "../widgets/calendarWidget";
+  import translate from "@/views/widgets/translate";
+	// import themePicker from "@/components/ThemePicker";
+	// import crypto from "@/utils/crypto";
 	import {
 		useI18n
 	} from "vue-i18n";
@@ -232,8 +235,6 @@
 		},
 		components: {
       Icon,
-			// Countdown,
-			// CountdownWidget,
       draggable,
 			setting,
 			// addAppItem,
@@ -242,8 +243,10 @@
 			// todoList,
 			supportAuthor,
 			privatization,
-			// calendar,
-			// calendarWidget,
+			calendar,
+			calendarWidget,
+      countdown,
+      countdownWidget,
 			translate,
 			// person
 		},
@@ -254,11 +257,20 @@
 			const settingModal = ref(null);
       const userLogin = ref(null);
       const translate = ref(null);
+      const calendar = ref(null);
 			const {
 				t,
 				locale
 			} = useI18n()
-
+      let componmets ={
+        supportAuthor,
+        privatization,
+        settingModal,
+        userLogin,
+        translate,
+        calendar,
+        calendarWidget
+      }
 			let data = {
         keyword: ref(''),
 				windmillRotate: ref(false),
@@ -416,12 +428,7 @@
 				}),
 				t,
 				locale,
-				clock,
-				supportAuthor,
-				privatization,
-				settingModal,
-				userLogin,
-        translate,
+				clock
 			}
 
       const state = reactive({
@@ -526,16 +533,12 @@
 				allowDrop: (event) => {
 					event.preventDefault();
 				},
-				dragEnterEvent: (event, app) => {
-					data.dragNav = app;
+				dragEnterEvent: (event) => {
+					data.dragNav = event.item;
 				},
-				dragEnterOver: (event, type) => {
+				dragEnterOver: (event) => {
 					data.dragNav = null;
-					if (type === 1) {
-						localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
-					} else {
-
-					}
+          localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
 				},
 				dropEvent: (event) => {
 					event.preventDefault();
@@ -670,6 +673,7 @@
 						// this.$refs['countdown'].appIndex = appIndex;
 						// this.$refs['countdown'].form = item;
 					} else if (item.id === '134df2c360e14809b15054a0be4eb57b') {
+            calendar.value.showModal()
 						// this.$refs['calendar'].dialogVisible = true;
 						// this.$refs['calendar'].groupIndex = index;
 						// this.$refs['calendar'].appIndex = appIndex;
@@ -722,7 +726,8 @@
 			});
 			document.body.addEventListener('click', methods.closeMenu)
 			return {
-				...data,
+        ...componmets,
+        ...data,
 				...methods,
         ...toRefs(state)
 			};
@@ -750,7 +755,7 @@
 	.section {
 		.app-grid {
 			overflow-y: auto;
-			height: 600px;
+			height: 800px;
 			padding-top: 100px;
 			width: 80%;
 			margin-left: 10%;
@@ -1134,6 +1139,9 @@
     }
     .leftBarItem:hover{
       background-color: rgba(var(--alpha-bg), .6);
+    }
+    .leftBarItemSelected{
+      background-color: rgba(var(--alpha-bg), .4);
     }
     .leftBarPlus{
       font-size: 18px;

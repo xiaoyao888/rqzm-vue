@@ -411,7 +411,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-::v-deep .a-menu {
+:deep .a-menu {
   border-right: none;
   background: none!important;
   .a-menu-item:not(.is-active){
