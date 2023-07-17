@@ -39,6 +39,13 @@ export function uuid(isSample) {
 export function diff(startDate, endDate) {
   return (startDate.getTime() - endDate.getTime()) / (24 * 60 * 60 * 1000)
 }
+export function diffHHMMSS(startDate, endDate) {
+  let second = parseInt((startDate.getTime() - endDate.getTime())/1000)
+  var h = parseInt(second/3600);
+  var m = parseInt((second%3600)/60);
+  var s = ((second%3600)%60);
+  return  (h<10?'0'+h:h)+':'+(m<10?'0'+m:m)+':'+(s<10?'0'+s:s)
+}
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time

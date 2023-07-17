@@ -653,8 +653,8 @@
 							methods.showDialog('setting');
 						}
 					} else if (item.type === 'countdown') {
-            countdown.value.showModal();
-            countdown.value.form = item
+            countdown.value.showModal()
+            countdown.value.editWidget(item)
 						// this.$refs['countdown'].dialogVisible = true;
 						// this.$refs['countdown'].groupIndex = index;
 						// this.$refs['countdown'].appIndex = appIndex;

@@ -1,22 +1,25 @@
 <template>
-  <a-modal v-model:visible="visible" class="dialogWidth" width="60%" :title="$t('action.countDown')" :footer="null">
+  <a-modal v-model:visible="visible" class="dialogWidth" width="40%" :title="$t('action.countDown')" :footer="null">
     <div class="d-layout-content ml50" data-v-b9c2b6cb="">
       <a-row >
-        <a-col :span="6">
-          <div class="countdown icon-size-2x2" style="margin:0 auto;" :style="'color:'+config.textColor">
-            <div class="app-icon" :style="'background:'+config.bgColor">
-              <div style="width:100%;margin-top:20px;" :style="'color:'+config.textColor">{{ config.name }}</div>
-              <div style="margin-top:20px;"><span style="font-size:30px;">{{ days }}</span>天</div>
-              <div style="margin-top:20px;">{{ config.target }}</div>
+        <a-col :span="7" style="border-right: 1px dashed #ccc;">
+          <div class="countdown icon-size-2x2" style="margin:0 auto;width:185px;height:185px" :style="'color:'+fontColor">
+            <div class="app-icon" :style="'background:'+backgroundColor">
+              <div style="width:100%;margin-top:15px;font-size: 18px;" :style="'color:'+fontColor">{{ eventName }}</div>
+              <div style="margin-top:10px;"><span style="font-size:30px;">{{ days }}</span></div>
+              <div style="margin-top:10px;font-size:13px;">{{ targetDate.format("YYYY-MM-DD")  }}</div>
             </div>
-            <div class="app-title">{{ name }}</div>
+            <div class="app-title">{{ widgetName }}</div>
           </div>
         </a-col>
-        <a-col :span="18">
-          <a-form ref="form" :rules="rules" :model="form" label-width="100px">
-            <a-form-item label="图标名称">
+        <a-col :span="17">
+          <a-form ref="form" :rules="rules" :model="formData" label-width="100px" style="margin-left:10px;"
+                  @finish="handleFinish"
+                  @validate="handleValidate"
+                  @finishFailed="handleFinishFailed">
+            <a-form-item label="图标名称" name="widgetName">
               <a-input
-                v-model="name"
+                v-model:value="widgetName"
                 maxlength="20"
                 type="text"
                 autocomplete="off"
@@ -25,35 +28,28 @@
             </a-form-item>
             <a-form-item label="事件名称">
               <a-input
-                v-model="config.name"
+                v-model:value="eventName"
                 maxlength="20"
                 type="text"
                 autocomplete="off"
                 tabindex="0"
               />
             </a-form-item>
-            <a-form-item label="目标时间">
-              <a-date-picker
-                v-model="targetDate"
-                type="datetime"
-                placeholder="选择时间"
-                @change="change"
-              />
+            <a-form-item label="目标日期/时间">
+              <a-date-picker v-if="eventType === 'countdown'" v-model:value="targetDate" type="datetime" placeholder="选择日期" @change="change" />
+              <a-time-picker v-else v-model:value="targetDate" placeholder="选择时间" @change="change"/>
             </a-form-item>
-            <a-form-item label="事件重复">
-              <a-input
-                v-model="iconName"
-                maxlength="20"
-                type="text"
-                autocomplete="off"
-                tabindex="0"
-              />
+            <a-form-item label="事件类型">
+              <a-radio-group v-model:value="eventType" button-style="solid" @change="changeEventType()">
+                <a-radio-button value="countdown">倒数日</a-radio-button>
+                <a-radio-button value="countdownTime">倒计时</a-radio-button>
+              </a-radio-group>
             </a-form-item>
             <a-form-item label="背景颜色">
               <div class="iconStyle">
                 <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectBackgroundColor(item)" />
                 <a-color-picker
-                  v-model="backgroundColor"
+                  v-model:value="backgroundColor"
                   show-alpha
                   :predefine="predefineColors"
                 />
@@ -63,7 +59,7 @@
               <div class="iconStyle">
                 <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectFontColor(item)" />
                 <a-color-picker
-                  v-model="fontColor"
+                  v-model:value="fontColor"
                   show-alpha
                   :predefine="predefineColors"
                 />
@@ -71,8 +67,8 @@
             </a-form-item>
           </a-form>
           <div style="text-align: center">
-            <a-button type="primary" @click="save">保存</a-button>
-
+            <a-button type="primary" html-type="submit" >保存</a-button>
+<!--            @click="save"-->
           </div>
 
         </a-col>
@@ -82,46 +78,43 @@
 </template>
 
 <script>
-import { dateFormat, diff } from '@/utils/util'
-import {reactive,toRefs} from "vue";
-
+import {dateFormat, diff, diffHHMMSS} from '@/utils/util'
+import {ref,reactive,toRefs} from "vue";
+import dayjs from "dayjs";
 export default {
   name: 'Countdown',
   props:['form'],
-  setup(props,{expose}) {
-    const form = reactive({
-      component: 'daysMatter',
-      name: '倒计时',
-      size: '2x2',
-      type: 'countdown',
-      config: {
-        name: '节日倒计时',
-        title: '',
-        target: '',
-        repeat: 'festival',
-        bgColor: '#2d4f59',
-        textColor: '#ffffff',
-        family: '',
-        icon: ''
-      },
-      id: '',
-      view: null
+  setup(props,{expose,emit}) {
+    const formRef = ref();
+    let checkWidgetName = async (_rule, value) => {
+      if (!value) {
+        return Promise.reject('Please input the widget name');
+      }
+    };
+    const formData = reactive({
+      widgetName:'倒数日',
+      eventName: '倒数日',
+      targetDate: dayjs("2022-07-17"),
+      eventType: "countdown",
+      backgroundColor: "rgb(87,167,252)",
+      fontColor:"rgba(255, 255, 255, 1)"
     })
     const data = reactive({
-      targetDate: null,
-      days: '',
+      days: Math.ceil(Math.abs(diff(new Date(), formData.targetDate.toDate()))),
       rules: {
-        content: [
-          {required: true, message: '榜单标题不能为空', trigger: 'blur'}
-        ]
+        widgetName: [{
+          required: true,
+          validator: checkWidgetName(),
+          trigger: 'change',
+        }]
       },
       visible: false,
       appIndex: 0,
       groupIndex: 0,
-      colors: ['#1681ff', '#2ecc71', '#33c5c5', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'],
-      fontColor: 'rgba(0, 0, 0, 1)',
-      backgroundColor: 'rgba(255, 255, 255, 1)',
+      colors: ['#000000','#ffffff','#1681ff', '#2ecc71', '#33c5c5', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'],
       predefineColors: [
+        '#000000',
+        '#ffffff',
         '#ff4500',
         '#ff8c00',
         '#ffd700',
@@ -141,40 +134,94 @@ export default {
 
     const showModal = () => {
       data.visible = true;
-    };
+    }
+    const editWidget = (form)=> {
+      // form.config.bgColor = value
+    }
+    let interval = null;
     const methods = {
+      changeEventType: ()=>{
+        let eventType = formData.eventType;
+        if(eventType === 'countdown'){
+          formData.widgetName = formData.widgetName.replace("倒计时","倒数日")
+          formData.eventName = formData.eventName.replace("倒计时","倒数日")
+        }else{
+          formData.targetDate = dayjs()
+          formData.widgetName = formData.widgetName.replace("倒数日","倒计时")
+          formData.eventName = formData.eventName.replace("倒数日","倒计时")
+
+        }
+      },
       change:(value)=>{
-        // data.form.config.target = dateFormat('yyyy-MM-dd', value)
-        // data.days = Math.ceil(Math.abs(diff(new Date(), value)))
+        let eventType = formData.eventType;
+        if(eventType === 'countdown'){
+          data.days = Math.ceil(Math.abs(diff(new Date(), value.toDate())))
+        }else{
+
+          clearInterval(interval)
+          data.days = diffHHMMSS(value.toDate(), new Date())
+          interval = setInterval(function(){
+            data.days = diffHHMMSS(value.toDate(), new Date())
+          },1000)
+        }
       },
       selectFontColor:(value)=> {
-        // data.form.config.textColor = value
+        formData.fontColor = value
       },
       selectBackgroundColor:(value)=> {
-        // data.form.config.bgColor = value
+        formData.backgroundColor = value
       },
       save:()=> {
-        this.$refs['form'].validate((valid) => {
+        this.$refs['formData'].validate((valid) => {
           if (valid) {
+
             let iconDefaultData = localStorage.getItem('iconDefaultData') || []
             if (iconDefaultData) {
               if (iconDefaultData.length > 0) {
                 iconDefaultData = JSON.parse(iconDefaultData)
               }
-              iconDefaultData[this.groupIndex].children[this.appIndex] = this.form
+              const form = {
+                component: "daysMatter",
+                name: "",
+                nameEn: "Countdown",
+                size: "2x2",
+                type: "countdown",
+                config: {
+                  name: "倒数日",
+                  title: "倒数日",
+                  target: "2022-12-04",
+                  repeat: "1",
+                  bgColor: "#2d4f59",
+                  textColor: "#ffffff",
+                  family: "",
+                  icon: ""
+                },
+                id: "da0ebd0b0f2142c7b56827df80d911f7",
+                view: null
+              }
+              iconDefaultData[groupIndex].children[appIndex] = form
               localStorage.setItem('iconDefaultData', JSON.stringify(iconDefaultData))
-              this.$emit('ok')
+              emit("ok", form)
             }
             this.dialogVisible = false
           }
         })
+      },
+      handleFinish: (values) => {
+        console.log(values, formState);
+      },
+      handleFinishFailed: (errors) => {
+        console.log(errors);
+      },
+      handleValidate: (...args) => {
+        console.log(args);
       }
     }
     expose({
-      form,
+      editWidget,
       showModal
     })
-    return {showModal,...toRefs(form),...toRefs(data), ...methods}
+    return {showModal,formRef,...toRefs(formData),...toRefs(data), ...methods}
   },
   // watch: {
   //   fontColor(value) {
