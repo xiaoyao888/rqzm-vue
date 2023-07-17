@@ -3,23 +3,23 @@
     <div class="d-layout-content ml50" data-v-b9c2b6cb="">
       <a-row >
         <a-col :span="7" style="border-right: 1px dashed #ccc;">
-          <div class="countdown icon-size-2x2" style="margin:0 auto;width:185px;height:185px" :style="'color:'+fontColor">
-            <div class="app-icon" :style="'background:'+backgroundColor">
-              <div style="width:100%;margin-top:15px;font-size: 18px;" :style="'color:'+fontColor">{{ eventName }}</div>
+          <div class="countdown icon-size-2x2" style="margin:0 auto;width:185px;height:185px" :style="'color:'+formData.fontColor">
+            <div class="app-icon" :style="'background:'+formData.backgroundColor">
+              <div style="width:100%;margin-top:15px;font-size: 18px;" :style="'color:'+formData.fontColor">{{ formData.eventName }}</div>
               <div style="margin-top:10px;"><span style="font-size:30px;">{{ days }}</span></div>
-              <div style="margin-top:10px;font-size:13px;">{{ targetDate.format("YYYY-MM-DD")  }}</div>
+              <div style="margin-top:10px;font-size:13px;">{{ formData.targetDate.format("YYYY-MM-DD")  }}</div>
             </div>
-            <div class="app-title">{{ widgetName }}</div>
+            <div class="app-title">{{ formData.widgetName }}</div>
           </div>
         </a-col>
         <a-col :span="17">
-          <a-form ref="form" :rules="rules" :model="formData" label-width="100px" style="margin-left:10px;"
+          <a-form ref="formRef" :rules="rules" :model="formData" label-width="100px" style="margin-left:10px;"
                   @finish="handleFinish"
                   @validate="handleValidate"
                   @finishFailed="handleFinishFailed">
             <a-form-item label="图标名称" name="widgetName">
               <a-input
-                v-model:value="widgetName"
+                v-model:value="formData.widgetName"
                 maxlength="20"
                 type="text"
                 autocomplete="off"
@@ -28,7 +28,7 @@
             </a-form-item>
             <a-form-item label="事件名称">
               <a-input
-                v-model:value="eventName"
+                v-model:value="formData.eventName"
                 maxlength="20"
                 type="text"
                 autocomplete="off"
@@ -37,10 +37,10 @@
             </a-form-item>
             <a-form-item label="目标日期/时间">
               <a-date-picker v-if="eventType === 'countdown'" v-model:value="targetDate" type="datetime" placeholder="选择日期" @change="change" />
-              <a-time-picker v-else v-model:value="targetDate" placeholder="选择时间" @change="change"/>
+              <a-time-picker v-else v-model:value="formData.targetDate" placeholder="选择时间" @change="change"/>
             </a-form-item>
             <a-form-item label="事件类型">
-              <a-radio-group v-model:value="eventType" button-style="solid" @change="changeEventType()">
+              <a-radio-group v-model:value="formData.eventType" button-style="solid" @change="changeEventType()">
                 <a-radio-button value="countdown">倒数日</a-radio-button>
                 <a-radio-button value="countdownTime">倒计时</a-radio-button>
               </a-radio-group>
@@ -49,7 +49,7 @@
               <div class="iconStyle">
                 <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectBackgroundColor(item)" />
                 <a-color-picker
-                  v-model:value="backgroundColor"
+                  v-model:value="formData.backgroundColor"
                   show-alpha
                   :predefine="predefineColors"
                 />
@@ -59,7 +59,7 @@
               <div class="iconStyle">
                 <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectFontColor(item)" />
                 <a-color-picker
-                  v-model:value="fontColor"
+                  v-model:value="formData.fontColor"
                   show-alpha
                   :predefine="predefineColors"
                 />
@@ -99,15 +99,16 @@ export default {
       backgroundColor: "rgb(87,167,252)",
       fontColor:"rgba(255, 255, 255, 1)"
     })
+    const rules = {
+      widgetName: [{
+        required: true,
+        validator: checkWidgetName,
+        trigger: 'change',
+      }]
+    }
     const data = reactive({
       days: Math.ceil(Math.abs(diff(new Date(), formData.targetDate.toDate()))),
-      rules: {
-        widgetName: [{
-          required: true,
-          validator: checkWidgetName(),
-          trigger: 'change',
-        }]
-      },
+
       visible: false,
       appIndex: 0,
       groupIndex: 0,
@@ -221,7 +222,7 @@ export default {
       editWidget,
       showModal
     })
-    return {showModal,formRef,...toRefs(formData),...toRefs(data), ...methods}
+    return {showModal,formRef,formData,rules,...toRefs(data), ...methods}
   },
   // watch: {
   //   fontColor(value) {
