@@ -45,12 +45,14 @@ export default {
     })
     let interval = null
     const methods = {
-      initDays:(date)=>{
+      initDays:()=>{
         let eventType = props.form.type;
         if(eventType === 'countdown'){
+	      let date = dayjs(props.form.config.target).toDate()
           data.days = Math.ceil(Math.abs(diff(new Date(), date)))
         }else{
           clearInterval(interval)
+	      let date = dayjs(dayjs().format("YYYY-MM-DD ")+props.form.config.target).toDate()
           data.days = diffHHMMSS(date, new Date())
           interval = setInterval(function(){
             data.days = diffHHMMSS(date, new Date())
@@ -58,12 +60,9 @@ export default {
         }
       },
     }
-    methods.initDays(dayjs(props.form.config.target).toDate())
-    onMounted(()=>{
-      bus.on("data",(info)=>{
-        methods.initDays(dayjs(info).toDate())
-      })
-    })
+	
+    methods.initDays()
+    
     return {
       ...toRefs(data)
     }

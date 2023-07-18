@@ -37,10 +37,18 @@ export function uuid(isSample) {
  * Created by PanJiaChen on 16/11/18.
  */
 export function diff(startDate, endDate) {
-  return (startDate.getTime() - endDate.getTime()) / (24 * 60 * 60 * 1000)
+	let millisecond = (startDate.getTime() - endDate.getTime())
+	if(millisecond <0){
+		  return 0
+	}
+  return  millisecond / (24 * 60 * 60 * 1000)
 }
 export function diffHHMMSS(startDate, endDate) {
-  let second = parseInt((startDate.getTime() - endDate.getTime())/1000)
+  let millisecond = parseInt(startDate.getTime() - endDate.getTime())
+  if(millisecond <0){
+	  return 0
+  }
+  let second = parseInt(millisecond/1000)
   var h = parseInt(second/3600);
   var m = parseInt((second%3600)/60);
   var s = ((second%3600)%60);

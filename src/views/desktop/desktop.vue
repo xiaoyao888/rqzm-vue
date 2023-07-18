@@ -663,7 +663,7 @@
 						}else if(item.id === 'fb9934a62e194e67ab46102c05ee45ca'){
               appStoreModal.value.showModal()
             }
-					} else if (item.type === 'countdown') {
+					} else if (item.type === 'countdown' || item.type === 'countdownTime') {
             countdown.value.showModal()
             countdown.value.editWidget(item,sectionIndex,appIndex)
 						// this.$refs['countdown'].dialogVisible = true;
