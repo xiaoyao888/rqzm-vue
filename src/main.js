@@ -8,5 +8,7 @@ import router from './router'
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 dayjs.locale('zh-cn');
+import ColorPicker from 'colorpicker-v3'
+import '@/styles/color-picker-v3.css'
 let app = createApp(App);
-app.use(Antd).use(i18n).use(router).mount('#app')
+app.use(Antd).use(i18n).use(router).use(ColorPicker).mount('#app')

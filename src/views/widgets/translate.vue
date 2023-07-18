@@ -1,5 +1,5 @@
 <template>
-    <a-modal v-model:visible="visible" class="dialogWidth" width="70%" title="翻译菜单" :footer="null" :header="null">
+    <a-modal v-model:visible="visible" class="dialogWidth" width="400px" :footer="null" :header="null">
     <div class="vuex-list">
       <a-input
         ref="inputRef"
@@ -144,5 +144,12 @@ String.prototype.format = function () {
   div {
     font-size: 12px;
   }
+}
+:deep .ant-modal-close{
+  display:none;
+}
+:deep .ant-modal-close-x {
+    width: 20px !important;
+    height: 20px !important;
 }
 </style>

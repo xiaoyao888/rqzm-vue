@@ -281,6 +281,16 @@
         },
         "id": "da0ebd0b0f2142c7b56827df80d911f7",
         "view": null
+      },
+      {
+        "id": "fb9934a62e194e67ab46102c05ee45ca",
+        "type": "component",
+        "name": "应用商店",
+        "nameEn": "App Store",
+        "src": "shopping.svg",
+        "backgroundColor": "#1581ff",
+        "view": null,
+        "size": "1x1"
       }
     ]
   },
