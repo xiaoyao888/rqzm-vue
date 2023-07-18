@@ -29,7 +29,7 @@
                 <img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon">
                 <img v-else-if="element.type==='component' && element.size==='1x1'" :src="getImgUrl(element)"
                      class="icon">
-                <countdown-widget v-else-if="element.type==='countdown'" :size="element.size?element.size:'1x1'"
+                <countdown-widget v-else-if="element.type==='countdown'||element.type==='countdownTime'" :size="element.size?element.size:'1x1'"
                                   :form="element"></countdown-widget>
                 <calendar-widget v-else-if="element.type==='calendar'"
                                  :size="element.size?element.size:'1x1'"></calendar-widget>
@@ -156,7 +156,7 @@
 			<canvas style="border-radius:60px;" ref="clock" width="120" height="120"></canvas>
 		</div>
 		<setting ref="settingModal" @changeThemeMode="changeThemeMode" @changeDateTime="changeDateTime"></setting>
-<!--		<add-app-item ref="addAppItem" @ok="initIconList()"></add-app-item>-->
+		<add-app-item ref="addAppItemModal" @ok="initIconList()"></add-app-item>
 <!--		<search-icon ref="searchIcon"></search-icon>-->
 		<login ref="userLogin" @success="initUserInfo()"></login>
 <!--		<todo-list ref="todoList"></todo-list>-->
@@ -165,6 +165,7 @@
 		<countdown ref="countdown" @ok="initIconList()"></countdown>
 		<calendar ref="calendar"></calendar>
 		<translate ref="translate"></translate>
+    <app-store ref="appStoreModal"></app-store>
 <!--		<person ref="person" :user-info="userInfo"></person>-->
 		<!--    <div class="wallpaper"></div>-->
 	</div>
@@ -191,7 +192,7 @@
 	// import {waves} from '@/directive/waves'
 	import setting from './setting';
 	// import person from './person';
-	// import addAppItem from './addAppItem';
+	import addAppItem from '@/views/desktop/addAppItem';
 	// import searchIcon from './searchIcon';
 	import login from '@/views/login/login';
 	// import todoList from '@/views/widgets/todoList';
@@ -202,6 +203,7 @@
 	import calendar from "@/views/widgets/calendar";
 	import calendarWidget from "../widgets/calendarWidget";
   import translate from "@/views/widgets/translate";
+  import AppStore from "@/views/widgets/appStore";
 	// import themePicker from "@/components/ThemePicker";
 	// import crypto from "@/utils/crypto";
 	import {
@@ -216,10 +218,11 @@
 			// waves
 		},
 		components: {
+      AppStore,
       Icon,
       draggable,
 			setting,
-			// addAppItem,
+			addAppItem,
 			// searchIcon,
 			login,
 			// todoList,
@@ -233,19 +236,18 @@
 			// person
 		},
 		setup() {
-			const clock = ref(null);
-			const supportAuthor = ref(null);
-			const privatization = ref(null);
-			const settingModal = ref(null);
-      const userLogin = ref(null);
-      const translate = ref(null);
-      const calendar = ref(null);
-      const countdown = ref(null);
-			const {
-				t,
-				locale
-			} = useI18n()
-      let componmets ={
+			const clock = ref(null)
+			const supportAuthor = ref(null)
+			const privatization = ref(null)
+			const settingModal = ref(null)
+      const userLogin = ref(null)
+      const translate = ref(null)
+      const calendar = ref(null)
+      const countdown = ref(null)
+      const appStoreModal = ref(null)
+      const addAppItemModal = ref(null)
+			const { t, locale } = useI18n()
+      let components ={
         supportAuthor,
         privatization,
         settingModal,
@@ -254,7 +256,9 @@
         calendar,
         calendarWidget,
         countdown,
-        countdownWidget
+        countdownWidget,
+        appStoreModal,
+        addAppItemModal
       }
 			let data = {
         keyword: ref(''),
@@ -397,7 +401,7 @@
           }
 				]),
 				selectSectionAppItem: reactive({}),
-				selectSectionAppItemParentIndex: ref(0),
+				selectSectionAppItemSectionIndex: ref(0),
 				selectSectionAppItemIndex: ref(0),
 				rightKeyMenuVisible: ref(false),
 				iconRightMenuVisible: ref(false),
@@ -542,7 +546,7 @@
 						}
 					}
 				},
-				openMenu: (e, parentIndex, app) => {
+				openMenu: (e, sectionIndex, app) => {
 					data.rightKeyMenuVisible.value = false;
 					data.iconRightMenuVisible.value = false;
 					if (e.currentTarget.offsetHeight - e.pageY < 110) {
@@ -556,11 +560,11 @@
 						data.rightKeyMenuLeft.value = e.pageX;
 					}
 
-          data.selectSectionAppItemParentIndex.value = parentIndex;
+          data.selectSectionAppItemSectionIndex.value = sectionIndex;
 					if (e.currentTarget.id && e.currentTarget.id.startsWith("appItem")) {
             let appIndex = 0
             if(app){
-              for (let it of data.iconDefaultData.value[parentIndex].children) {
+              for (let it of data.iconDefaultData.value[sectionIndex].children) {
                 if (it.name === app.name && it.id === app.id) {
                   break;
                 }
@@ -591,10 +595,10 @@
                 return new Promise((resolve, reject) => {
                   let i = 0
                   let item = data.selectSectionAppItem.value
-                  let parentIndex = data.selectSectionAppItemParentIndex.value
-                  for (let it of data.iconDefaultData.value[parentIndex].children) {
+                  let sectionIndex = data.selectSectionAppItemSectionIndex.value
+                  for (let it of data.iconDefaultData.value[sectionIndex].children) {
                     if (it.name === item.name && it.id === item.id) {
-                      data.iconDefaultData.value[parentIndex].children.splice(i, 1);
+                      data.iconDefaultData.value[sectionIndex].children.splice(i, 1);
                       break
                     }
                     i++
@@ -639,22 +643,29 @@
 						window.open(url + data.keyword.value, "_blank");
 					}
 				},
-				appClick: (item, index, appIndex) => {
+				appClick: (item, sectionIndex) => {
+          let appIndex = 0;
+          for (let it of data.iconDefaultData.value[sectionIndex].children) {
+            if (it.name === item.name && it.id === item.id) {
+              break;
+            }
+            appIndex++;
+          }
 					if (item.type === 'icon' || item.type === 'text') {
 						window.open(item.url, "_blank");
 					} else if (item.type === 'component') {
 						if (item.id === 'fb9934a62e194e67ab46102c05ee45ce') {
-							// this.$refs['addAppItem'].dialogVisible = true
-						}
-						if (item.id === '96eb2b757ec54b35b1d2a5d6bf13311a') {
+              addAppItemModal.value.showModal()
+						}else if (item.id === '96eb2b757ec54b35b1d2a5d6bf13311a') {
 							// this.$refs['todoList'].dialogVisible = true
-						}
-						if (item.id === '8aa6b3c126a94b939988e184a2c10f26') {
-							methods.showDialog('setting');
-						}
+						}else if (item.id === '8aa6b3c126a94b939988e184a2c10f26') {
+              settingModal.value.visible = true;
+						}else if(item.id === 'fb9934a62e194e67ab46102c05ee45ca'){
+              appStoreModal.value.showModal()
+            }
 					} else if (item.type === 'countdown') {
             countdown.value.showModal()
-            countdown.value.editWidget(item)
+            countdown.value.editWidget(item,sectionIndex,appIndex)
 						// this.$refs['countdown'].dialogVisible = true;
 						// this.$refs['countdown'].groupIndex = index;
 						// this.$refs['countdown'].appIndex = appIndex;
@@ -670,9 +681,9 @@
 				moveToFirstPage: (index) => {
           const appItem = data.selectSectionAppItem.value
           const appIndex = data.selectSectionAppItemIndex.value
-          const parentIndex = data.selectSectionAppItemParentIndex.value
+          const sectionIndex = data.selectSectionAppItemSectionIndex.value
 					data.iconDefaultData.value[index].children.push(appItem);
-					data.iconDefaultData.value[parentIndex].children.splice(appIndex, 1);
+					data.iconDefaultData.value[sectionIndex].children.splice(appIndex, 1);
           methods.saveIconDefaultData()
           message.info("操作成功！")
 				},
@@ -680,10 +691,10 @@
           localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value));
         },
 				changeAppIconlayout: (value) => {
-					let parentIndex = data.selectSectionAppItemParentIndex.value;
+					let sectionIndex = data.selectSectionAppItemSectionIndex.value;
 					let appIndex = data.selectSectionAppItemIndex.value;
 					data.selectSectionAppItem.size = value;
-					data.iconDefaultData.value[parentIndex].children[appIndex].size = value;
+					data.iconDefaultData.value[sectionIndex].children[appIndex].size = value;
 					localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value));
 				},
 				whiteOrBlack: () => {
@@ -713,7 +724,7 @@
 			});
 			document.body.addEventListener('click', methods.closeMenu)
 			return {
-        ...componmets,
+        ...components,
         ...data,
 				...methods,
         ...toRefs(state)

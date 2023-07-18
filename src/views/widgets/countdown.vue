@@ -1,11 +1,11 @@
 <template>
   <a-modal v-model:visible="visible" class="dialogWidth" width="40%" :title="$t('action.countDown')" :footer="null">
-    <div class="d-layout-content ml50" data-v-b9c2b6cb="">
+    <div >
       <a-row >
         <a-col :span="7" style="border-right: 1px dashed #ccc;">
-          <div class="countdown icon-size-2x2" style="margin:0 auto;width:185px;height:185px" :style="'color:'+formData.fontColor">
+          <div class="countdown icon-size-2x2" style="margin:0 auto;width:185px;height:185px" :style="'color:'+formData.textColor">
             <div class="app-icon" :style="'background:'+formData.backgroundColor">
-              <div style="width:100%;margin-top:15px;font-size: 18px;" :style="'color:'+formData.fontColor">{{ formData.eventName }}</div>
+              <div style="width:100%;margin-top:15px;font-size: 18px;" :style="'color:'+formData.textColor">{{ formData.eventName }}</div>
               <div style="margin-top:10px;"><span style="font-size:30px;">{{ days }}</span></div>
               <div style="margin-top:10px;font-size:13px;">{{ formData.targetDate.format("YYYY-MM-DD")  }}</div>
             </div>
@@ -13,10 +13,7 @@
           </div>
         </a-col>
         <a-col :span="17">
-          <a-form ref="formRef" :rules="rules" v-bind="layout" :model="formData" label-width="100px" style="margin-left:10px;"
-                  @finish="handleFinish"
-                  @validate="handleValidate"
-                  @finishFailed="handleFinishFailed">
+          <a-form ref="formRef" :rules="rules" v-bind="layout" :model="formData" label-width="100px" style="margin-left:10px;">
             <a-form-item label="图标名称" name="widgetName">
               <a-input v-model:value="formData.widgetName" max-length="20" type="text" autocomplete="off" tabindex="0"/>
             </a-form-item>
@@ -36,19 +33,18 @@
             <a-form-item label="背景颜色" name="backgroundColor">
               <div class="iconStyle">
                 <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectBackgroundColor(item)" />
-                <color-picker style="margin-top:6px;" @change="changeFontColor" v-model:rgba="formData.backgroundColor"></color-picker>
+                <color-picker style="margin-top:6px;" @change="changeBackgroundColor" v-model:rgba="formData.backgroundColor"></color-picker>
               </div>
             </a-form-item>
-            <a-form-item label="文字颜色" name="fontColor">
+            <a-form-item label="文字颜色" name="textColor">
               <div class="iconStyle">
-                <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectFontColor(item)" />
-                <color-picker style="margin-top:6px;" @change="changeFontColor" v-model:rgba="formData.fontColor"></color-picker>
+                <div v-for="item in colors" class="colorIcon" :style="'background: '+item" @click="selectTextColor(item)" />
+                <color-picker style="margin-top:6px;" @change="changeTextColor" v-model:rgba="formData.textColor"></color-picker>
               </div>
             </a-form-item>
           </a-form>
           <div style="text-align: center">
-            <a-button type="primary" html-type="submit" >保存</a-button>
-<!--            @click="save"-->
+            <a-button type="primary" html-type="submit" @click="save" >保存</a-button>
           </div>
 
         </a-col>
@@ -63,14 +59,18 @@ import {dateFormat, diff, diffHHMMSS} from '@/utils/util'
 import {ref,reactive,toRefs} from "vue";
 import dayjs from "dayjs";
 import Icon from "@/components/icon";
+import bus from "@/components/mitt"
 export default {
   name: 'Countdown',
   props:['form'],
   components: {
   },
   setup(props,{expose,emit}) {
-    const changeFontColor = (e) => {
+    const changeTextColor = (e) => {
       console.log(e); // {hex: '#ddd8c3', rgba: 'rgba(221,216,195,0.5849)'}
+    }
+    const changeBackgroundColor =(e)=>{
+      console.log(e)
     }
     const formRef = ref();
     let checkWidgetName = async (_rule, value) => {
@@ -84,7 +84,7 @@ export default {
       targetDate: dayjs("2022-07-17"),
       eventType: "countdown",
       backgroundColor: "rgb(0,118,245)",
-      fontColor:"rgb(255,255,255)"
+      textColor:"rgb(255,255,255)"
     })
     const rules = {
       widgetName: [{
@@ -105,15 +105,43 @@ export default {
       days: Math.ceil(Math.abs(diff(new Date(), formData.targetDate.toDate()))),
       visible: false,
       appIndex: 0,
-      groupIndex: 0,
-      colors: ['#1681ff', '#2ecc71', '#33c5c5', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c']
+      sectionIndex: 0,
+      colors: ['#1681ff', '#2ecc71', '#33c5c5', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'],
     })
 
     const showModal = () => {
       data.visible = true;
     }
-    const editWidget = (form)=> {
-      // form.config.bgColor = value
+    let form = {
+      component: "daysMatter",
+      name: "",
+      nameEn: "Countdown",
+      size: "2x2",
+      type: "countdown",
+      config: {
+        name: "倒数日",
+        title: "倒数日",
+        target: "2022-12-04",
+        repeat: "1",
+        bgColor: "#2d4f59",
+        textColor: formData,
+        family: "",
+        icon: ""
+      },
+      id: "da0ebd0b0f2142c7b56827df80d911f7",
+      view: null
+    }
+    const editWidget = (widget,sectionIndex,appIndex)=> {
+      formData.widgetName = widget.name
+      formData.eventName = widget.config.name
+      formData.targetDate = dayjs(widget.config.target)
+      formData.eventType = widget.type
+      formData.backgroundColor = widget.config.bgColor
+      formData.textColor = widget.config.textColor
+      form = widget
+      data.appIndex = appIndex
+      data.sectionIndex = sectionIndex
+      methods.initDays(dayjs(widget.config.target).toDate())
     }
     let interval = null;
     const methods = {
@@ -130,59 +158,53 @@ export default {
         }
       },
       change:(value)=>{
+        methods.initDays(value.toDate())
+      },
+      initDays:(date)=>{
         let eventType = formData.eventType;
         if(eventType === 'countdown'){
-          data.days = Math.ceil(Math.abs(diff(new Date(), value.toDate())))
+          data.days = Math.ceil(Math.abs(diff(new Date(), date)))
         }else{
 
           clearInterval(interval)
-          data.days = diffHHMMSS(value.toDate(), new Date())
+          data.days = diffHHMMSS(date, new Date())
           interval = setInterval(function(){
-            data.days = diffHHMMSS(value.toDate(), new Date())
+            data.days = diffHHMMSS(date, new Date())
           },1000)
         }
       },
-      selectFontColor:(value)=> {
-        formData.fontColor = value
+      selectTextColor:(value)=> {
+        formData.textColor = value
       },
       selectBackgroundColor:(value)=> {
         formData.backgroundColor = value
       },
       save:()=> {
-        this.$refs['formData'].validate((valid) => {
-          if (valid) {
-
+        // this.$refs['formData'].validate((valid) => {
+        //   if (valid) {
+        formRef.value.validate().then(() => {
             let iconDefaultData = localStorage.getItem('iconDefaultData') || []
             if (iconDefaultData) {
               if (iconDefaultData.length > 0) {
                 iconDefaultData = JSON.parse(iconDefaultData)
               }
-              const form = {
-                component: "daysMatter",
-                name: "",
-                nameEn: "Countdown",
-                size: "2x2",
-                type: "countdown",
-                config: {
-                  name: "倒数日",
-                  title: "倒数日",
-                  target: "2022-12-04",
-                  repeat: "1",
-                  bgColor: "#2d4f59",
-                  textColor: "#ffffff",
-                  family: "",
-                  icon: ""
-                },
-                id: "da0ebd0b0f2142c7b56827df80d911f7",
-                view: null
-              }
-              iconDefaultData[groupIndex].children[appIndex] = form
+              form.name = formData.widgetName
+              form.config.name = formData.eventName
+              form.config.target = dayjs(formData.targetDate).format("YYYY-MM-DD")
+              form.type = formData.eventType
+              form.config.bgColor = formData.backgroundColor
+              form.config.textColor = formData.textColor
+              iconDefaultData[data.sectionIndex].children[data.appIndex] = form
               localStorage.setItem('iconDefaultData', JSON.stringify(iconDefaultData))
               emit("ok", form)
+              bus.emit("data",form.config.target)
             }
-            this.dialogVisible = false
-          }
-        })
+            data.visible = false
+        }).catch(error => {
+          console.log('error', error);
+        });
+        //   }
+        // })
       },
       handleFinish: (values) => {
         console.log(values, formState);
@@ -198,10 +220,10 @@ export default {
       editWidget,
       showModal
     })
-    return {showModal, formRef,formData,rules,layout,...toRefs(data), ...methods, changeFontColor}
+    return {showModal, formRef,formData,rules,layout,...toRefs(data), ...methods, changeTextColor,changeBackgroundColor}
   },
   // watch: {
-  //   fontColor(value) {
+  //   textColor(value) {
   //     this.form.config.textColor = value
   //   },
   //   backgroundColor(value) {

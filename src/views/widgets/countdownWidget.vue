@@ -31,18 +31,39 @@
 </template>
 
 <script>
-import {diff} from "@/utils/util";
-import {reactive, toRefs} from "vue";
+import {diff, diffHHMMSS} from "@/utils/util";
+import {reactive, toRefs,onMounted} from "vue";
+import dayjs from "dayjs";
+import bus from "@/components/mitt"
 
 export default {
-
   name: "countdown",
   props: ['size','form'],
   setup(props){
     const data = reactive({
       days: ''
     })
-    data.days = Math.ceil(Math.abs(diff(new Date(props.form.config.target),new Date())));
+    let interval = null
+    const methods = {
+      initDays:(date)=>{
+        let eventType = props.form.type;
+        if(eventType === 'countdown'){
+          data.days = Math.ceil(Math.abs(diff(new Date(), date)))
+        }else{
+          clearInterval(interval)
+          data.days = diffHHMMSS(date, new Date())
+          interval = setInterval(function(){
+            data.days = diffHHMMSS(date, new Date())
+          },1000)
+        }
+      },
+    }
+    methods.initDays(dayjs(props.form.config.target).toDate())
+    onMounted(()=>{
+      bus.on("data",(info)=>{
+        methods.initDays(dayjs(info).toDate())
+      })
+    })
     return {
       ...toRefs(data)
     }
