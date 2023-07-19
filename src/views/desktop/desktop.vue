@@ -165,7 +165,7 @@
 		<countdown ref="countdown" @ok="initIconList()"></countdown>
 		<calendar ref="calendar"></calendar>
 		<translate ref="translate"></translate>
-    <app-store ref="appStoreModal"></app-store>
+    <app-store ref="appStoreModal" @addIcon="addIcon"></app-store>
 <!--		<person ref="person" :user-info="userInfo"></person>-->
 		<!--    <div class="wallpaper"></div>-->
 	</div>
@@ -427,6 +427,9 @@
 			// themePicker.methods.themeChange(data.themeColor);
 
 			const methods = {
+        addIcon: (item)=>{
+          data.iconDefaultData.value[0].children.push(item);
+        },
 				rotate: () => {
 					data.windmillRotate.value = true;
 
