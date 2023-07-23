@@ -1,7 +1,7 @@
 <template>
-  <a-modal v-model:visible="visible" class="dialogWidth" width="40%" :title="$t('action.countDown')" :footer="null">
+  <a-modal v-model:visible="visible" class="dialogWidth" width="800px" :title="$t('action.countDown')" :footer="null">
     <div >
-      <a-row >
+      <a-row :wrap="true">
         <a-col :span="7" style="border-right: 1px dashed #ccc;">
           <div class="countdown icon-size-2x2" style="margin:0 auto;width:185px;height:185px" :style="'color:'+formData.textColor">
             <div class="app-icon" :style="'background:'+formData.backgroundColor">
@@ -134,12 +134,12 @@ export default {
     const editWidget = (widget,sectionIndex,appIndex)=> {
       formData.widgetName = widget.name
       formData.eventName = widget.config.name
-	  if(widget.type==='countdown'){
+	  if(widget.component==='countdown'){
 	      formData.targetDate = dayjs(widget.config.target)
 	  }else{
           formData.targetDate = dayjs(dayjs().format("YYYY-MM-DD ")+widget.config.target)
 	  }
-      formData.eventType = widget.type
+      formData.eventType = widget.component
       formData.backgroundColor = widget.config.bgColor
       formData.textColor = widget.config.textColor
       form = widget
@@ -195,12 +195,12 @@ export default {
               }
               form.name = formData.widgetName
               form.config.name = formData.eventName
-			  if(form.type === 'countdown'){
+			  if(form.component === 'countdown'){
 				form.config.target = dayjs(formData.targetDate).format("YYYY-MM-DD")
 			  }else{
 				form.config.target = dayjs(formData.targetDate).format("HH:mm:ss")
 			  }
-              form.type = formData.eventType
+              form.component = formData.eventType
               form.config.bgColor = formData.backgroundColor
               form.config.textColor = formData.textColor
               iconDefaultData[data.sectionIndex].children[data.appIndex] = form

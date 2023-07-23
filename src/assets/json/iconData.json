@@ -38,7 +38,7 @@
       {
         "name": "每日一言",
         "nameEn": "Daily Word",
-        "component": "yiyan",
+        "component": "icon",
         "type": "component",
         "insetType": "",
         "src": "yiyan.svg",
@@ -85,7 +85,7 @@
       {
         "name": "待办事项",
         "nameEn": "Todo List",
-        "component": "notes",
+        "component": "icon",
         "src": "todo.svg",
         "type": "component",
         "size": "1x1",
@@ -206,6 +206,7 @@
       {
         "id": "8aa6b3c126a94b939988e184a2c10f26",
         "type": "component",
+		"component":"icon",
         "name": "设置",
         "nameEn": "Setting",
         "src": "setting.svg",
@@ -234,6 +235,7 @@
       {
         "id": "fb9934a62e194e67ab46102c05ee45ce",
         "type": "component",
+		"component":"icon",
         "name": "添加图标",
         "nameEn": "Add Icon",
         "src": "add.svg",
@@ -285,6 +287,7 @@
       {
         "id": "da0ebd0b0f2142c723f3s37df80d3241",
         "type": "component",
+        "component": "icon",
         "name": "应用商店",
         "nameEn": "App Store",
         "src": "shopping.svg",
@@ -328,7 +331,7 @@
       {
         "name": "股市",
         "nameEn": "stock",
-        "component": "stock",
+        "component": "icon",
         "type": "component",
         "size": "2x2",
         "id": "f63eede61e36446fafcea5f1b3fba089",
@@ -392,7 +395,7 @@
       {
         "name": "电影日历",
         "nameEn": "Movies",
-        "component": "movieCalendar",
+        "component": "icon",
         "type": "component",
         "insetType": "",
         "src": "movieCalendar.svg",
@@ -402,7 +405,7 @@
       {
         "name": "壁纸",
         "nameEn": "wallpaper",
-        "component": "wallpaper",
+        "component": "icon",
         "type": "icon",
         "size": "1x1",
         "id": "58aeab7272774245a5f61fcad70be124",

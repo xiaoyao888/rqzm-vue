@@ -38,9 +38,7 @@ export function uuid(isSample) {
  */
 export function diff(startDate, endDate) {
 	let millisecond = (startDate.getTime() - endDate.getTime())
-	if(millisecond <0){
-		  return 0
-	}
+	millisecond = Math.ceil(Math.abs(millisecond))
   return  millisecond / (24 * 60 * 60 * 1000)
 }
 export function diffHHMMSS(startDate, endDate) {

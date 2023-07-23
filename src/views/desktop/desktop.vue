@@ -3,41 +3,39 @@
 		:style="'background: url('+background+');background-color:rgb(0,0,0,0.8);background-size:100% 100%;'">
 		<!--    <full-page ref="fullpage" :options="options">-->
 		<!-- style="backdrop-filter: blur(1px)" -->
-    <div :id="'section'+(index+1)" class="section" :class="'section'+(index+1)" v-for="(item,index) in iconDefaultData.value" @contextmenu.prevent="openMenu($event)">
+		<div :id="'section'+(index+1)" class="section" :class="'section'+(index+1)"
+			v-for="(item,index) in iconDefaultData.value" @contextmenu.prevent="openMenu($event)">
 			<div class="app-grid" :style="currentIconPage === index?'':'display:none'">
 
-        <!--            @start="drag = true"-->
-        <!--            @end="drag = false"-->
-        <draggable
-            class="wrapper"
-            v-model="item.children"
-            @start="dragEnterEvent"
-            @end="dragEnterOver"
-            item-key="index"
-        >
-          <template #item="{ element }">
-            <div class="item" :class="'icon-size-'+(element.size?element.size:'1x1')">
-<!--              {{element.id}}-->
-              <div v-if="batchDeleteAppItemVisible" style="position: absolute;top:-7px;right:10px;z-index:1000">
-                <Icon icon="CloseCircleFilled" style="font-size:18px;color:#ffffff;" @click="deleteAppItem()"/>
-              </div>
-               <div :id="'appItem'+element.id" :data-index="element.id" class="app-icon" @click="appClick(element,index,i)"
-                   :style="'background:'+iconBackground(element)"
-                   @contextmenu.prevent="openMenu($event,index,element)">
+				<!--            @start="drag = true"-->
+				<!--            @end="drag = false"-->
+				<draggable class="wrapper" v-model="item.children" @start="dragEnterEvent" @end="dragEnterOver"
+					item-key="index">
+					<template #item="{ element }">
+						<div class="item" :class="'icon-size-'+(element.size?element.size:'1x1')">
+							<!--              {{element.id}}-->
+							<div v-if="batchDeleteAppItemVisible"
+								style="position: absolute;top:-7px;right:10px;z-index:1000">
+								<Icon icon="CloseCircleFilled" style="font-size:18px;color:#ffffff;"
+									@click="deleteAppItem()" />
+							</div>
+							<div :id="'appItem'+element.id" :data-index="element.id" class="app-icon"
+								@click="appClick(element,index,i)" :style="'background:'+iconBackground(element)"
+								@contextmenu.prevent="openMenu($event,index,element)">
 								<span v-if="element.type==='text'"
-                      :class="'widget-'+(element.size?element.size:'1x1')">{{ element.iconWord }}</span>
-                <img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon">
-                <img v-else-if="element.type==='component' && element.size==='1x1'" :src="getImgUrl(element)"
-                     class="icon">
-                <countdown-widget v-else-if="element.type==='countdown'||element.type==='countdownTime'" :size="element.size?element.size:'1x1'"
-                                  :form="element"></countdown-widget>
-                <calendar-widget v-else-if="element.type==='calendar'"
-                                 :size="element.size?element.size:'1x1'"></calendar-widget>
-              </div>
-              <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
-            </div>
-          </template>
-        </draggable>
+									:class="'widget-'+(element.size?element.size:'1x1')">{{ element.iconWord }}</span>
+								<img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon">
+								<img v-else-if="element.type==='component' && element.size==='1x1'&& element.component==='icon'"
+									:src="getImgUrl(element)" class="icon">
+								<countdown-widget v-else-if="element.type==='component' && (element.component==='countdown'||element.component==='countdownTime')"
+									:size="element.size?element.size:'1x1'" :form="element"></countdown-widget>
+								<calendar-widget v-else-if="element.type==='component' && element.component==='calendar'"
+									:size="element.size?element.size:'1x1'"></calendar-widget>
+							</div>
+							<div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
+						</div>
+					</template>
+				</draggable>
 			</div>
 		</div>
 		<!--    </full-page>-->
@@ -62,39 +60,43 @@
 						<template #title>
 							<span>{{$t('common.login')}}</span>
 						</template>
-            <Icon class="icon" icon="UserOutlined"/>
+						<Icon class="icon" icon="UserOutlined" />
 					</a-tooltip>
 				</div>
 			</div>
-      <div v-for="(item,index) in iconDefaultData.value" @click="selectDesktop(item,index)" class="leftBarItem" :class="currentIconPage === index?'leftBarItemSelected':''">
-        <a><i :class="'el-icon-'+item.icon"></i>{{ locale === 'zh_cn' ? item.name : item.nameEn }}</a>
-      </div>
-      <a><Icon class="leftBarPlus" icon="PlusCircleOutlined"/></a>
+			<div v-for="(item,index) in iconDefaultData.value" @click="selectDesktop(item,index)" class="leftBarItem"
+				:class="currentIconPage === index?'leftBarItemSelected':''">
+				<a><i :class="'el-icon-'+item.icon"></i>{{ locale === 'zh_cn' ? item.name : item.nameEn }}</a>
+			</div>
+			<a>
+				<Icon class="leftBarPlus" icon="PlusCircleOutlined" />
+			</a>
 			<div class="settingVisible" @click="showDialog('setting')">
 				<a-tooltip placement="right">
 					<template #title>
 						<span>{{$t('common.setting')}}</span>
 					</template>
-          <Icon icon="SettingOutlined"/>
+					<Icon icon="SettingOutlined" />
 				</a-tooltip>
 			</div>
 		</div>
 		<div class="search-container">
 			<div class="search-box">
 				<div class="search">
-          <a-select v-model:value="searchEngine" style="width:30%;" @change="changeSearchEngine()">
-            <a-select-option v-for="(item,index) in searchEngineList" :key="index"
-                             :label="locale ==='zh_cn'?item.name:item.nameEn"
-                             :value="locale ==='zh_cn'?item.name:item.nameEn">
-            </a-select-option>
-          </a-select>
-          <a-input style="width:70%;" v-model:value="keyword" type="text" autocomplete="off"
-							:placeholder="$t('action.pleaseInputContent')" @keyup.enter="search" />
+					<a-select v-model:value="searchEngine" style="width:30%;" @change="changeSearchEngine()">
+						<a-select-option v-for="(item,index) in searchEngineList" :key="index"
+							:label="locale ==='zh_cn'?item.name:item.nameEn"
+							:value="locale ==='zh_cn'?item.name:item.nameEn">
+						</a-select-option>
+					</a-select>
+					<a-input style="width:70%;" v-model:value="keyword" type="text" autocomplete="off"
+						:placeholder="$t('action.pleaseInputContent')" @keyup.enter="search" />
 				</div>
 			</div>
 			<div class="dateTime" :style="(dateTimeConfig.weight?'font-weight:bold':'')"
 				@click="showDialog('calendar')">
-				<span v-if="dateTimeConfig.showTime" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">{{ nowDateTime }} </span>
+				<span v-if="dateTimeConfig.showTime"
+					:style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">{{ nowDateTime }} </span>
 				<span v-if="dateTimeConfig.week" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
 					{{ nowWeek }}
 				</span>
@@ -103,33 +105,35 @@
 				</span>
 			</div>
 		</div>
-    <!--图标应用右键菜单-->
+		<!--图标应用右键菜单-->
 		<ul class="contextmenu" id="menuhome_section" v-show="rightKeyMenuVisible"
 			:style="{left:rightKeyMenuLeft+'px',top:rightKeyMenuTop+'px'}">
 			<li class="contextmenu-item hover" @click="addAppItem()">
-        <Icon class="icon" icon="PlusCircleOutlined"/>{{ $t("action.addIcon") }}
+				<Icon class="icon" icon="PlusCircleOutlined" />{{ $t("action.addIcon") }}
 			</li>
 			<li class="contextmenu-item hover" @click="showDialog('translate')">
-        <Icon class="icon" icon="SyncOutlined"/>{{ $t("common.translate") }}
+				<Icon class="icon" icon="SyncOutlined" />{{ $t("common.translate") }}
 			</li>
 			<li class="contextmenu-item hover" @click="rotate()">
-        <Icon class="icon" icon="SlackOutlined"/>{{ $t("action.changeWallpaper") }}</li>
+				<Icon class="icon" icon="SlackOutlined" />{{ $t("action.changeWallpaper") }}
+			</li>
 			<li class="contextmenu-item hover"><a :href="background" target="_blank">
-        <Icon class="icon" icon="DownloadOutlined"/>{{ $t("action.downWallpaper") }}</a>
-      </li>
+					<Icon class="icon" icon="DownloadOutlined" />{{ $t("action.downWallpaper") }}
+				</a>
+			</li>
 			<li class="contextmenu-item hover" @click="showDialog('searchIcon')">
-        <Icon class="icon" icon="SearchOutlined"/>{{ $t("action.localSearch") }}
+				<Icon class="icon" icon="SearchOutlined" />{{ $t("action.localSearch") }}
 			</li>
 		</ul>
 		<ul class="contextmenu" id="menuhome_icon" v-show="iconRightMenuVisible"
 			:style="{left:rightKeyMenuLeft+'px',top:rightKeyMenuTop+'px'}">
 			<li class="contextmenu-item hover"><i class="el-icon-sort"></i>
 				{{ $t("action.moveToHome") }}
-        <div class="contextmenu-layout">
-          <em v-for="(item,index) in iconDefaultData.value" @click="moveToFirstPage(index)">
-            {{ locale === 'zh_cn' ? item.name : item.nameEn }}
-          </em>
-        </div>
+				<div class="contextmenu-layout">
+					<em v-for="(item,index) in iconDefaultData.value" @click="moveToFirstPage(index)">
+						{{ locale === 'zh_cn' ? item.name : item.nameEn }}
+					</em>
+				</div>
 			</li>
 			<li class="contextmenu-item"><i class="el-icon-menu"></i> {{ $t("common.layout") }}
 				<div class="contextmenu-layout">
@@ -157,29 +161,29 @@
 		</div>
 		<setting ref="settingModal" @changeThemeMode="changeThemeMode" @changeDateTime="changeDateTime"></setting>
 		<add-app-item ref="addAppItemModal" @ok="initIconList()"></add-app-item>
-<!--		<search-icon ref="searchIcon"></search-icon>-->
+		<!--		<search-icon ref="searchIcon"></search-icon>-->
 		<login ref="userLogin" @success="initUserInfo()"></login>
-<!--		<todo-list ref="todoList"></todo-list>-->
+		<!--		<todo-list ref="todoList"></todo-list>-->
 		<support-author ref="supportAuthor"></support-author>
 		<privatization ref="privatization"></privatization>
 		<countdown ref="countdown" @ok="initIconList()"></countdown>
 		<calendar ref="calendar"></calendar>
 		<translate ref="translate"></translate>
-    <app-store ref="appStoreModal" @addIcon="addIcon"></app-store>
-<!--		<person ref="person" :user-info="userInfo"></person>-->
+		<app-store ref="appStoreModal" @addIcon="addIcon"></app-store>
+		<!--		<person ref="person" :user-info="userInfo"></person>-->
 		<!--    <div class="wallpaper"></div>-->
 	</div>
 </template>
 <script>
 	import {
 		ref,
-    toRefs,
+		toRefs,
 		reactive,
 		onMounted,
 		watch,
-    createVNode
+		createVNode
 	} from 'vue'
-  import draggable from 'vuedraggable'
+	import draggable from 'vuedraggable'
 	import drawClock from '@/utils/clock'
 	import {
 		randomNumber,
@@ -202,25 +206,28 @@
 	import countdownWidget from "@/views/widgets/countdownWidget";
 	import calendar from "@/views/widgets/calendar";
 	import calendarWidget from "../widgets/calendarWidget";
-  import translate from "@/views/widgets/translate";
-  import AppStore from "@/views/widgets/appStore";
+	import translate from "@/views/widgets/translate";
+	import AppStore from "@/views/widgets/appStore";
 	// import themePicker from "@/components/ThemePicker";
 	// import crypto from "@/utils/crypto";
 	import {
 		useI18n
 	} from "vue-i18n";
-  import Icon from "@/components/icon"
-  import {Modal,message} from "ant-design-vue";
+	import Icon from "@/components/icon"
+	import {
+		Modal,
+		message
+	} from "ant-design-vue";
 
-  export default {
+	export default {
 		name: "desktopIndex",
 		directives: {
 			// waves
 		},
 		components: {
-      AppStore,
-      Icon,
-      draggable,
+			AppStore,
+			Icon,
+			draggable,
 			setting,
 			addAppItem,
 			// searchIcon,
@@ -230,8 +237,8 @@
 			privatization,
 			calendar,
 			calendarWidget,
-      countdown,
-      countdownWidget,
+			countdown,
+			countdownWidget,
 			translate,
 			// person
 		},
@@ -240,28 +247,31 @@
 			const supportAuthor = ref(null)
 			const privatization = ref(null)
 			const settingModal = ref(null)
-      const userLogin = ref(null)
-      const translate = ref(null)
-      const calendar = ref(null)
-      const countdown = ref(null)
-      const appStoreModal = ref(null)
-      const addAppItemModal = ref(null)
-			const { t, locale } = useI18n()
-      let components ={
-        supportAuthor,
-        privatization,
-        settingModal,
-        userLogin,
-        translate,
-        calendar,
-        calendarWidget,
-        countdown,
-        countdownWidget,
-        appStoreModal,
-        addAppItemModal
-      }
+			const userLogin = ref(null)
+			const translate = ref(null)
+			const calendar = ref(null)
+			const countdown = ref(null)
+			const appStoreModal = ref(null)
+			const addAppItemModal = ref(null)
+			const {
+				t,
+				locale
+			} = useI18n()
+			let components = {
+				supportAuthor,
+				privatization,
+				settingModal,
+				userLogin,
+				translate,
+				calendar,
+				calendarWidget,
+				countdown,
+				countdownWidget,
+				appStoreModal,
+				addAppItemModal
+			}
 			let data = {
-        keyword: ref(''),
+				keyword: ref(''),
 				windmillRotate: ref(false),
 				drawerVisible: ref(false),
 				dateTimeConfig: reactive({
@@ -290,115 +300,114 @@
 				currentIconPage: ref(0),
 				iconDefaultData: reactive([]),
 				searchEngine: ref(''),
-				searchEngineList: reactive([
-            {
-            "key": "baidu",
+				searchEngineList: reactive([{
+						"key": "baidu",
 						"name": "百度",
 						"nameEn": "Baidu",
 						"url": "https://www.baidu.com/s?wd="
 					},
 					{
-            "key": "bing",
+						"key": "bing",
 						"name": "必应",
 						"nameEn": "Bing",
 						"url": "https://cn.bing.com/search?q="
 					},
 					{
-            "key": "google",
+						"key": "google",
 						"name": "谷歌",
 						"nameEn": "Google",
 						"url": "https://www.google.com/search?q="
 					},
-          {
-            "key": "github",
-            "name": "Github",
-            "nameEn": "Github",
-            "url": "https://github.com/search?q="
-          },
-          {
-            "key": "gitee",
-            "name": "Gitee",
-            "nameEn": "Gitee",
-            "url": "https://search.gitee.com/?skin=rec&type=repository&q="
-          },
-          {
-            "key": "douyin",
-            "name": "抖音",
-            "nameEn": "DouYin",
-            "url": "https://www.douyin.com/search/"
-          },
-          {
-            "key": "kuaishou",
-            "name": "快手",
-            "nameEn": "Kwai",
-            "url": "https://kuaishou.cn/search/video?searchKey="
-          },
-          {
-            "key": "xiaohongshu",
-            "name": "小红书",
-            "nameEn": "RedBook",
-            "href": "https://www.xiaohongshu.com/search_result/?&m_source=itab&keyword="
-          },
-          {
-            "key": "duckduckgo",
-            "name": "DuckDuckGo",
-            "nameEn": "DuckDuckGo",
-            "href": "https://duckduckgo.com/?q="
-          },
-          {
-            "key": "zhihu",
-            "name": "知乎",
-            "nameEn": "ZhiHu",
-            "href": "https://www.zhihu.com/search?type=content&q="
-          },
-          {
-            "key": "sougou",
-            "name": "搜狗",
-            "nameEn":"Sogou",
-            "href": "https://www.sogou.com/sogou?query="
-          },
-          {
-            "key": "360",
-            "name": "360",
-            "nameEn": "360",
-            "href": "https://www.so.com/s?q="
-          },
-          {
-            "key": "stackoverflow",
-            "name": "StackOverflow",
-            "nameEn": "StackOverflow",
-            "href": "https://stackoverflow.com/nocaptcha?s="
-          },
-          {
-            "key": "toutiao",
-            "name": "头条搜索",
-            "nameEn": "TouTiao",
-            "href": "https://so.toutiao.com/search?dvpf=pc&keyword="
-          },
-          {
-            "key": "douban",
-            "name": "豆瓣",
-            "nameEn": "DouBan",
-            "href": "https://www.douban.com/search?q="
-          },
-          {
-            "key": "bilibili",
-            "name": "哔哩哔哩",
-            "nameEn": "BiLiBiLi",
-            "href": "https://search.bilibili.com/all?keyword="
-          },
-          {
-            "key": "kaifabaidu",
-            "name": "开发者搜索",
-            "nameEn": "DevSearch",
-            "href": "https://kaifa.baidu.com/searchPage?wd="
-          },
-          {
-            "key": "mdn",
-            "name": "MDN",
-            "nameEn": "MDN",
-            "href": "https://developer.mozilla.org/zh-CN/search?q="
-          }
+					{
+						"key": "github",
+						"name": "Github",
+						"nameEn": "Github",
+						"url": "https://github.com/search?q="
+					},
+					{
+						"key": "gitee",
+						"name": "Gitee",
+						"nameEn": "Gitee",
+						"url": "https://search.gitee.com/?skin=rec&type=repository&q="
+					},
+					{
+						"key": "douyin",
+						"name": "抖音",
+						"nameEn": "DouYin",
+						"url": "https://www.douyin.com/search/"
+					},
+					{
+						"key": "kuaishou",
+						"name": "快手",
+						"nameEn": "Kwai",
+						"url": "https://kuaishou.cn/search/video?searchKey="
+					},
+					{
+						"key": "xiaohongshu",
+						"name": "小红书",
+						"nameEn": "RedBook",
+						"href": "https://www.xiaohongshu.com/search_result/?&m_source=itab&keyword="
+					},
+					{
+						"key": "duckduckgo",
+						"name": "DuckDuckGo",
+						"nameEn": "DuckDuckGo",
+						"href": "https://duckduckgo.com/?q="
+					},
+					{
+						"key": "zhihu",
+						"name": "知乎",
+						"nameEn": "ZhiHu",
+						"href": "https://www.zhihu.com/search?type=content&q="
+					},
+					{
+						"key": "sougou",
+						"name": "搜狗",
+						"nameEn": "Sogou",
+						"href": "https://www.sogou.com/sogou?query="
+					},
+					{
+						"key": "360",
+						"name": "360",
+						"nameEn": "360",
+						"href": "https://www.so.com/s?q="
+					},
+					{
+						"key": "stackoverflow",
+						"name": "StackOverflow",
+						"nameEn": "StackOverflow",
+						"href": "https://stackoverflow.com/nocaptcha?s="
+					},
+					{
+						"key": "toutiao",
+						"name": "头条搜索",
+						"nameEn": "TouTiao",
+						"href": "https://so.toutiao.com/search?dvpf=pc&keyword="
+					},
+					{
+						"key": "douban",
+						"name": "豆瓣",
+						"nameEn": "DouBan",
+						"href": "https://www.douban.com/search?q="
+					},
+					{
+						"key": "bilibili",
+						"name": "哔哩哔哩",
+						"nameEn": "BiLiBiLi",
+						"href": "https://search.bilibili.com/all?keyword="
+					},
+					{
+						"key": "kaifabaidu",
+						"name": "开发者搜索",
+						"nameEn": "DevSearch",
+						"href": "https://kaifa.baidu.com/searchPage?wd="
+					},
+					{
+						"key": "mdn",
+						"name": "MDN",
+						"nameEn": "MDN",
+						"href": "https://developer.mozilla.org/zh-CN/search?q="
+					}
 				]),
 				selectSectionAppItem: reactive({}),
 				selectSectionAppItemSectionIndex: ref(0),
@@ -420,16 +429,16 @@
 				clock
 			}
 
-      const state = reactive({
-        drag: false,
-        list: [1, 2, 3, 4, 5, 6]
-      })
+			const state = reactive({
+				drag: false,
+				list: [1, 2, 3, 4, 5, 6]
+			})
 			// themePicker.methods.themeChange(data.themeColor);
 
 			const methods = {
-        addIcon: (item)=>{
-          data.iconDefaultData.value[0].children.push(item);
-        },
+				addIcon: (item) => {
+					data.iconDefaultData.value[0].children.push(item);
+				},
 				rotate: () => {
 					data.windmillRotate.value = true;
 
@@ -458,7 +467,7 @@
 					}
 					if (data.dateTimeConfig.week) {
 						let date = new Date();
-						data.nowWeek = parseTime(date, '{a}',locale.value)
+						data.nowWeek = parseTime(date, '{a}', locale.value)
 					}
 					if (data.dateTimeConfig.lunar) {
 						let date = new Date();
@@ -496,9 +505,9 @@
 				},
 				changeDateTime: (value) => {
 					data.dateTimeConfig = value;
-          if(data.dateTimeConfig.showTime){
-            methods.initDateTime()
-          }
+					if (data.dateTimeConfig.showTime) {
+						methods.initDateTime()
+					}
 				},
 				showDialog: (value) => {
 					if (value === 'supportAuthor') {
@@ -506,13 +515,13 @@
 					} else if (value === 'privatization') {
 						privatization.value.showModal();
 					} else if (value === 'userLogin') {
-            userLogin.value.showModal();
-          } else if (value === 'translate') {
-            translate.value.visible = true;
-            translate.value.inputValue = data.keyword.value
-          } else if (value === 'setting') {
-            settingModal.value.visible = true;
-          }
+						userLogin.value.showModal();
+					} else if (value === 'translate') {
+						translate.value.visible = true;
+						translate.value.inputValue = data.keyword.value
+					} else if (value === 'setting') {
+						settingModal.value.visible = true;
+					}
 				},
 				getImgUrl: (item) => {
 					if (!item.src) {
@@ -530,7 +539,7 @@
 				},
 				dragEnterOver: (event) => {
 					data.dragNav = null;
-          localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
+					localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
 				},
 				dropEvent: (event) => {
 					event.preventDefault();
@@ -563,77 +572,80 @@
 						data.rightKeyMenuLeft.value = e.pageX;
 					}
 
-          data.selectSectionAppItemSectionIndex.value = sectionIndex;
+					data.selectSectionAppItemSectionIndex.value = sectionIndex;
 					if (e.currentTarget.id && e.currentTarget.id.startsWith("appItem")) {
-            let appIndex = 0
-            if(app){
-              for (let it of data.iconDefaultData.value[sectionIndex].children) {
-                if (it.name === app.name && it.id === app.id) {
-                  break;
-                }
-                appIndex++;
-              }
-              data.selectSectionAppItemIndex.value = appIndex;
-              data.selectSectionAppItem.value = app;
-            }
+						let appIndex = 0
+						if (app) {
+							for (let it of data.iconDefaultData.value[sectionIndex].children) {
+								if (it.name === app.name && it.id === app.id) {
+									break;
+								}
+								appIndex++;
+							}
+							data.selectSectionAppItemIndex.value = appIndex;
+							data.selectSectionAppItem.value = app;
+						}
 						data.iconRightMenuVisible.value = true; //在这里控制右键菜单的打开
 						if (event && event.stopPropagation) { //W3C
 							event.stopPropagation();
 						}
-					}else{
-            data.rightKeyMenuVisible.value = true; //在这里控制右键菜单的打开
-          }
+					} else {
+						data.rightKeyMenuVisible.value = true; //在这里控制右键菜单的打开
+					}
 				},
 				closeMenu: (e) => {
 					data.rightKeyMenuVisible.value = false;
 					data.iconRightMenuVisible.value = false;
 				},
 				deleteAppItem: () => {
-            Modal.confirm({
-              title: t('common.confirmDelete'),
-              icon: Icon("ExclamationCircleOutlined"),
-              okText: '确认',
-              cancelText: '取消',
-              onOk() {
-                return new Promise((resolve, reject) => {
-                  let i = 0
-                  let item = data.selectSectionAppItem.value
-                  let sectionIndex = data.selectSectionAppItemSectionIndex.value
-                  for (let it of data.iconDefaultData.value[sectionIndex].children) {
-                    if (it.name === item.name && it.id === item.id) {
-                      data.iconDefaultData.value[sectionIndex].children.splice(i, 1);
-                      break
-                    }
-                    i++
-                  }
-                  localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
-                  resolve();
-                }).catch(() => console.log('Oops errors!'));
-              },
-              // eslint-disable-next-line @typescript-eslint/no-empty-function
-              onCancel() {},
-            });
+					Modal.confirm({
+						title: t('common.confirmDelete'),
+						icon: Icon("ExclamationCircleOutlined"),
+						okText: '确认',
+						cancelText: '取消',
+						onOk() {
+							return new Promise((resolve, reject) => {
+								let i = 0
+								let item = data.selectSectionAppItem.value
+								let sectionIndex = data.selectSectionAppItemSectionIndex.value
+								for (let it of data.iconDefaultData.value[sectionIndex].children) {
+									if (it.name === item.name && it.id === item.id) {
+										data.iconDefaultData.value[sectionIndex].children.splice(i,
+											1);
+										break
+									}
+									i++
+								}
+								localStorage.setItem("iconDefaultData", JSON.stringify(data
+									.iconDefaultData.value))
+								resolve();
+							}).catch(() => console.log('Oops errors!'));
+						},
+						// eslint-disable-next-line @typescript-eslint/no-empty-function
+						onCancel() {},
+					});
 
 				},
-        initSearchEngine:()=>{
-          let defaultSearchEngine = localStorage.getItem("defaultSearchEngine")
-          if(defaultSearchEngine){
-            defaultSearchEngine = JSON.parse(defaultSearchEngine);
-            data.searchEngine.value = locale.value ==='zh_cn'?defaultSearchEngine.name:defaultSearchEngine.nameEn
-          }
-          if(!data.searchEngine.value){
-            data.searchEngine.value = locale.value ==='zh_cn'?'百度':'Baidu'
-          }
-        },
-        changeSearchEngine:()=>{
-          for (let engine of data.searchEngineList) {
-            const name = locale.value ==='zh_cn'?engine.name:engine.nameEn
-            if (name === data.searchEngine.value) {
-              localStorage.setItem("defaultSearchEngine", JSON.stringify(engine));
-              break;
-            }
-          }
-        },
+				initSearchEngine: () => {
+					let defaultSearchEngine = localStorage.getItem("defaultSearchEngine")
+					if (defaultSearchEngine) {
+						defaultSearchEngine = JSON.parse(defaultSearchEngine);
+						data.searchEngine.value = locale.value === 'zh_cn' ? defaultSearchEngine.name :
+							defaultSearchEngine.nameEn
+					}
+					if (!data.searchEngine.value) {
+						data.searchEngine.value = locale.value === 'zh_cn' ? '百度' : 'Baidu'
+					}
+				},
+				changeSearchEngine: () => {
+					for (let engine of data.searchEngineList) {
+						const name = locale.value === 'zh_cn' ? engine.name : engine.nameEn
+						if (name === data.searchEngine.value) {
+							localStorage.setItem("defaultSearchEngine", JSON.stringify(engine));
+							break;
+						}
+					}
+				},
 				search: () => {
 					if (data.searchEngine.value && data.keyword.value) {
 						let url = '';
@@ -647,52 +659,44 @@
 					}
 				},
 				appClick: (item, sectionIndex) => {
-          let appIndex = 0;
-          for (let it of data.iconDefaultData.value[sectionIndex].children) {
-            if (it.name === item.name && it.id === item.id) {
-              break;
-            }
-            appIndex++;
-          }
+					let appIndex = 0;
+					for (let it of data.iconDefaultData.value[sectionIndex].children) {
+						if (it.name === item.name && it.id === item.id) {
+							break;
+						}
+						appIndex++;
+					}
 					if (item.type === 'icon' || item.type === 'text') {
 						window.open(item.url, "_blank");
 					} else if (item.type === 'component') {
 						if (item.id === 'fb9934a62e194e67ab46102c05ee45ce') {
-              addAppItemModal.value.showModal()
-						}else if (item.id === '96eb2b757ec54b35b1d2a5d6bf13311a') {
+							addAppItemModal.value.showModal()
+						} else if (item.id === '96eb2b757ec54b35b1d2a5d6bf13311a') {
 							// this.$refs['todoList'].dialogVisible = true
-						}else if (item.id === '8aa6b3c126a94b939988e184a2c10f26') {
-              settingModal.value.visible = true;
-						}else if(item.id === 'fb9934a62e194e67ab46102c05ee45ca'){
-              appStoreModal.value.showModal()
-            }
-					} else if (item.type === 'countdown' || item.type === 'countdownTime') {
-            countdown.value.showModal()
-            countdown.value.editWidget(item,sectionIndex,appIndex)
-						// this.$refs['countdown'].dialogVisible = true;
-						// this.$refs['countdown'].groupIndex = index;
-						// this.$refs['countdown'].appIndex = appIndex;
-						// this.$refs['countdown'].form = item;
+						} else if (item.id === '8aa6b3c126a94b939988e184a2c10f26') {
+							settingModal.value.visible = true;
+						} else if (item.id === 'da0ebd0b0f2142c723f3s37df80d3241') {
+							appStoreModal.value.showModal()
+						}else if (item.component === 'countdown' || item.component === 'countdownTime') {
+							countdown.value.showModal()
+							countdown.value.editWidget(item, sectionIndex, appIndex)
+						} 
 					} else if (item.id === '134df2c360e14809b15054a0be4eb57b') {
-            calendar.value.showModal()
-						// this.$refs['calendar'].dialogVisible = true;
-						// this.$refs['calendar'].groupIndex = index;
-						// this.$refs['calendar'].appIndex = appIndex;
-						// this.$refs['calendar'].form = item;
+						calendar.value.showModal()
 					}
 				},
 				moveToFirstPage: (index) => {
-          const appItem = data.selectSectionAppItem.value
-          const appIndex = data.selectSectionAppItemIndex.value
-          const sectionIndex = data.selectSectionAppItemSectionIndex.value
+					const appItem = data.selectSectionAppItem.value
+					const appIndex = data.selectSectionAppItemIndex.value
+					const sectionIndex = data.selectSectionAppItemSectionIndex.value
 					data.iconDefaultData.value[index].children.push(appItem);
 					data.iconDefaultData.value[sectionIndex].children.splice(appIndex, 1);
-          methods.saveIconDefaultData()
-          message.info("操作成功！")
+					methods.saveIconDefaultData()
+					message.info("操作成功！")
 				},
-        saveIconDefaultData:()=>{
-          localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value));
-        },
+				saveIconDefaultData: () => {
+					localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value));
+				},
 				changeAppIconlayout: (value) => {
 					let sectionIndex = data.selectSectionAppItemSectionIndex.value;
 					let appIndex = data.selectSectionAppItemIndex.value;
@@ -709,8 +713,8 @@
 			methods.initDateTime();
 			methods.initIconList();
 			methods.initUserInfo();
-      methods.initWallPaper();
-      methods.initSearchEngine();
+			methods.initWallPaper();
+			methods.initSearchEngine();
 			onMounted(() => {
 				//
 				// nextTick(() => {
@@ -727,30 +731,30 @@
 			});
 			document.body.addEventListener('click', methods.closeMenu)
 			return {
-        ...components,
-        ...data,
+				...components,
+				...data,
 				...methods,
-        ...toRefs(state)
+				...toRefs(state)
 			};
 		}
 	}
 </script>
 <style lang="less">
-.windmill {
-  img {
-    animation: rotate 1s linear infinite;
-  }
-}
+	.windmill {
+		img {
+			animation: rotate 1s linear infinite;
+		}
+	}
 
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
+	@keyframes rotate {
+		from {
+			transform: rotate(0deg);
+		}
 
-  to {
-    transform: rotate(360deg);
-  }
-}
+		to {
+			transform: rotate(360deg);
+		}
+	}
 </style>
 <style lang="less">
 	/* <768px */
@@ -778,59 +782,59 @@
 			margin-left: 10%;
 
 			.wrapper {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-y)));
-        grid-template-rows: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-x)));
-        grid-auto-flow: dense;
-        justify-content: center;
-        box-sizing: border-box;
-        margin-top: 20px;
+				display: grid;
+				grid-template-columns: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-y)));
+				grid-template-rows: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-x)));
+				grid-auto-flow: dense;
+				justify-content: center;
+				box-sizing: border-box;
+				margin-top: 20px;
 
-        .item {
-          //width: calc(var(--item-size) + var(--item-gap-x));
-          //height: calc(var(--item-size) + var(--item-gap-y));
-          padding: 0 calc(var(--item-gap-y) / 2) calc(var(--item-gap-x));
-          position: relative;
-          box-sizing: border-box;
-          cursor: pointer;
+				.item {
+					//width: calc(var(--item-size) + var(--item-gap-x));
+					//height: calc(var(--item-size) + var(--item-gap-y));
+					padding: 0 calc(var(--item-gap-y) / 2) calc(var(--item-gap-x));
+					position: relative;
+					box-sizing: border-box;
+					cursor: pointer;
 
-          .app-icon {
-            position: relative;
-            height: 100%;
-            overflow: hidden;
-            border-radius: var(--icon-bg-radius);
-            background-color: #fff;
-            text-align: center;
-            font-size: 18px;
+					.app-icon {
+						position: relative;
+						height: 100%;
+						overflow: hidden;
+						border-radius: var(--icon-bg-radius);
+						background-color: #fff;
+						text-align: center;
+						font-size: 18px;
 
-            img {
-              position: absolute;
-              height: 100%;
-              transform: translate3d(-50%, -50%, 0);
-              top: 50%;
-              left: 50%
-            }
-          }
+						img {
+							position: absolute;
+							// height: 100%;
+							transform: translate3d(-50%, -50%, 0);
+							top: 50%;
+							left: 50%
+						}
+					}
 
-          .app-icon:hover {
-            //margin-top:-5px;
-            //margin-left:-5px;
-            //height:65px;
-            //width:65px;
-            //width:calc(var(--icon-size) + 5);
-            //height:calc(var(--icon-size) + 5);
-          }
+					.app-icon:hover {
+						//margin-top:-5px;
+						//margin-left:-5px;
+						//height:65px;
+						//width:65px;
+						//width:calc(var(--icon-size) + 5);
+						//height:calc(var(--icon-size) + 5);
+					}
 
-          .app-title {
-            font-size: 12px;
-            color: #ffffff;
-            text-align: center;
-            padding-top: 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            //text-overflow: ellipsis
-          }
-        }
+					.app-title {
+						font-size: 12px;
+						color: #ffffff;
+						text-align: center;
+						padding-top: 10px;
+						white-space: nowrap;
+						overflow: hidden;
+						//text-overflow: ellipsis
+					}
+				}
 			}
 		}
 	}
@@ -964,7 +968,8 @@
 			margin: 0 auto;
 			padding: 10px;
 			box-sizing: border-box;
-      margin-left:10px;
+			margin-left: 10px;
+
 			.search {
 				background-color: rgba(255, 255, 255, .6);
 				border-radius: 45px;
@@ -986,7 +991,7 @@
 				//color: var(--d-main);
 				.ant-select:not(.ant-select-customize-input) .ant-select-selector {
 					background-color: transparent;
-          box-shadow: none;
+					box-shadow: none;
 					border: none;
 					cursor: pointer
 				}
@@ -994,11 +999,11 @@
 				.ant-input-search .ant-input:hover,
 				.ant-input-search .ant-input:focus {
 					border: none;
-          box-shadow: none;
+					box-shadow: none;
 				}
 
 				.ant-input {
-          box-shadow: none;
+					box-shadow: none;
 					background-color: transparent;
 					color: var(--bg-body);
 					border: none;
@@ -1013,7 +1018,7 @@
 					color: var(--bg-body);
 					cursor: pointer;
 					border: none;
-          box-shadow: none;
+					box-shadow: none;
 				}
 
 				.el-select .el-input .el-input__inner {
@@ -1075,31 +1080,34 @@
 		font-weight: 400;
 		//color: #ffffff;
 		box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
-    min-width: 100px;
-    max-width: 150px;
+		min-width: 100px;
+		max-width: 150px;
 	}
 
 
 	.contextmenu li {
-    margin-left: 10px;
-    line-height:20px;
+		margin-left: 10px;
+		line-height: 20px;
 		cursor: pointer;
-    text-align: left;
+		text-align: left;
+
 		.contextmenu-layout {
 			//width: 105px;
-      margin-right:10px;
+			margin-right: 10px;
 			background-color: rgba(var(--alpha-bg), .9);
 		}
-    .icon {
-      margin-right:5px;
-    }
+
+		.icon {
+			margin-right: 5px;
+		}
+
 		.contextmenu-layout em {
 			display: inline-block;
 			font-size: 12px;
 			//height: 14px;
 			//line-height: 14px;
 			min-width: 30px;
-      padding:2px 5px;
+			padding: 2px 5px;
 			//background-color: rgba(var(--alpha-bg), .6);
 			background-color: #cfcfcf;
 			border-radius: 5px;
@@ -1151,22 +1159,27 @@
 		line-height: 40px;
 		position: absolute;
 		top: 0;
-    .leftBarItem{
-      min-height:30px;
-    }
-    .leftBarItem:hover{
-      background-color: rgba(var(--alpha-bg), .6);
-    }
-    .leftBarItemSelected{
-      background-color: rgba(var(--alpha-bg), .4);
-    }
-    .leftBarPlus{
-      font-size: 18px;
-    }
-    .leftBarPlus:hover{
-      color: #fff;
-      font-size: 20px;
-    }
+
+		.leftBarItem {
+			min-height: 30px;
+		}
+
+		.leftBarItem:hover {
+			background-color: rgba(var(--alpha-bg), .6);
+		}
+
+		.leftBarItemSelected {
+			background-color: rgba(var(--alpha-bg), .4);
+		}
+
+		.leftBarPlus {
+			font-size: 18px;
+		}
+
+		.leftBarPlus:hover {
+			color: #fff;
+			font-size: 20px;
+		}
 	}
 
 	.settingVisible {
