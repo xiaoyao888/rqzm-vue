@@ -82,7 +82,7 @@ function drawMinute(context,r,rem,minute,whiteOrBlack) {
     var rad = 2 * Math.PI / 60 * minute;
     context.rotate(rad);
     context.moveTo(0, 15*rem);
-    context.lineTo(0, -r + 34)
+    context.lineTo(0, -r + 24)
     context.stroke();
     context.restore();
 }

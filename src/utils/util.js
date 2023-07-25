@@ -163,7 +163,7 @@ export function dateFormat(fmt, date) {
 }
 
 export function formatDate(date) {
-  var m = date.getMonth() + 1 < 10 ? ('0' + date.getMonth() + 1) : date.getMonth() + 1
+  var m = date.getMonth() + 1 < 10 ? ('0' + (date.getMonth() + 1)) :  + 1
   var d = (date.getDate() < 10 ? ('0' + date.getDate()) : date.getDate())
   return date.getFullYear().toString() + '-' + m.toString() + '-' + d.toString()
 }
@@ -470,42 +470,16 @@ export function removeClass(ele, cls) {
     ele.className = ele.className.replace(reg, ' ')
   }
 }
-// export function exportExcel(json, fields, filename = '.xlsx', wscols) { // 导出xlsx
-//   if (json.length === 0 || fields.length === 0) {
-//     return
-//   }
-//   json.forEach(item => {
-//     for (const x in item) {
-//       if (fields.hasOwnProperty(x)) {
-//         item[fields[x]] = item[x]
-//       }
-//       delete item[x] // 删除原先的对象属性
-//     }
-//   })
-//   const sheetName = filename // excel的文件名称
-//   const wb = XLSX.utils.book_new() // 工作簿对象包含一SheetNames数组，以及一个表对象映射表名称到表对象。XLSX.utils.book_new实用函数创建一个新的工作簿对象。
-//   const ws = XLSX.utils.json_to_sheet(json, { header: Object.values(fields) }) // 将JS对象数组转换为工作表。
 
-//   // workbook.SheetNames[0]获取到到是文件里的到第一个表格
-//   ws['!cols'] = wscols
-//   wb.SheetNames.push(sheetName)
-//   wb.Sheets[sheetName] = ws
-//   const defaultCellStyle = { font: { name: '微软雅黑', sz: 12, color: 'FF00FF88' }, fill: { fgColor: { rgb: 'FFFFAA00' }}}// 设置表格的样式
-//   const wopts = { bookType: 'xlsx', bookSST: false, type: 'binary', cellStyles: true, defaultCellStyle: defaultCellStyle, showGridLines: false } // 写入的样式
-//   const wbout = XLSX.write(wb, wopts)
-//   const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' })
-//   fs.saveAs(blob, filename + '.xlsx')
-// }
-// const s2ab = s => {
-//   var buf
-//   if (typeof ArrayBuffer !== 'undefined') {
-//     buf = new ArrayBuffer(s.length)
-//     var view = new Uint8Array(buf)
-//     for (var i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff
-//     return buf
-//   } else {
-//     buf = new Array(s.length)
-//     for (var x = 0; x !== s.length; ++x) buf[x] = s.charCodeAt(x) & 0xFF
-//     return buf
-//   }
-// }
+
+export function strFormat(url,arg){
+  if (arg===null || arg === '' || arg.length == 0){
+    return arg;
+  }
+
+  // 使用正则表达式，循环替换占位符数据
+  for (var result = url, i = 0; i < arg.length; i++){
+    result = result.replace(new RegExp("\\{" + i + "\\}", "g"), arg[i]);
+    return result;
+  }
+}

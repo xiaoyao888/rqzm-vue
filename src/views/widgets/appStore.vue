@@ -5,14 +5,14 @@
       <div class="app-store-nav">
         <div @click="showStatus=true" class="app-store-nav-item" :class="showStatus?'app-store-nav-item-selected':''"><a>小图标</a></div>
         <div @click="showStatus=false" class="app-store-nav-item" :class="!showStatus?'app-store-nav-item-selected':''"><a>小组件</a></div>
-        <a-select ref="select" style="border-radius: 16px;" v-model:value="sectionIndex" @change="handleChange">
-          <a-select-option :value="item.name" v-for="item in sectionList" >{{item.name}}</a-select-option>
+        <a-select ref="select" style="border-radius: 16px;" v-model:value="currentSection.name" @change="handleChange($event)">
+          <a-select-option :value="item.name" v-for="item in sectionList.value" :key="item.name">{{item.name}}</a-select-option>
         </a-select>
         <div class="app-store-nav-title">应用商店</div>
         <a-input class="app-store-nav-input" @keyup="init"/>
       </div>
       <div class="icon-list" v-if="showStatus">
-        <div class="icon-item" v-for="item in iconList" >
+        <div class="icon-item" v-for="(item,index) in iconList" :key="index">
           <div style="height:100px;text-align: center">
             <div>
               {{item.name}}
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="widget-list" v-if="!showStatus">
-        <div class="widget-item" v-for="item in widgetList" >
+        <div class="widget-item" v-for="(item,index) in widgetList" :key="index">
           <div style="height:160px;">
             {{item.name}}
           </div>
@@ -43,11 +43,14 @@
 </template>
 
 <script setup>
-import {ref, defineExpose, reactive, defineEmits} from "vue";
+import {ref,toRef, defineExpose, reactive, defineEmits} from "vue";
 import Icon from '@/components/icon'
 import iconDefaultData from "@/assets/json/navJsonData.json";
 import {message} from "ant-design-vue";
 import iconData from "@/assets/json/iconData.json";
+import {useI18n} from "vue-i18n";
+
+const { t,locale} = useI18n()
 const visible = ref(false)
 const showModal=()=>{
   visible.value = true
@@ -57,7 +60,10 @@ const showStatus = ref(true)
 const widgetList = reactive([])
 const iconList = reactive([])
 const sectionList = reactive([])
-const sectionIndex = ref(0)
+const currentSection = reactive({
+  name: "",
+  index: 0
+})
 const init =()=> {
   let iconData = require('@/assets/json/iconData.json');
   if(iconData){
@@ -76,15 +82,27 @@ const init =()=> {
     if (iconDefaultData.length > 0) {
       iconDefaultData = JSON.parse(iconDefaultData);
     }
+    let arr = []
     let index =0;
     for(let item of iconDefaultData){
-      sectionList.push({id:item.id,name:item.name,nameEn:item.nameEn,index:index})
+      if(index === 0){
+        currentSection.name = locale.value === 'zh_cn'?item.name:item.nameEn
+        currentSection.index = 0
+      }
+      arr.push({id:item.id,name:item.name,nameEn:item.nameEn,index:index})
       index++;
     }
+    sectionList.value = arr
   }
 }
-const handleChange=(item)=>{
-  sectionIndex.value = item.index
+const handleChange=(name)=>{
+  currentSection.name = name
+  for (let idd of sectionList.value) {
+    if (idd.name === name) {
+      currentSection.index = idd.index
+      return
+    }
+  }
 }
 const addIcon = (item) =>{
   let iconDefaultData = localStorage.getItem('iconDefaultData') || []
@@ -92,17 +110,16 @@ const addIcon = (item) =>{
     if (iconDefaultData.length > 0) {
       iconDefaultData = JSON.parse(iconDefaultData);
     }
-    for (const idd of iconDefaultData) {
-      for(let it of idd.children) {
-        if (it.id === item.id) {
-          message.warning(it.name + '，已经添加过了！');
-          return;
-        }
+    const children = iconDefaultData[currentSection.index].children
+    for(let it of children) {
+      if (it.id === item.id) {
+        message.warning(it.name + '，已经添加过了！');
+        return;
       }
     }
-    iconDefaultData[sectionIndex.value].children.push(item)
+    iconDefaultData[currentSection.index].children.push(JSON.parse(JSON.stringify(item)))
     localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData))
-    emits("addIcon", item)
+    emits("addIcon", {app:item,index:currentSection.index})
     message.success(item.name+'，添加成功！');
   }
 }
