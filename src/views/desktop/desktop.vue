@@ -20,13 +20,14 @@
 									@click="deleteAppItem()" />
 							</div>
 							<div :id="'appItem'+element.id" :data-index="element.id" class="app-icon"
-								@click="appClick(element,index,i)" :style="'background:'+iconBackground(element)"
-								@contextmenu.prevent="openMenu($event,index,element)">
+
+                    @click="appClick(element,index,i)" :style="'background:'+iconBackground(element)"
+                    @contextmenu.prevent="openMenu($event,index,element)">
 								<span v-if="element.type==='text'"
 									:class="'widget-'+(element.size?element.size:'1x1')">{{ element.iconWord }}</span>
-								<img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon">
+								<img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon" :class="'img-'+(element.size?element.size:'1x1')">
 								<img v-else-if="element.type==='component' && element.size==='1x1'&& element.component==='icon'"
-									:src="getImgUrl(element)" class="icon">
+									:src="getImgUrl(element)" class="icon" :class="'img-'+(element.size?element.size:'1x1')">
 								<countdown-widget v-else-if="element.type==='component' && (element.component==='countdown'||element.component==='countdownTime')"
 									:size="element.size?element.size:'1x1'" :form="element"></countdown-widget>
 								<calendar-widget v-else-if="element.type==='component' && element.component==='calendar'"
@@ -759,85 +760,66 @@
 <style lang="less">
 	/* <768px */
 	@media screen and (max-width: 768px) {
-		.section {
-			.app-grid {
-				width: 100% !important;
-				margin-left: 0 !important;
-				overflow-y: auto;
-				height: 600px;
+    .app-grid {
+      width: 100% !important;
+      margin-left: 0 !important;
+      overflow-y: auto;
+      height: 600px;
 
-				::-webkit-scrollbar {
-					width: 20px;
-				}
-			}
-		}
+      ::-webkit-scrollbar {
+        width: 20px;
+      }
+    }
 	}
-
-	.section {
-		.app-grid {
-			overflow-y: auto;
-			height: 800px;
-			padding-top: 100px;
-			width: 80%;
-			margin-left: 10%;
-
-			.wrapper {
-				display: grid;
-				grid-template-columns: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-y)));
-				grid-template-rows: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-x)));
-				grid-auto-flow: dense;
-				justify-content: center;
-				box-sizing: border-box;
-				margin-top: 20px;
-
-				.item {
-					//width: calc(var(--item-size) + var(--item-gap-x));
-					//height: calc(var(--item-size) + var(--item-gap-y));
-					padding: 0 calc(var(--item-gap-y) / 2) calc(var(--item-gap-x));
-					position: relative;
-					box-sizing: border-box;
-					cursor: pointer;
-
-					.app-icon {
-						position: relative;
-						height: 100%;
-						overflow: hidden;
-						border-radius: var(--icon-bg-radius);
-						background-color: #fff;
-						text-align: center;
-						font-size: 18px;
-
-						img {
-							position: absolute;
-							// height: 100%;
-							transform: translate3d(-50%, -50%, 0);
-							top: 50%;
-							left: 50%
-						}
-					}
-
-					.app-icon:hover {
-						//margin-top:-5px;
-						//margin-left:-5px;
-						//height:65px;
-						//width:65px;
-						//width:calc(var(--icon-size) + 5);
-						//height:calc(var(--icon-size) + 5);
-					}
-
-					.app-title {
-						font-size: 12px;
-						color: #ffffff;
-						text-align: center;
-						padding-top: 10px;
-						white-space: nowrap;
-						overflow: hidden;
-						//text-overflow: ellipsis
-					}
-				}
-			}
-		}
-	}
+  .app-grid {
+    overflow-y: auto;
+    height: 800px;
+    padding-top: 100px;
+    width: 80%;
+    margin-left: 10%;
+    .wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-y)));
+      grid-template-rows: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-x)));
+      grid-auto-flow: dense;
+      justify-content: center;
+      box-sizing: border-box;
+      margin-top: 20px;
+      .item {
+        padding: 0 calc(var(--item-gap-y) / 2) calc(var(--item-gap-x));
+        box-sizing: border-box;
+        cursor: pointer;
+        .app-icon {
+          overflow: hidden;
+          border-radius: var(--icon-bg-radius);
+          background-color: #fff;
+          text-align: center;
+          font-size: 18px;
+          height:100%;
+        }
+        .app-title {
+          font-size: 12px;
+          color: #ffffff;
+          text-align: center;
+          padding-top: 10px;
+          white-space: nowrap;
+          overflow: hidden;
+          //text-overflow: ellipsis
+        }
+      }
+    }
+  }
+  .img-1x1, .img-2x2{
+    width:100%;
+    height: 100%;
+  }
+  .img-1x2,.img-2x4 {
+    height:100%!important;
+  }
+  .img-2x1{
+    width:100%!important;
+    margin-top:80%;
+  }
 
 	.fullpage {
 		//background-color: rgb(189, 211, 186);
@@ -846,101 +828,9 @@
 		background-size: 100% 100%;
 		height: 100vh;
 	}
-
-	/*.section1 .secction1-content {
-  color: #fff;
-  text-align: center;
-  position: absolute;
-  //top: 40%;
-  right: 0;
-  left: 0;
-}
-
-.secction1-content h1 {
-  font-size: 40px;
-  padding-bottom: 30px;
-}
-
-.secction1-content p {
-  font-size: 20px;
-}
-
-.section2 {
-  //background-color: rgb(44, 48, 43);
-  background: url("../../../static/images/wallpaper/168600.png");
-}
-
-.section3 {
-  //background-color: rgb(116, 104, 109);
-  background: url("../../../static/images/wallpaper/168032.webp");
-}
-
-.section4 {
-  //background-color: rgb(201, 202, 157);
-  background: url("../../../static/images/wallpaper/168502.webp");
-}
-
-.section5 {
-  //background-color: rgb(201, 202, 157);
-  background: url("../../../static/images/wallpaper/168924.webp");
-}*/
-
 	@media screen and (max-width: 768px) {
 		.navMenu {
 			display: none !important;
-		}
-	}
-
-	.nav-bar {
-		transition: .1s;
-		text-align: center;
-		color: rgba(var(--img-text), .6);
-		font-size: 12px;
-		display: flex;
-		backdrop-filter: blur(4px);
-		background-color: rgba(var(--alpha-bg), var(--sidebar-opacity, .5));
-		height: 80px;
-		width: 96%;
-		margin-left: 2%;
-		padding: 10px;
-		position: absolute;
-		bottom: 10px;
-		border-radius: 10px;
-		flex-direction: column;
-		justify-content: center;
-	}
-
-	.nav-app-item {
-		position: relative;
-		box-sizing: border-box;
-		cursor: pointer;
-		margin-right: 10px;
-		width: 55px;
-		height: 55px;
-
-		.app-icon {
-			position: relative;
-			width: 100%;
-			height: 100%;
-			overflow: hidden;
-			border-radius: var(--icon-bg-radius);
-			background-color: #fff;
-
-			img {
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				transform: translate3d(-50%, -50%, 0);
-				top: 50%;
-				left: 50%
-			}
-		}
-
-		.app-icon:hover {
-			margin-top: -5px;
-			margin-left: -5px;
-			height: 65px;
-			width: 65px;
 		}
 	}
 
