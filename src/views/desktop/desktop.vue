@@ -97,7 +97,7 @@
                    :placeholder="$t('action.pleaseInputContent')" @keyup.enter="search"/>
           <Icon v-if="keyword!=null && keyword!==''" class="icon" icon="CloseOutlined" @click="keyword = ''"/>
         </div>
-        <div v-if="keyword!=null && keyword!==''" style="    position: absolute;
+        <div v-if="keyword!=null && keyword!==''" style="position: absolute;
     top: 69px;">
           <div class="translate">
             <a :href="getTranslateUrl(item)" target="_blank" v-for="item in translateList"
@@ -115,6 +115,9 @@
 				</span>
         <span v-if="dateTimeConfig.lunar" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
 					{{ nowLunar }}
+				</span>
+        <span v-if="dateTimeConfig.lunar" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
+        {{currentDay}}
 				</span>
       </div>
       <div style="clear:both"></div>
@@ -297,7 +300,8 @@ export default {
         lunar: true,
         color: '#ffffff',
         weight: true,
-        timestamp: 1000 * 60 * 60 * 24
+        timestamp: 1000 * 60 * 60 * 24,
+        day: true,
       }),
       // background: "https://dogefs.s3.ladydaily.com/~/source/unsplash/photo-1673912402587-57ac40f1b4a5?ixid=M3w0MjI2NjN8MHwxfHRvcGljfHx4alBSNGhsa0JHQXx8fHx8Mnx8MTY4ODE5OTQyN3w&ixlib=rb-4.0.3&w=2560&h=1440&fmt=webp",
       background: ref(null),
@@ -313,6 +317,7 @@ export default {
       nowDateTime: ref(''),
       nowWeek: ref(''),
       nowLunar: ref(''),
+      currentDay: ref(''),
       currentIconPage: ref(0),
       iconDefaultData: reactive([]),
       searchEngine: ref(''),
@@ -535,6 +540,7 @@ export default {
           let config = data.dateTimeConfig
           localStorage.setItem("dateTimeConfig", JSON.stringify(config))
         }
+        let date = new Date()
         if (data.dateTimeConfig.showTime) {
           data.nowDateTime = dateFormat(data.dateTimeConfig.format, new Date());
           setInterval(function () {
@@ -542,12 +548,16 @@ export default {
           }, data.dateTimeConfig.timestamp)
         }
         if (data.dateTimeConfig.week) {
-          let date = new Date();
           data.nowWeek = parseTime(date, '{a}', locale.value)
         }
         if (data.dateTimeConfig.lunar) {
-          let date = new Date();
           data.nowLunar = getLunar(date);
+        }
+
+        if (data.dateTimeConfig.day) {
+          let year = new Date(date.getFullYear(), 0, 0);
+          let day = parseInt((date - year) / 24 / 60 / 60 / 1000)
+          data.currentDay = "第"+day + "天  第"+Math.ceil(day / 7)+"周"
         }
       },
       initIconList: () => {
