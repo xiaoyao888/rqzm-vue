@@ -142,15 +142,18 @@
     </ul>
     <ul class="contextmenu" id="menuhome_icon" v-show="iconRightMenuVisible"
         :style="{left:rightKeyMenuLeft+'px',top:rightKeyMenuTop+'px'}">
-      <li class="contextmenu-item hover"><i class="el-icon-sort"></i>
+      <li class="contextmenu-item hover">
+        <Icon icon="SwapOutlined"/>
         {{ $t("action.moveToHome") }}
         <div class="contextmenu-layout">
-          <em v-for="(item,index) in iconDefaultData.value" @click="moveToFirstPage(index)">
+          <em v-for="(item,index) in iconDefaultData.value" :key="index" @click="moveToFirstPage(index)">
             {{ locale === 'zh_cn' ? item.name : item.nameEn }}
           </em>
         </div>
       </li>
-      <li class="contextmenu-item"><i class="el-icon-menu"></i> {{ $t("common.layout") }}
+      <li class="contextmenu-item" v-if="isDisableItem()">
+        <Icon icon="LayoutOutlined"/>
+        {{ $t("common.layout") }}
         <div class="contextmenu-layout">
           <em class="" @click="changeAppIconlayout('1x1')">1x1</em>
           <em class="" @click="changeAppIconlayout('1x2')">1x2</em>
@@ -159,15 +162,17 @@
           <em class="" @click="changeAppIconlayout('2x4')">2x4</em>
         </div>
       </li>
-      <li class="contextmenu-item hover"><i class="el-icon-edit"></i>
+      <li class="contextmenu-item hover" v-if="isDisableItem()">
+        <Icon icon="EditOutlined"/>
         {{ $t("common.edit") }}
       </li>
-      <li class="contextmenu-item hover" @click="batchDeleteAppItemVisible = !batchDeleteAppItemVisible">
-        <i class="el-icon-delete"></i>
+      <li class="contextmenu-item hover" v-if="isDisableItem()" @click="batchDeleteAppItemVisible = !batchDeleteAppItemVisible">
+        <Icon icon="DeleteOutlined"/>
         {{ batchDeleteAppItemVisible ? $t("common.cancelBatchDelete") : $t("common.batchDelete") }}
       </li>
-      <li class="contextmenu-item hover" @click="deleteAppItem()">
+      <li class="contextmenu-item hover" v-if="isDisableItem()" @click="deleteAppItem()">
         <i class="el-icon-delete"></i>
+        <Icon icon="DeleteOutlined"/>
         {{ $t("common.delete") }}
       </li>
     </ul>
@@ -494,6 +499,16 @@ export default {
     // themePicker.methods.themeChange(data.themeColor);
 
     const methods = {
+      isDisableItem:()=>{
+        if(data.selectSectionAppItem.value){
+          if(data.selectSectionAppItem.value.id ==='da0ebd0b0f2142c723f3s37df80d3241' ||
+              data.selectSectionAppItem.value.id ==='fb9934a62e194e67ab46102c05ee45ce' ||
+              data.selectSectionAppItem.value.id ==='8aa6b3c126a94b939988e184a2c10f26'){
+            return false
+          }
+        }
+        return true
+      },
       getTranslateUrl: (item) => {
         return strFormat(item.url, [data.keyword.value]);
       },
@@ -740,9 +755,9 @@ export default {
           } else if (item.component === 'countdown' || item.component === 'countdownTime') {
             countdown.value.showModal()
             countdown.value.editWidget(item, sectionIndex, appIndex)
+          } else if (item.id === '134df2c360e14809b15054a0be4eb57b') {
+            calendar.value.showModal()
           }
-        } else if (item.id === '134df2c360e14809b15054a0be4eb57b') {
-          calendar.value.showModal()
         }
       },
       moveToFirstPage: (index) => {
@@ -851,7 +866,7 @@ export default {
       padding: 0 calc(var(--item-gap-y) / 2) calc(var(--item-gap-x));
       box-sizing: border-box;
       cursor: pointer;
-
+      position: relative;
       .app-icon {
         overflow: hidden;
         border-radius: var(--icon-bg-radius);
