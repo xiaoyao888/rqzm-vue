@@ -11,51 +11,93 @@
         <div class="app-store-nav-title">应用商店</div>
         <a-input class="app-store-nav-input" @keyup="init"/>
       </div>
-      <div class="icon-list" v-if="showStatus">
-        <div class="icon-item" v-for="(item,index) in iconList" :key="index">
-          <div style="height:100px;text-align: center">
-            <div>
-              {{item.name}}
+      <div v-if="showStatus">
+        <a-row>
+          <a-col :span="2">
+            <div style="display: flex;flex-direction: column;align-items: flex-end" class="icon-nav">
+              <div v-for="(item,index) in data" :key="index">
+                <a-tag>{{ item }}</a-tag>
+              </div>
             </div>
-            <div id="appItem4fb906f7bb9a4fdba6a0c81d652858d1" data-index="4fb906f7bb9a4fdba6a0c81d652858d1" class="app-icon" :style="'background:'+iconBackground(item)">
-              <img :src="getImgUrl(item)" class="icon">
+<!--            <a-list size="small" bordered :data-source="data">
+              <template #renderItem="{ item }">
+                <a-list-item>{{ item }}</a-list-item>
+              </template>
+              <template #header>
+                <div>Header</div>
+              </template>
+              <template #footer>
+                <div>Footer</div>
+              </template>
+            </a-list>-->
+          </a-col>
+          <a-col :span="22" class="icon-list" >
+            <div class="icon-item" v-for="(item,index) in iconList" :key="index">
+              <div style="text-align: center">
+                <div style="display:flex;justify-content: space-between">
+                  <div>
+                    <Icon style="color:#ff7a06" icon="FireFilled"></Icon>{{Number.parseInt(Math.random()*1000)}}
+                  </div>
+                  <a-button type="primary" size="small" @click="addIcon(item)" style="padding:0 4px;">
+                    <Icon icon="PlusOutlined"></Icon>
+                  </a-button>
+                </div>
+                <div id="appItem4fb906f7bb9a4fdba6a0c81d652858d1" data-index="4fb906f7bb9a4fdba6a0c81d652858d1" class="app-icon" :style="'background:'+iconBackground(item)">
+                  <img :src="getImgUrl(item)" class="icon">
+                </div>
+                <div>
+                  {{item.name}}
+                </div>
+              </div>
             </div>
-          </div>
-          <div style="display:flex;justify-content: space-between">
-            <div style="width:100px;"><Icon style="color:#ff7a06" icon="FireFilled"></Icon>{{Number.parseInt(Math.random()*1000)}}</div>
-            <a-button size="small" @click="addIcon(item)"><Icon icon="PlusOutlined" style="color:#6e6e6e;"></Icon></a-button>
-          </div>
-        </div>
+          </a-col>
+        </a-row>
       </div>
       <div class="widget-list" v-if="!showStatus">
         <div class="widget-item" v-for="(item,index) in widgetList" :key="index">
-          <div style="height:160px;">
-            {{item.name}}
-          </div>
-          <div style="display:flex;justify-content: space-between">
-            <div style="width:100px;"><Icon style="color:#ff0000" icon="FireFilled"></Icon>{{Number.parseInt(Math.random()*1000)}}</div>
-            <a-button type="primary" size="small">添加</a-button>
+          <div style="height:200px;text-align: center">
+            <div style="display: flex;flex-direction: row; justify-content: space-between">
+              <div><Icon style="color:#ff0000" icon="FireFilled"></Icon>{{Number.parseInt(Math.random()*1000)}}</div>
+              <div>
+                <a-tag @click="changeAppIconlayout('1x1')">1x1</a-tag>
+                <a-tag @click="changeAppIconlayout('1x2')">1x2</a-tag>
+                <a-tag @click="changeAppIconlayout('2x1')">2x1</a-tag>
+                <a-tag @click="changeAppIconlayout('2x2')">2x2</a-tag>
+                <a-tag @click="changeAppIconlayout('2x4')">2x4</a-tag>
+              </div>
+              <a-button type="primary" size="small" @click="addIcon(item)" style="padding:0 4px;">
+                <Icon icon="PlusOutlined" ></Icon>
+              </a-button>
+            </div>
+            <div class="app-icon" :class="'icon-size-'+(item.size?item.size:'1x1')">
+              <countdown-widget
+                  v-if="item.type==='component' && (item.component==='countdown'||item.component==='countdownTime')"
+                  :size="item.size?item.size:'1x1'" :form="item"></countdown-widget>
+              <calendar-widget v-else-if="item.type==='component' && item.component==='calendar'"
+                               :size="item.size?item.size:'1x1'"></calendar-widget>
+            </div>
+            <div style="margin-top:10px;">{{item.name}}</div>
           </div>
         </div>
       </div>
     </a-modal>
+
   </div>
 </template>
 
 <script setup>
-import {ref,toRef, defineExpose, reactive, defineEmits} from "vue";
+import {ref, defineExpose, reactive, defineEmits} from "vue";
 import Icon from '@/components/icon'
-import iconDefaultData from "@/assets/json/navJsonData.json";
 import {message} from "ant-design-vue";
-import iconData from "@/assets/json/iconData.json";
 import {useI18n} from "vue-i18n";
 
-const { t,locale} = useI18n()
+import countdownWidget from "@/views/widgets/countdownWidget";
+import calendarWidget from "@/views/widgets/calendarWidget";
+
+const { locale} = useI18n()
 const visible = ref(false)
-const showModal=()=>{
-  visible.value = true
-  init()
-}
+
+const data = ['AI','热门','新闻','视频','音乐','图片','效率','开发','学习','游戏','购物','社交','阅读','出行','金融','其他'];
 const showStatus = ref(true)
 const widgetList = reactive([])
 const iconList = reactive([])
@@ -64,6 +106,11 @@ const currentSection = reactive({
   name: "",
   index: 0
 })
+
+const showModal=()=>{
+  visible.value = true
+  init()
+}
 const init =()=> {
   let iconData = require('@/assets/json/iconData.json');
   if(iconData){
@@ -194,14 +241,44 @@ const emits = defineEmits(["addIcon"])
 }
 .widget-item{
   background:#ffffff;
-  width: 210px;
-  height: 200px;
+  width: 432px;
+  height: 245px;
   margin:8px;
   padding:10px;
   border-radius: 10px;
   button{
     border-radius:12px;
   }
+  .icon-size-1x1{
+    width:55px;
+    height:55px;
+  }
+  .icon-size-1x2{
+    width:145px;
+    height:55px;
+  }
+  .icon-size-2x1{
+    width:55px;
+    height:145px;
+  }
+  .icon-size-2x2{
+    width:145px;
+    height:145px;
+  }
+  .icon-size-2x4{
+    width:325px;
+    height:145px;
+  }
+  :deep .ant-tag{
+    border-radius: 10px;
+  }
+}
+
+.icon-nav :deep .ant-tag{
+  min-width:53px;
+  text-align:center;
+  margin-top:10px;
+  cursor:pointer;
 }
 .icon-list{
   display:flex;
@@ -215,7 +292,7 @@ const emits = defineEmits(["addIcon"])
 }
 .icon-item{
   background:#ffffff;
-  width: 162px;
+  width: 188px;
   height: 150px;
   margin:8px;
   padding:10px;
@@ -223,6 +300,7 @@ const emits = defineEmits(["addIcon"])
   button{
     border-radius:12px;
   }
+
 }
 .app-icon {
   position: relative;

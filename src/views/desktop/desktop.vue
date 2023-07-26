@@ -34,6 +34,11 @@
                     :size="element.size?element.size:'1x1'" :form="element"></countdown-widget>
                 <calendar-widget v-else-if="element.type==='component' && element.component==='calendar'"
                                  :size="element.size?element.size:'1x1'"></calendar-widget>
+
+                <today-english-widget v-else-if="element.type==='component' && element.component==='todayEnglish'"
+                                      :size="element.size?element.size:'1x1'"/>
+                <today-sentence-widget v-else-if="element.type==='component' && element.component==='todaySentence'"
+                                      :size="element.size?element.size:'1x1'"/>
               </div>
               <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
             </div>
@@ -97,8 +102,7 @@
                    :placeholder="$t('action.pleaseInputContent')" @keyup.enter="search"/>
           <Icon v-if="keyword!=null && keyword!==''" class="icon" icon="CloseOutlined" @click="keyword = ''"/>
         </div>
-        <div v-if="keyword!=null && keyword!==''" style="position: absolute;
-    top: 69px;">
+        <div v-if="keyword!=null && keyword!==''" style="position: absolute;top: 69px;">
           <div class="translate">
             <a :href="getTranslateUrl(item)" target="_blank" v-for="item in translateList"
                :key="item.name">{{ item.name }}</a>
@@ -227,8 +231,11 @@ import privatization from './privatization';
 import countdown from "@/views/widgets/countdown";
 import countdownWidget from "@/views/widgets/countdownWidget";
 import calendar from "@/views/widgets/calendar";
-import calendarWidget from "../widgets/calendarWidget";
+import calendarWidget from "@/views/widgets/calendarWidget";
 import AppStore from "@/views/widgets/appStore";
+import todayEnglishWidget from "@/views/widgets/todayEnglishWidget";
+import todaySentenceWidget from "@/views/widgets/todaySentenceWidget";
+
 // import themePicker from "@/components/ThemePicker";
 // import crypto from "@/utils/crypto";
 import {useI18n} from "vue-i18n";
@@ -237,13 +244,14 @@ import {
   Modal,
   message
 } from "ant-design-vue";
-
 export default {
   name: "desktopIndex",
   directives: {
     // waves
   },
   components: {
+    todayEnglishWidget,
+    todaySentenceWidget,
     AppStore,
     Icon,
     draggable,
@@ -257,7 +265,7 @@ export default {
     calendar,
     calendarWidget,
     countdown,
-    countdownWidget,
+    countdownWidget
     // person
   },
   setup() {
@@ -858,7 +866,7 @@ export default {
 
 .app-grid {
   overflow-y: auto;
-  height: 800px;
+  min-height: 600px;
   padding-top: 100px;
   width: 80%;
   margin-left: 10%;
@@ -877,17 +885,6 @@ export default {
       box-sizing: border-box;
       cursor: pointer;
       position: relative;
-      .app-icon {
-        overflow: hidden;
-        border-radius: var(--icon-bg-radius);
-        background-color: #fff;
-        text-align: center;
-        font-size: 18px;
-        height: 100%;
-
-        box-shadow: 0 0 10px 3px #0000002a;
-      }
-
       .app-title {
         font-size: 12px;
         color: #ffffff;

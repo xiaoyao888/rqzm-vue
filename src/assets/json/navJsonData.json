@@ -28,7 +28,7 @@
       {
         "name": "每日一言",
         "nameEn": "Daily Word",
-        "component": "icon",
+        "component": "todaySentence",
         "type": "component",
         "insetType": "",
         "src": "yiyan.svg",
@@ -717,8 +717,16 @@
         "src": "",
         "type": "text",
         "url": "https://www.yiibai.com"
+      },
+      {
+        "id": "0da7d5e9d06545539cc0b35ae5eb2688",
+        "url": "https://www.xiaozhongjishu.com/?from=rqzm",
+        "type": "icon",
+        "name": "小众技术资源库",
+        "nameEn": "xzjszyk",
+        "src": "xiaozhongjishu.com.png",
+        "backgroundColor": "#fff"
       }
-
     ],
     "id": "883018ac3517490b92abfe1739103672"
   },
@@ -1373,15 +1381,6 @@
         "name": "半次元",
         "nameEn": "bcy",
         "src": "60b9ee2cae5a9ba4024b4415.png",
-        "backgroundColor": "#fff"
-      },
-      {
-        "id": "0da7d5e9d06545539cc0b35ae5eb2688",
-        "url": "https://www.xiaozhongjishu.com/?from=rqzm",
-        "type": "icon",
-        "name": "小众技术资源库",
-        "nameEn": "xzjszyk",
-        "src": "xiaozhongjishu.com.png",
         "backgroundColor": "#fff"
       },
       {

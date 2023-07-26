@@ -1,10 +1,46 @@
 [
   {
     "id": "6e7e5a6098cc42ddbf42278c7fee0370",
-    "name": "主页",
+    "name": "影音",
     "nameEn": "Home",
     "icon": "home",
     "children": [
+      {
+        "id": "vwLnQvDMr",
+        "url": "http://www.bilibili.com/",
+        "type": "icon",
+        "name": "哔哩哔哩",
+        "nameEn": "Bilibili",
+        "src": "bilibili2.svg",
+        "backgroundColor": "#fe65a6"
+      },
+      {
+        "id": "86e0e088ab594f35a2a82086922dc9dd",
+        "url": "https://www.douyin.com/?ug_source=rqzm_zmsy",
+        "type": "icon",
+        "name": "抖音",
+        "nameEn": "Tiktok",
+        "src": "douyin.svg",
+        "backgroundColor": "#1c0b1a"
+      },
+      {
+        "id": "1e7e181cfcd944a6bd87fa012e72900b",
+        "url": "https://music.163.com/?from=rqzm",
+        "type": "icon",
+        "name": "网易云音乐",
+        "nameEn": "Music 163",
+        "src": "music163.svg",
+        "backgroundColor": "#fe1816"
+      },
+      {
+        "id": "0eeb7a1fa87f4430b01b4e341a413f3e",
+        "url": "http://y.qq.com/",
+        "type": "icon",
+        "name": "QQ音乐",
+        "nameEn": "QQ music",
+        "src": "qqmusic.svg",
+        "backgroundColor": "#fff"
+      },
       {
         "id": "6e7e5a6098cc42ddbf42278c7fee0371",
         "url": "https://rqzm.cn/",
@@ -15,45 +51,8 @@
         "backgroundColor": "#fff",
         "size": "1x1"
       },
-      {
-        "id": "4fb906f7bb9a4fdba6a0c81d652858d1",
-        "url": "https://www.bejson.com/",
-        "type": "icon",
-        "name": "bejson",
-        "nameEn": "Bejson",
-        "src": "bejson.svg",
-        "backgroundColor": "#000",
-        "size": "1x1"
-      },
-      {
-        "name": "每日一言",
-        "nameEn": "Daily Word",
-        "component": "icon",
-        "type": "component",
-        "insetType": "",
-        "src": "yiyan.svg",
-        "size": "1x1",
-        "id": "a5f51a862bfd408ba456b8d6c7afcd77"
-      },
-      {
-        "id": "95740bf8f356427d8a42d8a31a2f8b53",
-        "url": "https://ai.taobao.com?pid=mm_54561194_2536750027_111828300388&union_lens=lensId%3APUB%401644727921%4021057ef3_09a7_17ef16c69e2_05aa%4001",
-        "type": "icon",
-        "name": "爱淘宝",
-        "nameEn": "Taobao",
-        "src": "taobao.svg",
-        "backgroundColor": "#eb6f2d",
-        "size": "1x1"
-      },
-      {
-        "id": "e15fd6b4fab9475a910a4451799db857",
-        "url": "https://www.jd.com",
-        "type": "icon",
-        "name": "京东商城",
-        "nameEn": "JD Shop",
-        "src": "jd.svg",
-        "backgroundColor": "#ff0000"
-      },
+
+
       {
         "id": "a81ff05dd2b247ca87e9b34f9037e23c",
         "url": "https://js.design?source=rqzm&plan=1",
@@ -73,17 +72,6 @@
         "backgroundColor": "#fff"
       },
       {
-        "name": "待办事项",
-        "nameEn": "Todo List",
-        "component": "icon",
-        "src": "todo.svg",
-        "type": "component",
-        "size": "1x1",
-        "id": "96eb2b757ec54b35b1d2a5d6bf13311a",
-        "view": null,
-        "backgroundColor": "#1581ff"
-      },
-      {
         "url": "https://xiezuocat.com/#/?s=rqzm",
         "type": "icon",
         "name": "秘塔写作猫",
@@ -101,24 +89,6 @@
         "src": "islide.svg",
         "id": "9c09d7d0cdee40698c4270b7cda3e444",
         "backgroundColor": "#fff"
-      },
-      {
-        "id": "vwLnQvDMr",
-        "url": "http://www.bilibili.com/",
-        "type": "icon",
-        "name": "哔哩哔哩",
-        "nameEn": "Bilibili",
-        "src": "bilibili2.svg",
-        "backgroundColor": "#fe65a6"
-      },
-      {
-        "id": "86e0e088ab594f35a2a82086922dc9dd",
-        "url": "https://www.douyin.com/?ug_source=rqzm_zmsy",
-        "type": "icon",
-        "name": "抖音",
-        "nameEn": "Tiktok",
-        "src": "douyin.svg",
-        "backgroundColor": "#1c0b1a"
       },
       {
         "id": "5a9364f8fd4744b3bde1f912f7925a52",
@@ -158,53 +128,6 @@
         "backgroundColor": "#0c6dfe"
       },
       {
-        "id": "1e7e181cfcd944a6bd87fa012e72900b",
-        "url": "https://music.163.com/?from=rqzm",
-        "type": "icon",
-        "name": "网易云音乐",
-        "nameEn": "Music 163",
-        "src": "music163.svg",
-        "backgroundColor": "#fe1816"
-      },
-      {
-        "id": "0eeb7a1fa87f4430b01b4e341a413f3e",
-        "url": "http://y.qq.com/",
-        "type": "icon",
-        "name": "QQ音乐",
-        "nameEn": "QQ music",
-        "src": "qqmusic.svg",
-        "backgroundColor": "#fff"
-      },
-      {
-        "id": "efd8b78bfbd4410ba27d8ba5e4d9be8f",
-        "type": "icon",
-        "url": "https://www.tmall.com/",
-        "name": "天猫精选",
-        "nameEn": "Tmall",
-        "src": "tmall.svg",
-        "backgroundColor": "#ff0030"
-      },
-      {
-        "id": "71fb963152104b078084099b72279112",
-        "url": "https://www.apipost.cn/?utm_source=10147",
-        "type": "icon",
-        "name": "Apipost",
-        "nameEn": "Apipost",
-        "src": "apipost.svg",
-        "backgroundColor": "#ee5601"
-      },
-      {
-        "id": "8aa6b3c126a94b939988e184a2c10f26",
-        "type": "component",
-		"component":"icon",
-        "name": "设置",
-        "nameEn": "Setting",
-        "src": "setting.svg",
-        "view": null,
-        "backgroundColor": "#fff",
-        "size": "1x1"
-      },
-      {
         "id": "83536f7c49b6426f8a6fcaab8d0cd03e",
         "url": "https://www.baidu.com/?tn=68018901_2_oem_dg",
         "type": "icon",
@@ -223,17 +146,6 @@
         "backgroundColor": "#fff"
       },
       {
-        "id": "fb9934a62e194e67ab46102c05ee45ce",
-        "type": "component",
-		"component":"icon",
-        "name": "添加图标",
-        "nameEn": "Add Icon",
-        "src": "add.svg",
-        "backgroundColor": "#fff",
-        "view": null,
-        "size": "1x1"
-      },
-      {
         "id": "5fcbe3b2481f49ed8aeb23c9c728e2e8",
         "type": "icon",
         "name": "电子木鱼",
@@ -243,6 +155,34 @@
         "backgroundColor": "#fff",
         "view": null,
         "size": "1x1"
+      }
+    ]
+  },
+  {
+    "name": "组件",
+    "nameEn": "shopping",
+    "icon": "code",
+    "children": [
+      {
+        "name": "待办事项",
+        "nameEn": "Todo List",
+        "component": "icon",
+        "src": "todo.svg",
+        "type": "component",
+        "size": "1x1",
+        "id": "96eb2b757ec54b35b1d2a5d6bf13311a",
+        "view": null,
+        "backgroundColor": "#1581ff"
+      },
+      {
+        "name": "每日一言",
+        "nameEn": "Daily Word",
+        "component": "todaySentence",
+        "type": "component",
+        "insetType": "",
+        "src": "yiyan.svg",
+        "size": "2x2",
+        "id": "a5f51a862bfd408ba456b8d6c7afcd77"
       },
       {
         "name": "今天吃什么",
@@ -255,43 +195,6 @@
         "id": "1445d3b195564a7192605ecf5c9f9935",
         "view": null
       },
-      {
-        "component": "countdown",
-        "name": "倒计时",
-        "nameEn": "Countdown",
-        "size": "2x2",
-        "type": "component",
-        "config": {
-          "name": "结婚倒计时",
-          "title": "结婚倒计时",
-          "target": "2022-12-04",
-          "repeat": "festival",
-          "bgColor": "#2d4f59",
-          "textColor": "#ffffff",
-          "family": "",
-          "icon": ""
-        },
-        "id": "da0ebd0b0f2142c7b56827df80d911f7",
-        "view": null
-      },
-      {
-        "id": "da0ebd0b0f2142c723f3s37df80d3241",
-        "type": "component",
-        "component": "icon",
-        "name": "应用商店",
-        "nameEn": "App Store",
-        "src": "shopping.svg",
-        "backgroundColor": "#1581ff",
-        "view": null,
-        "size": "1x1"
-      }
-    ]
-  },
-  {
-    "name": "程序员",
-    "nameEn": "developer",
-    "icon": "code",
-    "children": [
       {
         "name": "日历",
         "nameEn": "Calendar",
@@ -352,24 +255,6 @@
         "size": "2x2",
         "type": "component",
         "config": {
-          "name": "纪念日",
-          "title": "发工资还有",
-          "target": "2021-11-15",
-          "repeat": "month",
-          "bgColor": "#fff",
-          "textColor": "#1890ff",
-          "family": "",
-          "icon": "2"
-        },
-        "id": "0433bd855c5746e2bfae0a616717c0fd"
-      },
-      {
-        "component": "countdown",
-        "name": "倒计时",
-        "nameEn": "Countdown",
-        "size": "2x2",
-        "type": "component",
-        "config": {
           "name": "下班倒计时",
           "title": "下班还有",
           "target": "2022-11-11 18:00:00",
@@ -391,6 +276,77 @@
         "src": "movieCalendar.svg",
         "size": "2x2",
         "id": "006e4b384ffb4e60b89c761bb60a8d15"
+      },
+      {
+        "name": "今日英语",
+        "nameEn": "Today English",
+        "component": "todayEnglish",
+        "type": "component",
+        "insetType": "",
+        "src": "movieCalendar.svg",
+        "size": "2x2",
+        "id": "006e4b384ffb4e60b823454bb60a8d15"
+      }
+    ]
+  },
+  {
+    "name": "购物",
+    "nameEn": "shopping",
+    "icon": "code",
+    "children": [
+      {
+        "id": "efd8b78bfbd4410ba27d8ba5e4d9be8f",
+        "type": "icon",
+        "url": "https://www.tmall.com/",
+        "name": "天猫精选",
+        "nameEn": "Tmall",
+        "src": "tmall.svg",
+        "backgroundColor": "#ff0030"
+      },
+      {
+        "id": "95740bf8f356427d8a42d8a31a2f8b53",
+        "url": "https://ai.taobao.com?pid=mm_54561194_2536750027_111828300388&union_lens=lensId%3APUB%401644727921%4021057ef3_09a7_17ef16c69e2_05aa%4001",
+        "type": "icon",
+        "name": "爱淘宝",
+        "nameEn": "Taobao",
+        "src": "taobao.svg",
+        "backgroundColor": "#eb6f2d",
+        "size": "1x1"
+      },
+      {
+        "id": "e15fd6b4fab9475a910a4451799db857",
+        "url": "https://www.jd.com",
+        "type": "icon",
+        "name": "京东商城",
+        "nameEn": "JD Shop",
+        "src": "jd.svg",
+        "backgroundColor": "#ff0000"
+      }
+    ]
+  },
+  {
+    "name": "程序员",
+    "nameEn": "developer",
+    "icon": "code",
+    "children": [
+      {
+        "id": "71fb963152104b078084099b72279112",
+        "url": "https://www.apipost.cn/?utm_source=10147",
+        "type": "icon",
+        "name": "Apipost",
+        "nameEn": "Apipost",
+        "src": "apipost.svg",
+        "backgroundColor": "#ee5601"
+      },
+      {
+        "id": "4fb906f7bb9a4fdba6a0c81d652858d1",
+        "url": "https://www.bejson.com/",
+        "type": "icon",
+        "name": "bejson",
+        "nameEn": "Bejson",
+        "src": "bejson.svg",
+        "backgroundColor": "#000",
+        "size": "1x1"
       },
       {
         "name": "壁纸",
@@ -717,8 +673,16 @@
         "src": "",
         "type": "text",
         "url": "https://www.yiibai.com"
+      },
+      {
+        "id": "0da7d5e9d06545539cc0b35ae5eb2688",
+        "url": "https://www.xiaozhongjishu.com/?from=rqzm",
+        "type": "icon",
+        "name": "小众技术资源库",
+        "nameEn": "xzjszyk",
+        "src": "xiaozhongjishu.com.png",
+        "backgroundColor": "#fff"
       }
-
     ],
     "id": "883018ac3517490b92abfe1739103672"
   },
