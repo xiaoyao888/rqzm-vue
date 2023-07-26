@@ -2,26 +2,26 @@
   <div>
     <div class="widget a-button--primary" v-if="props.size==='1x1'">
       <div class="widget-1x1">
-
+        <img :src="require('@/assets/images/logos/yiyan.svg')" style="width:100%;height:100%;" alt="每日一言"/>
       </div>
     </div>
 
     <div class="widget a-button--primary" v-if="props.size==='1x2'">
       <div class="widget-1x2">
-
+        <img :src="require('@/assets/images/logos/yiyan.svg')" style="height:100%;" alt="每日一言"/>
       </div>
     </div>
     <div class="widget a-button--primary" v-if="props.size==='2x1'">
       <div class="widget-2x1">
-
+        <img :src="require('@/assets/images/logos/yiyan.svg')" style="width:100%;" alt="每日一言"/>
       </div>
     </div>
     <div class="widget a-button--primary" v-if="props.size==='2x2'" @mouseover="showRefresh = true" @mouseleave="showRefresh=false">
       <div class="widget-2x2" style="height:145px;">
         <div class="c2">{{ todaySentence.hitokoto }}</div>
         <div class="c3">——{{ todaySentence.from }}</div>
-        <div v-if="showRefresh" class="showRefresh" @click="initTodaySentence()">
-          <Icon icon="SyncOutlined"/>
+        <div v-if="showRefresh" class="showRefresh" >
+          <Icon icon="SyncOutlined" @click="initTodaySentence()"/>
         </div>
       </div>
     </div>
@@ -29,8 +29,8 @@
       <div class="widget-2x4" style="height:145px;">
         <div class="c2">{{ todaySentence.hitokoto }}</div>
         <div class="c3">——{{ todaySentence.from }}</div>
-        <div v-if="showRefresh" class="showRefresh" @click="initTodaySentence()">
-          <Icon icon="SyncOutlined"/>
+        <div v-if="showRefresh" class="showRefresh" >
+          <Icon icon="SyncOutlined" @click="initTodaySentence()"/>
         </div>
       </div>
     </div>
@@ -65,44 +65,23 @@ const props = defineProps({
   text-align: center;
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
-  background:#2d4f59;
-  padding:10px;
 }
 
 .widget-1x1 {
-  .c2 {
-    line-height: 57px;
-    font-size: 30px;
-  }
 }
 
 .widget-1x2 {
-  .c2 {
-    line-height: 57px;
-    font-size: 14px;
-    background: #ff5a5d;
-    color: #fff;
-  }
+  height:55px;
 }
 
 .widget-2x1 {
-  .c1 {
-    margin-top: 10px;
-    font-size: 13px;
-  }
-
-  .c2 {
-    line-height: 50px;
-    font-size: 36px;
-  }
-
-  .c3 {
-    font-size: 13px;
-    line-height: 30px;
+  img{
+    margin-top:42px;
   }
 }
 
 .widget-2x2, .widget-2x4 {
+  background:#2d4f59;
   .c1 {
     display: flex;
     flex-direction: row;
@@ -121,12 +100,14 @@ const props = defineProps({
     display: flex;
     align-items: center;
     text-align: start;
+    padding:0 10px;
   }
 
   .c3 {
     font-size: 12px;
     margin-top: 10px;
     text-align: right;
+    padding:0 10px;
   }
 }
 
