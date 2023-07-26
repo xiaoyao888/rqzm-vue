@@ -618,10 +618,14 @@ export default {
         if (!item.src) {
           return;
         }
-        try {
-          return require('@/assets/images/logos/' + item.src + "");
-        } catch (e) {
-        }
+		  if(item.src.indexOf("http") !== -1){
+			return item.src
+		  }else{
+			try {
+			  return require('@/assets/images/logos/' + item.src + "");
+			} catch (e) {
+		  }
+		}
       },
       allowDrop: (event) => {
         event.preventDefault();

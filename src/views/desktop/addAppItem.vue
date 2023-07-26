@@ -2,29 +2,34 @@
   <a-modal v-model:visible="visible" class="dialogWidth" width="50%" :closable="false" :footer="null">
     <a-row >
       <a-col :span="5" style="border-right: 1px dashed #ccc;">
-        <div class="icon" :style="'background: '+form.backgroundColor">
-          {{ form.iconWord }}
-        </div>
-        {{ form.name }}
+	    <div style="text-align: center;">
+			<div class="icon" style="margin:0 auto;" :style="'background: '+form.backgroundColor">
+			  <div v-if="value1===1">{{ form.iconWord }}</div>
+			  <div v-else>
+				  <img :src="form.src" style="width:100%;height:100%;"/>
+			  </div>
+			</div>
+			{{ form.name }}
+		</div>
       </a-col>
       <a-col :span="19" >
         <a-form ref="formFef" :rules="rules" v-bind="data.layout" :model="form">
-          <a-form-item label="地址：" prop="url">
+          <a-form-item label="地址：" name="url">
             <a-input v-model:value="form.url" placeholder="请输入地址"></a-input>
           </a-form-item>
-          <a-form-item label="标题：" prop="name">
+          <a-form-item label="标题：" name="name">
             <a-input v-model:value="form.name" placeholder="请输入标题"></a-input>
           </a-form-item>
-          <a-form-item label="图标类型：" prop="iconType">
-            <a-radio-group v-model:value="value1" button-style="solid" @change="value1===1?form.src='':form.iconWord===''">
+          <a-form-item label="图标类型：" name="iconType">
+            <a-radio-group v-model:value="value1" button-style="solid" @change="changeIconType">
               <a-radio-button :value="1">文字</a-radio-button>
               <a-radio-button :value="2">图标</a-radio-button>
             </a-radio-group>
           </a-form-item>
-          <a-form-item v-if="value1===1" label="图标文字：" prop="iconWord">
+          <a-form-item v-if="value1===1" label="图标文字：" name="iconWord">
             <a-input v-model:value="form.iconWord" placeholder="请输入图标文字"></a-input>
           </a-form-item>
-          <a-form-item v-else label="图标地址：" prop="src">
+          <a-form-item v-else label="图标地址：" name="src">
             <a-input v-model:value="form.src" placeholder="请输入图标地址"></a-input>
           </a-form-item>
           <a-form-item label="图标颜色：">
@@ -51,13 +56,14 @@
 
 <script setup>
 import {ref,reactive} from "vue";
+import {uuid} from '@/utils/util'
 const visible = ref(false)
 const formFef = ref(null)
 const value1 = ref(1)
 const form = reactive({
-  id: Math.random(),
+  id: uuid(true),
   url: "",
-  type: value1.value===1?"text":"icon",
+  type: "text",
   iconWord: "",
   name: "",
   src: "",
@@ -109,6 +115,15 @@ const data = {
     '#c7158577'
   ]
 }
+const changeIconType=()=>{
+	if(value1.value === 1){
+		form.src = ''
+		form.type = 'text'
+	}else{
+		form.iconWord=''
+		form.type = 'icon'
+	}
+}
 const methods = {
   selectColor(value) {
     form.backgroundColor = value;
@@ -123,7 +138,7 @@ const methods = {
           }
           iconDefaultData[0].children.push(form);
           localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData))
-          // emit("ok")
+          emits("addIcon", {app:form,index:0})
         }
         if (item === 1) {
           visible.value = false;
@@ -167,6 +182,7 @@ const showModal=()=>{
 defineExpose({
   showModal
 })
+const emits = defineEmits(["addIcon"])
 </script>
 
 <style lang="less" scoped>
