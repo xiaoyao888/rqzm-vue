@@ -5,21 +5,31 @@
         <div class="icon" :style="'background: '+form.backgroundColor">
           {{ form.iconWord }}
         </div>
+        {{ form.name }}
       </a-col>
       <a-col :span="19" >
         <a-form ref="formFef" :rules="rules" v-bind="data.layout" :model="form">
-          <a-form-item label="地址：">
-            <a-input v-model="form.url" placeholder="请输入地址"></a-input>
+          <a-form-item label="地址：" prop="url">
+            <a-input v-model:value="form.url" placeholder="请输入地址"></a-input>
           </a-form-item>
-          <a-form-item label="标题：">
-            <a-input v-model="form.name" placeholder="请输入标题"></a-input>
+          <a-form-item label="标题：" prop="name">
+            <a-input v-model:value="form.name" placeholder="请输入标题"></a-input>
           </a-form-item>
-          <a-form-item label="图标文字：">
-            <a-input v-model="form.iconWord" placeholder="请输入图标文字"></a-input>
+          <a-form-item label="图标类型：" prop="iconType">
+            <a-radio-group v-model:value="value1" button-style="solid" @change="value1===1?form.src='':form.iconWord===''">
+              <a-radio-button :value="1">文字</a-radio-button>
+              <a-radio-button :value="2">图标</a-radio-button>
+            </a-radio-group>
+          </a-form-item>
+          <a-form-item v-if="value1===1" label="图标文字：" prop="iconWord">
+            <a-input v-model:value="form.iconWord" placeholder="请输入图标文字"></a-input>
+          </a-form-item>
+          <a-form-item v-else label="图标地址：" prop="src">
+            <a-input v-model:value="form.src" placeholder="请输入图标地址"></a-input>
           </a-form-item>
           <a-form-item label="图标颜色：">
             <div class="iconStyle">
-              <div class="colorIcon" v-for="item in data.colors" :style="'background: '+item" @click="methods.selectColor(item)"></div>
+              <div class="colorIcon" v-for="(item, index) in data.colors" :key="index" :style="'background: '+item" @click="methods.selectColor(item)"></div>
               <a-color-picker
                 v-model="data.color"
                 show-alpha
@@ -43,10 +53,11 @@
 import {ref,reactive} from "vue";
 const visible = ref(false)
 const formFef = ref(null)
+const value1 = ref(1)
 const form = reactive({
   id: Math.random(),
   url: "",
-  type: "text",
+  type: value1.value===1?"text":"icon",
   iconWord: "",
   name: "",
   src: "",
@@ -55,15 +66,18 @@ const form = reactive({
 })
 const rules = {
   url: [
-    {required: true, message: '路径不能为空', trigger: 'blur'}
+    {required: true, message: '地址不能为空', trigger: 'blur'}
   ],
-      name: [
+  name: [
     {required: true, message: '标题不能为空', trigger: 'blur'}
   ],
-      iconWord: [
+  iconWord: [
     {required: true, message: '图标文字不能为空', trigger: 'blur'}
   ],
-      backgroundColor: [
+  src: [
+    {required: true, message: '图标地址不能为空', trigger: 'blur'}
+  ],
+  backgroundColor: [
     {required: true, message: '图标颜色不能为空', trigger: 'blur'}
   ]
 }
