@@ -369,7 +369,7 @@ const saveDateSetting = () => {
 //   localStorage.setItem('dateTimeConfig', JSON.stringify(dateTimeConfig));
 // }
 const resetIcon = () => {
-  let iconDefaultData = require('@/assets/json/navJsonjson');
+  let iconDefaultData = require('@/assets/json/navJsonData');
   localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData));
   window.location.reload();
 }
