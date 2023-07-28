@@ -21,7 +21,7 @@ function drawBackground(context,r,rem,whiteOrBlack) {
     context.translate(r, r);
     context.beginPath();
     context.lineWidth = 8*rem;
-    context.strokeStyle = whiteOrBlack
+    context.strokeStyle = '#535454'
     context.arc(0, 0, r - 5*rem, 0, 2 * Math.PI, false);
     context.stroke();
     context.closePath();
