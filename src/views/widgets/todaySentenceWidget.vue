@@ -63,8 +63,6 @@ const props = defineProps({
 .widget {
   color: #ffffff;
   text-align: center;
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
 }
 
 .widget-1x1 {

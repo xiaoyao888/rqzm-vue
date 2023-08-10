@@ -182,8 +182,30 @@
         "insetType": "",
         "src": "yiyan.svg",
         "size": "2x2",
-        "backgroundColor": "#041211",
+        "backgroundColor": "#03a297",
         "id": "a5f51a862bfd408ba456b8d6c7afcd77"
+      },
+      {
+        "name": "每日诗词",
+        "nameEn": "Daily Poetry",
+        "component": "todayPoetry",
+        "type": "component",
+        "insetType": "",
+        "src": "yiyan.svg",
+        "size": "2x2",
+        "backgroundColor": "#03a297",
+        "id": "a5f51a862bfd408ba456b8d6c7afcd78"
+      },
+      {
+        "name": "今日英语",
+        "nameEn": "Today English",
+        "component": "todayEnglish",
+        "type": "component",
+        "insetType": "",
+        "src": "movieCalendar.svg",
+        "size": "2x2",
+        "backgroundColor": "#03a297",
+        "id": "006e4b384ffb4e60b823454bb60a8d15"
       },
       {
         "name": "今天吃什么",
@@ -277,16 +299,6 @@
         "src": "movieCalendar.svg",
         "size": "2x2",
         "id": "006e4b384ffb4e60b89c761bb60a8d15"
-      },
-      {
-        "name": "今日英语",
-        "nameEn": "Today English",
-        "component": "todayEnglish",
-        "type": "component",
-        "insetType": "",
-        "src": "movieCalendar.svg",
-        "size": "2x2",
-        "id": "006e4b384ffb4e60b823454bb60a8d15"
       }
     ]
   },

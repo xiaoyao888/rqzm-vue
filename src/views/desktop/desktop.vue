@@ -38,7 +38,9 @@
                 <today-english-widget v-else-if="element.type==='component' && element.component==='todayEnglish'"
                                       :size="element.size?element.size:'1x1'"/>
                 <today-sentence-widget v-else-if="element.type==='component' && element.component==='todaySentence'"
-                                      :size="element.size?element.size:'1x1'"/>
+                                       :size="element.size?element.size:'1x1'"/>
+                <today-poetry-widget v-else-if="element.type==='component' && element.component==='todayPoetry'"
+                                       :size="element.size?element.size:'1x1'"/>
               </div>
               <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
             </div>
@@ -235,6 +237,7 @@ import calendarWidget from "@/views/widgets/calendarWidget";
 import AppStore from "@/views/widgets/appStore";
 import todayEnglishWidget from "@/views/widgets/todayEnglishWidget";
 import todaySentenceWidget from "@/views/widgets/todaySentenceWidget";
+import todayPoetryWidget from "@/views/widgets/todayPoetryWidget";
 
 // import themePicker from "@/components/ThemePicker";
 // import crypto from "@/utils/crypto";
@@ -252,6 +255,7 @@ export default {
   components: {
     todayEnglishWidget,
     todaySentenceWidget,
+    todayPoetryWidget,
     AppStore,
     Icon,
     draggable,

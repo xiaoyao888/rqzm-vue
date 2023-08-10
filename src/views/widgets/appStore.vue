@@ -54,7 +54,7 @@
         </a-row>
       </div>
       <div class="widget-list" v-if="!showStatus">
-        <div class="widget-item" v-for="(item,index) in widgetList" :key="index">
+        <div class="widget-item" v-for="(item,index) in widgetList" :key="index" >
           <div style="height:200px;text-align: center">
             <div style="display: flex;flex-direction: row; justify-content: space-between">
               <div><Icon style="color:#ff0000" icon="FireFilled"></Icon>{{Number.parseInt(Math.random()*1000)}}</div>
@@ -69,12 +69,18 @@
                 <Icon icon="PlusOutlined" ></Icon>
               </a-button>
             </div>
-            <div class="app-icon" :class="'icon-size-'+(item.size?item.size:'1x1')">
+            <div class="app-icon" :class="'icon-size-'+(item.size?item.size:'1x1')" :style="'background:'+item.backgroundColor">
               <countdown-widget
                   v-if="item.type==='component' && (item.component==='countdown'||item.component==='countdownTime')"
-                  :size="item.size?item.size:'1x1'" :form="item"></countdown-widget>
+                  :size="item.size?item.size:'1x1'" :form="item"/>
               <calendar-widget v-else-if="item.type==='component' && item.component==='calendar'"
-                               :size="item.size?item.size:'1x1'"></calendar-widget>
+                               :size="item.size?item.size:'1x1'"/>
+              <today-english-widget v-else-if="item.type==='component' && item.component==='todayEnglish'"
+                                    :size="item.size?item.size:'1x1'"/>
+              <today-sentence-widget v-else-if="item.type==='component' && item.component==='todaySentence'"
+                                     :size="item.size?item.size:'1x1'"/>
+              <today-poetry-widget v-else-if="item.type==='component' && item.component==='todayPoetry'"
+                                   :size="item.size?item.size:'1x1'"/>
             </div>
             <div style="margin-top:10px;">{{item.name}}</div>
           </div>
@@ -86,13 +92,16 @@
 </template>
 
 <script setup>
-import {ref, defineExpose, reactive, defineEmits} from "vue";
+import {ref, defineExpose, reactive, defineEmits, defineComponent} from "vue";
 import Icon from '@/components/icon'
 import {message} from "ant-design-vue";
 import {useI18n} from "vue-i18n";
 
 import countdownWidget from "@/views/widgets/countdownWidget";
 import calendarWidget from "@/views/widgets/calendarWidget";
+import todayEnglishWidget from "@/views/widgets/todayEnglishWidget";
+import todaySentenceWidget from "@/views/widgets/todaySentenceWidget";
+import todayPoetryWidget from "@/views/widgets/todayPoetryWidget";
 
 const { locale} = useI18n()
 const visible = ref(false)
@@ -190,6 +199,13 @@ const iconBackground = (app) => {
     }
   }
 }
+defineComponent({
+  countdownWidget,
+  calendarWidget,
+  todayEnglishWidget,
+  todaySentenceWidget,
+  todayPoetryWidget
+})
 defineExpose({
   showModal
 })
