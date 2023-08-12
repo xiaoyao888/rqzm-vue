@@ -17,7 +17,7 @@
               <div v-if="batchDeleteAppItemVisible"
                    style="position: absolute;top:-7px;right:10px;z-index:1000">
                 <Icon icon="CloseCircleFilled" style="font-size:18px;color:#ffffff;"
-                      @click="deleteAppItem()"/>
+                      @click="batchDeleteAppItem(element)"/>
               </div>
               <div :id="'appItem'+element.id" :data-index="element.id" class="app-icon"
 
@@ -730,6 +730,19 @@ export default {
           },
         });
 
+      },
+      batchDeleteAppItem: (item) => {
+        let i = 0
+        let sectionIndex = data.selectSectionAppItemSectionIndex.value
+        for (let it of data.iconDefaultData.value[sectionIndex].children) {
+          if (it.name === item.name && it.id === item.id) {
+            data.iconDefaultData.value[sectionIndex].children.splice(i,
+                1);
+            break
+          }
+          i++
+        }
+        localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
       },
       initSearchEngine: () => {
         let defaultSearchEngine = localStorage.getItem("defaultSearchEngine")
