@@ -1,57 +1,49 @@
 <template>
   <div class="app-store">
     <a-modal v-model:visible="visible" style="top: 20px" :body-style="{'background-color':'#f1f0f5','padding':'0 0 '}" width="920px" :footer="null" :closable="false">
-      <div class="closable" @click="visible=false"><Icon icon="CloseOutlined"></Icon></div>
-      <div class="app-store-nav">
-        <div @click="showStatus=true" class="app-store-nav-item" :class="showStatus?'app-store-nav-item-selected':''"><a>小图标</a></div>
-        <div @click="showStatus=false" class="app-store-nav-item" :class="!showStatus?'app-store-nav-item-selected':''"><a>小组件</a></div>
-        <a-select ref="select" style="border-radius: 16px;" v-model:value="currentSection.name" @change="handleChange($event)">
-          <a-select-option :value="item.name" v-for="item in sectionList.value" :key="item.name">{{item.name}}</a-select-option>
-        </a-select>
-        <div class="app-store-nav-title">应用商店</div>
-        <a-input class="app-store-nav-input" @keyup="init"/>
-      </div>
+	  
+        <div class="app-store-nav" style="width:95%">
+          <div class="app-store-nav-title">应用商店</div>
+          <div style="display:inline-flex;width:270px;">
+          <div @click="showStatus=true" class="app-store-nav-item" :class="showStatus?'app-store-nav-item-selected':''"><a>小图标</a></div>
+          <div @click="showStatus=false" class="app-store-nav-item" :class="!showStatus?'app-store-nav-item-selected':''"><a>小组件</a></div>
+          <a-select ref="select" style="border-radius: 16px;" v-model:value="currentSection.name" @change="handleChange($event)">
+            <a-select-option :value="item.name" v-for="item in sectionList.value" :key="item.name">{{item.name}}</a-select-option>
+          </a-select>
+          </div>
+          <a-input class="app-store-nav-input" @keyup="init"/>
+        </div>
+	  <div class="closable" @click="visible=false"><Icon icon="CloseOutlined"></Icon></div>
+        
+        
       <div v-if="showStatus">
-        <a-row>
-          <a-col :span="2">
-            <div style="display: flex;flex-direction: column;align-items: flex-end" class="icon-nav">
+        <div style="display:inline-flex;">
+            <div style="display: flex;flex-direction: column;align-items: flex-start;margin-left:5px;width:50px;" class="icon-nav">
               <div v-for="(item,index) in data" :key="index">
                 <a-tag>{{ item }}</a-tag>
               </div>
             </div>
-<!--            <a-list size="small" bordered :data-source="data">
-              <template #renderItem="{ item }">
-                <a-list-item>{{ item }}</a-list-item>
-              </template>
-              <template #header>
-                <div>Header</div>
-              </template>
-              <template #footer>
-                <div>Footer</div>
-              </template>
-            </a-list>-->
-          </a-col>
-          <a-col :span="22" class="icon-list" >
-            <div class="icon-item" v-for="(item,index) in iconList" :key="index">
-              <div style="text-align: center">
-                <div style="display:flex;justify-content: space-between">
-                  <div>
-                    <Icon style="color:#ff7a06" icon="FireFilled"></Icon>{{Number.parseInt(Math.random()*1000)}}
+            <div style="display:flex;flex-wrap: wrap;justify-content: flex-start;height:600px;overflow-y: auto;">
+              <div class="icon-item" v-for="(item,index) in iconList" :key="index">
+                <div style="text-align: center">
+                  <div style="display:flex;justify-content: space-between">
+                    <div>
+                      <Icon style="color:#ff7a06" icon="FireFilled"></Icon>{{Number.parseInt(Math.random()*1000)}}
+                    </div>
+                    <a-button type="primary" size="small" @click="addIcon(item)" style="padding:0 4px;">
+                      <Icon icon="PlusOutlined"></Icon>
+                    </a-button>
                   </div>
-                  <a-button type="primary" size="small" @click="addIcon(item)" style="padding:0 4px;">
-                    <Icon icon="PlusOutlined"></Icon>
-                  </a-button>
-                </div>
-                <div id="appItem4fb906f7bb9a4fdba6a0c81d652858d1" data-index="4fb906f7bb9a4fdba6a0c81d652858d1" class="app-icon" :style="'background:'+iconBackground(item)">
-                  <img :src="getImgUrl(item)" class="icon">
-                </div>
-                <div>
-                  {{item.name}}
+                  <div id="appItem4fb906f7bb9a4fdba6a0c81d652858d1" data-index="4fb906f7bb9a4fdba6a0c81d652858d1" class="app-icon" :style="'background:'+iconBackground(item)">
+                    <img :src="getImgUrl(item)" class="icon">
+                  </div>
+                  <div>
+                    {{item.name}}
+                  </div>
                 </div>
               </div>
             </div>
-          </a-col>
-        </a-row>
+          </div>
       </div>
       <div class="widget-list" v-if="!showStatus">
         <div class="widget-item" v-for="(item,index) in widgetList" :key="index" >
@@ -70,8 +62,10 @@
               </a-button>
             </div>
             <div class="app-icon" :class="'icon-size-'+(item.size?item.size:'1x1')" :style="'background:'+item.backgroundColor">
+			  <img v-if="item.type==='component' && item.component==='icon'"
+				     :src="getImgUrl(item)" class="icon" :class="'img-'+(item.size?item.size:'1x1')">
               <countdown-widget
-                  v-if="item.type==='component' && (item.component==='countdown'||item.component==='countdownTime')"
+                  v-else-if="item.type==='component' && (item.component==='countdown'||item.component==='countdownTime')"
                   :size="item.size?item.size:'1x1'" :form="item"/>
               <calendar-widget v-else-if="item.type==='component' && item.component==='calendar'"
                                :size="item.size?item.size:'1x1'"/>
@@ -214,7 +208,8 @@ const emits = defineEmits(["addIcon"])
 <style lang="less" scoped>
 .app-store-nav {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
   padding-top: 7px;
   padding-bottom: 7px;
   padding-left:7px;
@@ -224,7 +219,7 @@ const emits = defineEmits(["addIcon"])
   background: #ffffff;
   text-align: center;
   line-height: 32px;
-  border-radius: 16px;
+  border-radius: 5px;
   margin-right:10px;
 }
 .app-store-nav-section{
@@ -237,12 +232,10 @@ const emits = defineEmits(["addIcon"])
 }
 .app-store-nav-title{
   line-height: 32px;
-  margin-left:130px;
   font-size:16px;
 }
 .app-store-nav-input{
   width:200px;
-  margin-left:190px;
   border-radius:16px;
 }
 .widget-list{

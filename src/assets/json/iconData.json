@@ -299,6 +299,16 @@
         "src": "movieCalendar.svg",
         "size": "2x2",
         "id": "006e4b384ffb4e60b89c761bb60a8d15"
+      },
+      {
+        "name": "小夜表",
+        "nameEn": "Night Clock",
+        "component": "icon",
+        "type": "component",
+        "src": "clock.svg",
+        "size": "1x1",
+        "backgroundColor": "#FFFFFF",
+        "id": "006e4b384ffb4e60b823454bb4fk49fk"
       }
     ]
   },

@@ -27,7 +27,7 @@
                       :class="'widget-'+(element.size?element.size:'1x1')">{{ element.iconWord }}</span>
                 <img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon"
                      :class="'img-'+(element.size?element.size:'1x1')">
-                <img v-else-if="element.type==='component' && element.size==='1x1'&& element.component==='icon'"
+                <img v-else-if="element.type==='component' && element.component==='icon'"
                      :src="getImgUrl(element)" class="icon" :class="'img-'+(element.size?element.size:'1x1')">
                 <countdown-widget
                     v-else-if="element.type==='component' && (element.component==='countdown'||element.component==='countdownTime')"
@@ -114,8 +114,7 @@
 
       <div class="dateTime" :style="(dateTimeConfig.weight?'font-weight:bold':'')"
            @click="showDialog('calendar')">
-				<span v-if="dateTimeConfig.showTime"
-              :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">{{ nowDateTime }} </span>
+		<span v-if="dateTimeConfig.showTime" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''" @click="nightClockWidget.showModal()">{{ nowDateTime }} </span>
         <span v-if="dateTimeConfig.week" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
 					{{ nowWeek }}
 				</span>
@@ -198,6 +197,7 @@
     <countdown ref="countdown" @ok="initIconList()"></countdown>
     <calendar ref="calendar"></calendar>
     <app-store ref="appStoreModal" @addIcon="addIcon"></app-store>
+	<night-clock-widget ref="nightClockWidget" />
     <!--		<person ref="person" :user-info="userInfo"></person>-->
     <!--    <div class="wallpaper"></div>-->
   </div>
@@ -238,6 +238,7 @@ import AppStore from "@/views/widgets/appStore";
 import todayEnglishWidget from "@/views/widgets/todayEnglishWidget";
 import todaySentenceWidget from "@/views/widgets/todaySentenceWidget";
 import todayPoetryWidget from "@/views/widgets/todayPoetryWidget";
+import nightClockWidget from "@/views/widgets/nightClockWidget";
 
 // import themePicker from "@/components/ThemePicker";
 // import crypto from "@/utils/crypto";
@@ -253,6 +254,7 @@ export default {
     // waves
   },
   components: {
+	nightClockWidget,
     todayEnglishWidget,
     todaySentenceWidget,
     todayPoetryWidget,
@@ -273,6 +275,7 @@ export default {
     // person
   },
   setup() {
+	const nightClockWidget= ref(null)
     const clock = ref(null)
     const supportAuthor = ref(null)
     const privatization = ref(null)
@@ -298,7 +301,8 @@ export default {
       countdownWidget,
       appStoreModal,
       addAppItemModal,
-      todoListModal
+      todoListModal,
+	  nightClockWidget
     }
 
     let data = {
@@ -783,6 +787,8 @@ export default {
             countdown.value.editWidget(item, sectionIndex, appIndex)
           } else if (item.id === '134df2c360e14809b15054a0be4eb57b') {
             calendar.value.showModal()
+          } else if (item.id === '006e4b384ffb4e60b823454bb4fk49fk') {
+            nightClockWidget.value.showModal()
           }
         }
       },
@@ -874,7 +880,7 @@ export default {
 
 .app-grid {
   overflow-y: auto;
-  min-height: 600px;
+  min-height: 700px;
   padding-top: 100px;
   width: 80%;
   margin-left: 10%;
