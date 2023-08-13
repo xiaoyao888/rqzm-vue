@@ -16,22 +16,16 @@
         <img :src="require('@/assets/images/logos/yiyan.svg')" style="width:100%;" alt="每日一言"/>
       </div>
     </div>
-    <div class="widget a-button--primary" v-if="props.size==='2x2'" @mouseover="showRefresh = true" @mouseleave="showRefresh=false">
+    <div class="widget a-button--primary" v-if="props.size==='2x2'">
       <div class="widget-2x2" style="height:145px;">
         <div class="c2">{{ todayPoetry.content }}</div>
         <div class="c3">——{{ todayPoetry.origin.author }}•{{ todayPoetry.origin.dynasty }}</div>
-        <div v-if="showRefresh" class="showRefresh" >
-          <Icon icon="SyncOutlined" @click="initTodayPoetry()"/>
-        </div>
       </div>
     </div>
-    <div class="widget a-button--primary" v-if="props.size==='2x4'" @mouseover="showRefresh = true" @mouseleave="showRefresh=false">
+    <div class="widget a-button--primary" v-if="props.size==='2x4'">
       <div class="widget-2x4" style="height:145px;">
         <div class="c2">{{ todayPoetry.content }}</div>
         <div class="c3">——{{ todayPoetry.origin.author }}•{{ todayPoetry.origin.dynasty }}</div>
-        <div v-if="showRefresh" class="showRefresh" >
-          <Icon icon="SyncOutlined" @click="initTodayPoetry()"/>
-        </div>
       </div>
     </div>
   </div>
@@ -39,8 +33,8 @@
 
 <script setup>
 import {ref, defineProps} from "vue";
-import Icon from '@/components/icon'
 import * as jinrishici from "jinrishici";
+import dayjs from "dayjs";
 //变量
 const todayPoetry = ref({
   origin:{
@@ -48,11 +42,22 @@ const todayPoetry = ref({
     dynasty:""
   }
 })
-const showRefresh = ref(false)
 //方法
 const initTodayPoetry = () => {
+  let lsTodayPoetry = localStorage.getItem("todayPoetry");
+  if(lsTodayPoetry){
+    lsTodayPoetry = JSON.parse(lsTodayPoetry);
+    if(lsTodayPoetry.createDate === dayjs().format("YYYY-MM-DD")){
+      todayPoetry.value = lsTodayPoetry.data
+      return;
+    }
+  }
   jinrishici.load(result => {
-    todayPoetry.value = result.data
+    if(result.data){
+      todayPoetry.value = result.data
+      let res = {data:result.data,"createDate":dayjs().format("YYYY-MM-DD")}
+      localStorage.setItem("todayPoetry",JSON.stringify(res))
+    }
   })
 }
 initTodayPoetry();

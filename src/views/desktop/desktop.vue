@@ -1,6 +1,8 @@
 <template>
   <div id="fullpage" class="fullpage " :class="themeMode"
-       :style="'background: url('+background+');background-color:rgb(0,0,0,0.8);background-size:100% 100%;'">
+       :style="bgWallpaper&&bgWallpaper.indexOf('http') === 0?
+       'background: url('+bgWallpaper+');background-color:rgb(0,0,0,0.5);background-size:100% 100%;':
+       'background:'+bgWallpaper">
     <!--    <full-page ref="fullpage" :options="options">-->
     <!-- style="backdrop-filter: blur(1px)" -->
     <div :id="'section'+(index+1)" class="section" :class="'section'+(index+1)"
@@ -134,11 +136,11 @@
         <Icon class="icon" icon="PlusCircleOutlined"/>
         {{ $t("action.addIcon") }}
       </li>
-      <li class="contextmenu-item hover" @click="rotate()">
+      <li class="contextmenu-item hover" @click="changeWallpaper()">
         <Icon class="icon" icon="SlackOutlined"/>
         {{ $t("action.changeWallpaper") }}
       </li>
-      <li class="contextmenu-item hover"><a :href="background" target="_blank">
+      <li class="contextmenu-item hover"><a :href="bgWallpaper.indexOf('http')===0?bgWallpaper:'#'" target="_blank">
         <Icon class="icon" icon="DownloadOutlined"/>
         {{ $t("action.downWallpaper") }}
       </a>
@@ -197,9 +199,10 @@
     <countdown ref="countdown" @ok="initIconList()"></countdown>
     <calendar ref="calendar"></calendar>
     <app-store ref="appStoreModal" @addIcon="addIcon"></app-store>
-	<night-clock-widget ref="nightClockWidget" />
+    <night-clock-widget ref="nightClockWidget" />
+    <wall-paper ref="wallpaper" @ok="initWallPaper"></wall-paper>
+    <today-poetry ref="todayPoetry"></today-poetry>
     <!--		<person ref="person" :user-info="userInfo"></person>-->
-    <!--    <div class="wallpaper"></div>-->
   </div>
 </template>
 <script>
@@ -248,13 +251,17 @@ import {
   Modal,
   message
 } from "ant-design-vue";
+import wallPaper from "@/views/desktop/wallPaper";
+import TodayPoetry from "@/views/widgets/todayPoetry";
 export default {
   name: "desktopIndex",
   directives: {
     // waves
   },
   components: {
-	nightClockWidget,
+    TodayPoetry,
+    wallPaper,
+    nightClockWidget,
     todayEnglishWidget,
     todaySentenceWidget,
     todayPoetryWidget,
@@ -275,7 +282,7 @@ export default {
     // person
   },
   setup() {
-	const nightClockWidget= ref(null)
+    const nightClockWidget= ref(null)
     const clock = ref(null)
     const supportAuthor = ref(null)
     const privatization = ref(null)
@@ -286,6 +293,8 @@ export default {
     const appStoreModal = ref(null)
     const addAppItemModal = ref(null)
     const todoListModal = ref(null)
+    const wallpaper = ref(null)
+    const todayPoetry = ref(null)
     const {
       t,
       locale
@@ -302,7 +311,9 @@ export default {
       appStoreModal,
       addAppItemModal,
       todoListModal,
-	  nightClockWidget
+      nightClockWidget,
+      wallpaper,
+      todayPoetry
     }
 
     let data = {
@@ -320,7 +331,7 @@ export default {
         day: true,
       }),
       // background: "https://dogefs.s3.ladydaily.com/~/source/unsplash/photo-1673912402587-57ac40f1b4a5?ixid=M3w0MjI2NjN8MHwxfHRvcGljfHx4alBSNGhsa0JHQXx8fHx8Mnx8MTY4ODE5OTQyN3w&ixlib=rb-4.0.3&w=2560&h=1440&fmt=webp",
-      background: ref(null),
+      bgWallpaper: ref(null),
       themeMode: ref('light'), //this.$store.state.settings.themeMode,
       themeColor: ref('#000000'), //this.$store.state.settings.themeColor,
       options: reactive({
@@ -446,53 +457,7 @@ export default {
           "href": "https://developer.mozilla.org/zh-CN/search?q="
         }
       ]),
-      translateList: reactive([
-        {
-          name: "火山",
-          nameEn: "Volcano",
-          url: "https://translate.volcengine.com/translate?from=rqzm.cn&text={0}",
-          icon: "huoshan.svg"
-        }, {
-          name: "百度",
-          nameEn: "Baidu",
-          url: "https://fanyi.baidu.com/#zh/en/{0}",
-          icon: "baidu.svg"
-        }, {
-          name: "微软",
-          nameEn: "MS Bing",
-          url: "https://cn.bing.com/translator/?h_text=msn_ctxt&setlang=zh-cn&from=rqzm.cn&text={0}",
-          icon: "bing.svg"
-        }, {
-          name: "谷歌",
-          nameEn: "Google",
-          url: "https://translate.google.com/",
-          icon: "google.svg"
-        }, {
-          name: "有道",
-          nameEn: "Google",
-          url: "https://fanyi.youdao.com/",
-          icon: "youdao.svg"
-        }, {
-          name: "搜狗",
-          nameEn: "Google",
-          url: "https://fanyi.sogou.com/text?keyword={0}&transfrom=auto&transto=zh-CHS&model=general",
-          icon: "sougou.svg"
-        }, {
-          name: "腾讯君",
-          nameEn: "Google",
-          url: "https://fanyi.qq.com/?text={0}",
-          icon: "qq.svg"
-        }, {
-          name: "360",
-          nameEn: "Google",
-          url: "https://fanyi.so.com/#{0}",
-          icon: "360.svg"
-        }, {
-          name: "金山",
-          nameEn: "Google",
-          url: "https://www.iciba.com/fy",
-          icon: "iciba.svg"
-        }]),
+      translateList: reactive([]),
       selectSectionAppItem: reactive({}),
       selectSectionAppItemSectionIndex: ref(0),
       selectSectionAppItemIndex: ref(0),
@@ -541,12 +506,12 @@ export default {
 
         setTimeout(function () {
           data.windmillRotate.value = false;
-          const bgData = require('@/assets/json/background.json'); //111
+          const bgData = require('@/assets/json/otherWallpaper.json');
           const random = Number(randomNumber(0, 111))
           const bg = bgData[random].raw;
-          data.background.value = bg;
-          localStorage.setItem("background", bg);
-        }, 5000);
+          data.bgWallpaper.value = bg;
+          localStorage.setItem("bgWallpaper", bg);
+        }, 3000);
       },
       initDateTime: () => {
         let dateTimeConfig = localStorage.getItem('dateTimeConfig')
@@ -597,7 +562,7 @@ export default {
         }
       },
       initWallPaper: () => {
-        data.background.value = localStorage.getItem('background') || 'background.jpg'
+        data.bgWallpaper.value = localStorage.getItem('bgWallpaper') || 'background.jpg'
       },
       selectDesktop: (item, index) => {
         data.currentIconPage.value = index
@@ -610,6 +575,9 @@ export default {
         if (data.dateTimeConfig.showTime) {
           methods.initDateTime()
         }
+      },
+      changeWallpaper:()=>{
+        wallpaper.value.showModal()
       },
       showDialog: (value) => {
         if (value === 'supportAuthor') {
@@ -626,14 +594,13 @@ export default {
         if (!item.src) {
           return;
         }
-		  if(item.src.indexOf("http") !== -1){
-			return item.src
-		  }else{
-			try {
-			  return require('@/assets/images/logos/' + item.src + "");
-			} catch (e) {
-		  }
-		}
+        if(item.src.indexOf("http") !== -1) {
+          return item.src
+        }else{
+          try {
+            return require('@/assets/images/logos/' + item.src + "");
+          } catch (e) {}
+		    }
       },
       allowDrop: (event) => {
         event.preventDefault();
@@ -725,7 +692,6 @@ export default {
               resolve();
             }).catch(() => console.log('Oops errors!'));
           },
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
           onCancel() {
           },
         });
@@ -802,6 +768,8 @@ export default {
             calendar.value.showModal()
           } else if (item.id === '006e4b384ffb4e60b823454bb4fk49fk') {
             nightClockWidget.value.showModal()
+          } else if (item.id === 'a5f51a862bfd408ba456b8d6c7afcd78') {
+            todayPoetry.value.showModal()
           }
         }
       },
@@ -835,6 +803,7 @@ export default {
     methods.initUserInfo();
     methods.initWallPaper();
     methods.initSearchEngine();
+    data.translateList.value= require('@/assets/json/translate.json')
     onMounted(() => {
       //
       // nextTick(() => {

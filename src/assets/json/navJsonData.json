@@ -6,6 +6,33 @@
     "icon": "home",
     "children": [
       {
+        "name": "日历",
+        "nameEn": "Calendar",
+        "component": "calendar",
+        "type": "component",
+        "size": "2x2",
+        "id": "134df2c360e14809b15054a0be4eb57b"
+      },
+      {
+        "component": "countdownTime",
+        "name": "倒计时",
+        "nameEn": "Countdown",
+        "size": "2x2",
+        "type": "component",
+        "config": {
+          "name": "下班倒计时",
+          "title": "下班还有",
+          "target": "18:00:00",
+          "repeat": "",
+          "bgColor": "#63a099",
+          "textColor": "#fff",
+          "family": "",
+          "icon": "4"
+        },
+        "id": "6e5f4de765b74ab99dec129700473a33",
+        "view": 1
+      },
+      {
         "id": "6e7e5a6098cc42ddbf42278c7fee0371",
         "url": "https://rqzm.cn/",
         "type": "icon",
@@ -257,6 +284,24 @@
         "view": null
       },
       {
+        "id": "da0ebd0b0f2142c723f3s37df80d3241",
+        "type": "component",
+        "component": "icon",
+        "name": "应用商店",
+        "nameEn": "App Store",
+        "src": "shopping.svg",
+        "backgroundColor": "#1581ff",
+        "view": null,
+        "size": "1x1"
+      }
+    ]
+  },
+  {
+    "name": "程序员",
+    "nameEn": "developer",
+    "icon": "code",
+    "children": [
+      {
         "component": "countdown",
         "name": "倒计时",
         "nameEn": "Countdown",
@@ -276,32 +321,6 @@
         "view": null
       },
       {
-        "id": "da0ebd0b0f2142c723f3s37df80d3241",
-        "type": "component",
-        "component": "icon",
-        "name": "应用商店",
-        "nameEn": "App Store",
-        "src": "shopping.svg",
-        "backgroundColor": "#1581ff",
-        "view": null,
-        "size": "1x1"
-      }
-    ]
-  },
-  {
-    "name": "程序员",
-    "nameEn": "developer",
-    "icon": "code",
-    "children": [
-      {
-        "name": "日历",
-        "nameEn": "Calendar",
-        "component": "calendar",
-        "type": "component",
-        "size": "2x2",
-        "id": "134df2c360e14809b15054a0be4eb57b"
-      },
-      {
         "component": "countdown",
         "name": "倒计时",
         "nameEn": "Countdown",
@@ -318,15 +337,6 @@
           "icon": "3"
         },
         "id": "3693ac9d24b745549edfc83075da1e01"
-      },
-      {
-        "name": "股市",
-        "nameEn": "stock",
-        "component": "icon",
-        "type": "component",
-        "size": "2x2",
-        "id": "f63eede61e36446fafcea5f1b3fba089",
-        "view": null
       },
       {
         "name": "倒数日",
@@ -363,44 +373,6 @@
           "icon": "2"
         },
         "id": "0433bd855c5746e2bfae0a616717c0fd"
-      },
-      {
-        "component": "countdown",
-        "name": "倒计时",
-        "nameEn": "Countdown",
-        "size": "2x2",
-        "type": "component",
-        "config": {
-          "name": "下班倒计时",
-          "title": "下班还有",
-          "target": "2022-11-11 18:00:00",
-          "repeat": "",
-          "bgColor": "#63a099",
-          "textColor": "#fff",
-          "family": "",
-          "icon": "4"
-        },
-        "id": "6e5f4de765b74ab99dec129700473a33",
-        "view": 1
-      },
-      {
-        "name": "电影日历",
-        "nameEn": "Movies",
-        "component": "icon",
-        "type": "component",
-        "insetType": "",
-        "src": "movieCalendar.svg",
-        "size": "2x2",
-        "id": "006e4b384ffb4e60b89c761bb60a8d15"
-      },
-      {
-        "name": "壁纸",
-        "nameEn": "wallpaper",
-        "component": "icon",
-        "type": "icon",
-        "size": "1x1",
-        "id": "58aeab7272774245a5f61fcad70be124",
-        "src": "wallpaper.svg"
       },
       {
         "id": "98faf3b8ac6446cd8f3c4ee7c6d429ad",

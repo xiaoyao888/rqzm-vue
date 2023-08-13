@@ -17,7 +17,7 @@
       </div>
     </div>
     <div :style="'background:url(' + todayEnglish.picture3+');background-size:100% 100%;'">
-      <div class="widget a-button--primary" v-if="props.size==='2x2'">
+      <div class="widget a-button--primary" v-if="props.size==='2x2'" @mouseover="showPlay = true" @mouseleave="showPlay=false">
         <div class="widget-2x2" style="height:145px;">
           <div class="c1" style="display: flex;flex-direction: row;justify-content: space-around;font-size:14px;">
             <div @click="prevDate(1)"><Icon icon="LeftCircleOutlined" /></div>

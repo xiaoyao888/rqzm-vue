@@ -272,7 +272,7 @@
         }
       },
       {
-        "component": "countdown",
+        "component": "countdownTime",
         "name": "倒计时",
         "nameEn": "Countdown",
         "size": "2x2",
@@ -280,7 +280,7 @@
         "config": {
           "name": "下班倒计时",
           "title": "下班还有",
-          "target": "2022-11-11 18:00:00",
+          "target": "18:00:00",
           "repeat": "",
           "bgColor": "#63a099",
           "textColor": "#fff",

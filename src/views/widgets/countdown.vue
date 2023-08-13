@@ -134,11 +134,11 @@ export default {
     const editWidget = (widget,sectionIndex,appIndex)=> {
       formData.widgetName = widget.name
       formData.eventName = widget.config.name
-	  if(widget.component==='countdown'){
-	      formData.targetDate = dayjs(widget.config.target)
-	  }else{
-          formData.targetDate = dayjs(dayjs().format("YYYY-MM-DD ")+widget.config.target)
-	  }
+      if(widget.component==='countdown'){
+        formData.targetDate = dayjs(widget.config.target)
+      }else{
+        formData.targetDate = dayjs(dayjs().format("YYYY-MM-DD ")+widget.config.target)
+      }
       formData.eventType = widget.component
       formData.backgroundColor = widget.config.bgColor
       formData.textColor = widget.config.textColor
@@ -167,10 +167,9 @@ export default {
       initDays:(date)=>{
         let eventType = formData.eventType;
         if(eventType === 'countdown'){
-		  clearInterval(interval)
+          clearInterval(interval)
           data.days = Math.ceil(Math.abs(diff(new Date(), date)))
         }else{
-
           clearInterval(interval)
           data.days = diffHHMMSS(date, new Date())
           interval = setInterval(function(){
@@ -195,11 +194,11 @@ export default {
               }
               form.name = formData.widgetName
               form.config.name = formData.eventName
-			  if(form.component === 'countdown'){
-				form.config.target = dayjs(formData.targetDate).format("YYYY-MM-DD")
-			  }else{
-				form.config.target = dayjs(formData.targetDate).format("HH:mm:ss")
-			  }
+              if(form.component === 'countdown'){
+                form.config.target = dayjs(formData.targetDate).format("YYYY-MM-DD")
+              }else{
+                form.config.target = dayjs(formData.targetDate).format("HH:mm:ss")
+              }
               form.component = formData.eventType
               form.config.bgColor = formData.backgroundColor
               form.config.textColor = formData.textColor

@@ -34,11 +34,11 @@ export const constantRoutes = [
         component: () => import('@/views/desktop/desktop'),
         hidden: true
     },
-    // {
-    //     path: '/muyu',
-    //     component: () => import('@/views/muyu/muyu'),
-    //     hidden: true
-    // },
+    {
+        path: '/muyu',
+        component: () => import('@/views/muyu/muyu'),
+        hidden: true
+    },
     // {
     //   path: '/auth-redirect',
     //   component: () => import('@/views/login/auth-redirect'),

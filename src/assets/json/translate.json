@@ -1,0 +1,47 @@
+[
+  {
+    "name": "火山",
+    "nameEn": "Volcano",
+    "url": "https://translate.volcengine.com/translate?from=rqzm.cn&text={0}",
+    "icon": "huoshan.svg"
+  }, {
+  "name": "百度",
+  "nameEn": "Baidu",
+  "url": "https://fanyi.baidu.com/#zh/en/{0}",
+  "icon": "baidu.svg"
+}, {
+  "name": "微软",
+  "nameEn": "MS Bing",
+  "url": "https://cn.bing.com/translator/?h_text=msn_ctxt&setlang=zh-cn&from=rqzm.cn&text={0}",
+  "icon": "bing.svg"
+}, {
+  "name": "谷歌",
+  "nameEn": "Google",
+  "url": "https://translate.google.com/",
+  "icon": "google.svg"
+}, {
+  "name": "有道",
+  "nameEn": "Google",
+  "url": "https://fanyi.youdao.com/",
+  "icon": "youdao.svg"
+}, {
+  "name": "搜狗",
+  "nameEn": "Google",
+  "url": "https://fanyi.sogou.com/text?keyword={0}&transfrom=auto&transto=zh-CHS&model=general",
+  "icon": "sougou.svg"
+}, {
+  "name": "腾讯君",
+  "nameEn": "Google",
+  "url": "https://fanyi.qq.com/?text={0}",
+  "icon": "qq.svg"
+}, {
+  "name": "360",
+  "nameEn": "Google",
+  "url": "https://fanyi.so.com/#{0}",
+  "icon": "360.svg"
+}, {
+  "name": "金山",
+  "nameEn": "Google",
+  "url": "https://www.iciba.com/fy",
+  "icon": "iciba.svg"
+}]
