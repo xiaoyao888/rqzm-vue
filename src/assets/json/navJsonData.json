@@ -33,6 +33,25 @@
         "view": 1
       },
       {
+        "component": "countdown",
+        "name": "倒计时",
+        "nameEn": "Countdown",
+        "size": "2x2",
+        "type": "component",
+        "config": {
+          "name": "倒计时",
+          "title": "倒计时",
+          "target": "2022-12-04",
+          "repeat": "festival",
+          "bgColor": "#2d4f59",
+          "textColor": "#ffffff",
+          "family": "",
+          "icon": ""
+        },
+        "id": "da0ebd0b0f2142c7b56827df80d911f7",
+        "view": null
+      },
+      {
         "id": "6e7e5a6098cc42ddbf42278c7fee0371",
         "url": "https://rqzm.cn/",
         "type": "icon",
@@ -64,25 +83,6 @@
         "id": "a5f51a862bfd408ba456b8d6c7afcd77"
       },
       {
-        "id": "95740bf8f356427d8a42d8a31a2f8b53",
-        "url": "https://ai.taobao.com?pid=mm_54561194_2536750027_111828300388&union_lens=lensId%3APUB%401644727921%4021057ef3_09a7_17ef16c69e2_05aa%4001",
-        "type": "icon",
-        "name": "爱淘宝",
-        "nameEn": "Taobao",
-        "src": "taobao.svg",
-        "backgroundColor": "#eb6f2d",
-        "size": "1x1"
-      },
-      {
-        "id": "e15fd6b4fab9475a910a4451799db857",
-        "url": "https://www.jd.com",
-        "type": "icon",
-        "name": "京东商城",
-        "nameEn": "JD Shop",
-        "src": "jd.svg",
-        "backgroundColor": "#ff0000"
-      },
-      {
         "id": "a81ff05dd2b247ca87e9b34f9037e23c",
         "url": "https://js.design?source=rqzm&plan=1",
         "type": "icon",
@@ -90,15 +90,6 @@
         "nameEn": "JS Design",
         "src": "jsdesign.svg",
         "backgroundColor": "#cf3d35"
-      },
-      {
-        "id": "98fed5c0d82a485bb780013e12bf6640",
-        "name": "FlowUs",
-        "nameEn": "FlowUs",
-        "src": "flowus.svg",
-        "type": "icon",
-        "url": "https://flowus.cn/?promotionChannel=WZ_it_01",
-        "backgroundColor": "#fff"
       },
       {
         "name": "待办事项",
@@ -112,34 +103,6 @@
         "backgroundColor": "#1581ff"
       },
       {
-        "url": "https://xiezuocat.com/#/?s=rqzm",
-        "type": "icon",
-        "name": "秘塔写作猫",
-        "nameEn": "XieZuo Cat",
-        "src": "xiezuocat.com.svg",
-        "id": "7a9e56d963cc45c0aa254338791021b1",
-        "view": 1,
-        "backgroundColor": "#fefefe"
-      },
-      {
-        "url": "https://www.islide.cc/ppt?utm_source=rqzm.cn&utm_medium=web&utm_campaign=1",
-        "type": "icon",
-        "name": "iSlide PPT神器",
-        "nameEn": "iSlide",
-        "src": "islide.svg",
-        "id": "9c09d7d0cdee40698c4270b7cda3e444",
-        "backgroundColor": "#fff"
-      },
-      {
-        "id": "vwLnQvDMr",
-        "url": "http://www.bilibili.com/",
-        "type": "icon",
-        "name": "哔哩哔哩",
-        "nameEn": "Bilibili",
-        "src": "bilibili2.svg",
-        "backgroundColor": "#fe65a6"
-      },
-      {
         "id": "86e0e088ab594f35a2a82086922dc9dd",
         "url": "https://www.douyin.com/?ug_source=rqzm_zmsy",
         "type": "icon",
@@ -149,16 +112,6 @@
         "backgroundColor": "#1c0b1a"
       },
       {
-        "id": "5a9364f8fd4744b3bde1f912f7925a52",
-        "url": "http://www.douyu.com/",
-        "type": "icon",
-        "name": "斗鱼",
-        "nameEn": "Dou Yu",
-        "src": "douyu.svg",
-        "backgroundColor": "#ff6a2d",
-        "view": null
-      },
-      {
         "id": "d59555c85c8445998eb752fabee2700c",
         "url": "http://www.iqiyi.com",
         "type": "icon",
@@ -166,15 +119,6 @@
         "nameEn": "iqiyi",
         "src": "iqiyi.svg",
         "backgroundColor": "#00cc4c"
-      },
-      {
-        "id": "3aa1c65264754ef482578769b8af258a",
-        "url": "http://weibo.com/",
-        "type": "icon",
-        "name": "新浪微博",
-        "nameEn": "Weibo",
-        "src": "weibo.svg",
-        "backgroundColor": "#ffd850"
       },
       {
         "id": "93ced548ce45473397a8cd8540551104",
@@ -211,6 +155,15 @@
         "nameEn": "Tmall",
         "src": "tmall.svg",
         "backgroundColor": "#ff0030"
+      },
+      {
+        "id": "e15fd6b4fab9475a910a4451799db857",
+        "url": "https://www.jd.com",
+        "type": "icon",
+        "name": "京东商城",
+        "nameEn": "JD Shop",
+        "src": "jd.svg",
+        "backgroundColor": "#ff0000"
       },
       {
         "id": "71fb963152104b078084099b72279112",
@@ -273,17 +226,6 @@
         "size": "1x1"
       },
       {
-        "name": "今天吃什么",
-        "nameEn": "What's eat",
-        "component": "eat",
-        "type": "component",
-        "insetType": "",
-        "src": "eat.svg",
-        "size": "1x1",
-        "id": "1445d3b195564a7192605ecf5c9f9935",
-        "view": null
-      },
-      {
         "id": "da0ebd0b0f2142c723f3s37df80d3241",
         "type": "component",
         "component": "icon",
@@ -301,25 +243,6 @@
     "nameEn": "developer",
     "icon": "code",
     "children": [
-      {
-        "component": "countdown",
-        "name": "倒计时",
-        "nameEn": "Countdown",
-        "size": "2x2",
-        "type": "component",
-        "config": {
-          "name": "结婚倒计时",
-          "title": "结婚倒计时",
-          "target": "2022-12-04",
-          "repeat": "festival",
-          "bgColor": "#2d4f59",
-          "textColor": "#ffffff",
-          "family": "",
-          "icon": ""
-        },
-        "id": "da0ebd0b0f2142c7b56827df80d911f7",
-        "view": null
-      },
       {
         "component": "countdown",
         "name": "倒计时",

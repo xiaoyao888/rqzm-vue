@@ -1,8 +1,6 @@
 <template>
   <div id="fullpage" class="fullpage " :class="themeMode"
-       :style="bgWallpaper&&bgWallpaper.indexOf('http') === 0?
-       'background: url('+bgWallpaper+');background-color:rgb(0,0,0,0.5);background-size:100% 100%;':
-       'background:'+bgWallpaper">
+       :style="bgWallpaper">
     <!--    <full-page ref="fullpage" :options="options">-->
     <!-- style="backdrop-filter: blur(1px)" -->
     <div :id="'section'+(index+1)" class="section" :class="'section'+(index+1)"
@@ -495,6 +493,9 @@ export default {
         }
         return true
       },
+      initTranslate:()=>{
+        data.translateList= require('@/assets/json/translate.json')
+      },
       getTranslateUrl: (item) => {
         return strFormat(item.url, [data.keyword.value]);
       },
@@ -511,6 +512,7 @@ export default {
           const bg = bgData[random].raw;
           data.bgWallpaper.value = bg;
           localStorage.setItem("bgWallpaper", bg);
+          methods.initWallPaper();
         }, 3000);
       },
       initDateTime: () => {
@@ -562,7 +564,20 @@ export default {
         }
       },
       initWallPaper: () => {
-        data.bgWallpaper.value = localStorage.getItem('bgWallpaper') || 'background.jpg'
+        let bgWallpaper = localStorage.getItem('bgWallpaper')
+        if (bgWallpaper && bgWallpaper.length > 0) {
+          if(bgWallpaper&&bgWallpaper.indexOf('http') === 0){
+            data.bgWallpaper.value = 'background: url('+bgWallpaper+');background-color:rgb(0,0,0,0.5);background-size:100% 100%;'
+          }else if(bgWallpaper&&bgWallpaper.indexOf('/img/') === 0){
+            data.bgWallpaper.value = 'background: url('+bgWallpaper+');background-color:rgb(0,0,0,0.5);background-size:100% 100%;'
+          }else{
+            data.bgWallpaper.value = 'background:'+bgWallpaper
+          }
+        } else {
+          let bg = methods.getBackgroundImgUrl('background.jpg');
+          localStorage.setItem("bgWallpaper", bg)
+          data.bgWallpaper.value = 'background: url('+bg+');background-color:rgb(0,0,0,0.5);background-size:100% 100%;'
+        }
       },
       selectDesktop: (item, index) => {
         data.currentIconPage.value = index
@@ -600,7 +615,10 @@ export default {
           try {
             return require('@/assets/images/logos/' + item.src + "");
           } catch (e) {}
-		    }
+        }
+      },
+      getBackgroundImgUrl: (image) => {
+        return require('@/assets/images/wallpaper/' +image);
       },
       allowDrop: (event) => {
         event.preventDefault();
@@ -803,7 +821,7 @@ export default {
     methods.initUserInfo();
     methods.initWallPaper();
     methods.initSearchEngine();
-    data.translateList.value= require('@/assets/json/translate.json')
+    methods.initTranslate();
     onMounted(() => {
       //
       // nextTick(() => {
