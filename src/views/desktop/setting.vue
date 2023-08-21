@@ -9,8 +9,7 @@
         placement="right"
         @after-visible-change="afterVisibleChange">
       <a-row :gutter="20" style="margin:0">
-        <a-col :span="8"
-               :style="'height:'+height+'px;border-right:1px solid #ccc;padding-right:0;padding-left:0;overflow-x:hidden'">
+        <a-col :span="8" :style="'height:'+height+'px;border-right:1px solid #ccc;padding-right:0;padding-left:0;overflow-x:hidden'">
           <a-menu
               default-active="basicSetting"
               class="a-menu-vertical-demo"
@@ -61,19 +60,16 @@
               <div class="settingItem">
                 <span class="title">{{ $t("action.languageSwitch") }}</span>
                 <div class="content">
-                  <a-button size="small" :type="currentLanguage === 'zh_cn'?'primary':''"
-                            @click="changeLanguage('zh_cn')">
+                  <a-button size="small" :type="currentLanguage === 'zh_cn'?'primary':''" @click="changeLanguage('zh_cn')">
                     {{ $t("action.chinese") }}
                   </a-button>
-                  <a-button size="small" :type="currentLanguage === 'en_us'?'primary':''"
-                            @click="changeLanguage('en_us')">
+                  <a-button size="small" :type="currentLanguage === 'en_us'?'primary':''" @click="changeLanguage('en_us')">
                     {{ $t("action.english") }}
                   </a-button>
                   <a-button size="small" :type="currentLanguage === 'ja'?'primary':''" @click="changeLanguage('ja')">
                     {{ $t("action.japanese") }}
                   </a-button>
-                  <a-button size="small" :type="currentLanguage === 'ko-KR'?'primary':''"
-                            @click="changeLanguage('ko-KR')">
+                  <a-button size="small" :type="currentLanguage === 'ko-KR'?'primary':''" @click="changeLanguage('ko-KR')">
                     {{ $t("action.korean") }}
                   </a-button>
                 </div>
@@ -186,6 +182,15 @@
                 <span class="title">{{ $t("action.showNavbar") }}</span>
                 <div class="content">
                   <a-switch v-model:checked="navbarConfig.show" @change="changeNavbar"></a-switch>
+                </div>
+                <span class="title">{{ $t("action.navbarPosition") }}</span>
+                <div class="content">
+                  <a-button-group>
+                    <a-button :type="navbarConfig.position ==='top'?'primary':''" @click="changePosition('top')">上</a-button>
+                    <a-button :type="navbarConfig.position ==='bottom'?'primary':''" @click="changePosition('bottom')">下</a-button>
+                    <a-button :type="navbarConfig.position ==='left'?'primary':''" @click="changePosition('left')">左</a-button>
+                    <a-button :type="navbarConfig.position ==='right'?'primary':''" @click="changePosition('right')">右</a-button>
+                  </a-button-group>
                 </div>
               </div>
             </div>
@@ -344,6 +349,12 @@ const changeThemeMode = (bool) => {
 }
 const changeNavbar = (bool) => {
   navbarConfig.show = bool
+  emits("changeNavbar", navbarConfig.show, navbarConfig.position)
+  let data = {show: navbarConfig.show, position: navbarConfig.position}
+  localStorage.setItem('navbarConfig', JSON.stringify(data));
+}
+const changePosition = (position) => {
+  navbarConfig.position = position
   emits("changeNavbar", navbarConfig.show, navbarConfig.position)
   localStorage.setItem('navbarConfig', JSON.stringify(navbarConfig));
 }

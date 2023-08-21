@@ -99,6 +99,7 @@
     "dateTimeFormat": "Date/Time Format",
     "dateTimeOtherSetting": "Other Setting",
     "dateTimeColor": "Color",
-    "showNavbar": "Show Navbar"
+    "showNavbar": "Show Navbar",
+    "navbarPosition": "Navbar Position"
   }
 }

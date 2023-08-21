@@ -60,7 +60,10 @@
               @click="showDialog('privatization')">{{ $t("action.privatization") }}</span>
       </div>
     </div>
-    <div class="leftBar" v-show="navbarConfig.show">
+    <div class="leftBar" :class="navbarConfig.position==='top'?'topBar':
+        navbarConfig.position==='right'?'rightBar':
+        navbarConfig.position==='bottom'?'bottomBar':
+        '1'" v-show="navbarConfig.show"  >
       <div class="loginVisible" @click="showDialog('userLogin')">
         <div v-if="userInfo.nickName" class="login" @click="drawer('person')">
           <a>{{ userInfo.nickName }}</a>
@@ -867,6 +870,7 @@ export default {
           localStorage.setItem("navbarConfig",JSON.stringify({show:true, position:'left'}))
         }else{
           data.navbarConfig.show = JSON.parse(val).show
+          data.navbarConfig.position = JSON.parse(val).position
         }
       }
     }
@@ -929,7 +933,7 @@ export default {
 .app-grid {
   overflow-y: auto;
   min-height: 700px;
-  padding-top: 100px;
+  padding-top: 130px;
   width: 80%;
   margin-left: 10%;
 
@@ -1003,7 +1007,7 @@ export default {
   justify-content: center;
   height: 50px;
   position: absolute;
-  top: 10px;
+  top: 50px;
   left: 50%;
   width: 500px;
   margin-left: -250px;
@@ -1198,7 +1202,25 @@ export default {
   color: var(--color);
   font-size: inherit;
 }
-
+.rightBar{
+  top:0!important;
+  right:0!important;
+}
+.topBar{
+  top:0!important;
+  flex-direction: row!important;
+  width: 100%!important;
+  height: auto!important;
+  padding: 0 10px;
+}
+.bottomBar{
+  top: auto!important;
+  bottom:0!important;
+  flex-direction: row!important;
+  width: 100%!important;
+  height: auto!important;
+  padding: 0 10px;
+}
 .leftBar {
   transition: .1s;
   text-align: center;
@@ -1214,7 +1236,6 @@ export default {
   line-height: 40px;
   position: absolute;
   top: 0;
-
   .leftBarItem {
     min-height: 30px;
   }
