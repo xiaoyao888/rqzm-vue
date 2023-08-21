@@ -12,40 +12,40 @@
         <a-col :span="8"
                :style="'height:'+height+'px;border-right:1px solid #ccc;padding-right:0;padding-left:0;overflow-x:hidden'">
           <a-menu
-              default-active="1"
+              default-active="basicSetting"
               class="a-menu-vertical-demo"
               style="height:100%;"
               @select="handleOpen">
-            <a-menu-item key="1">
+            <a-menu-item key="basicSetting">
               <Icon icon="SettingOutlined"></Icon>
               <span slot="title">{{ $t("action.basicSetting") }}</span>
             </a-menu-item>
-            <a-menu-item key="2">
+            <a-menu-item key="searchBar">
               <i class="a-icon-search"></i>
               <Icon icon="SearchOutlined"></Icon>
               <span slot="title">{{ $t("action.searchBar") }}</span>
             </a-menu-item>
-            <a-menu-item key="3">
+            <a-menu-item key="icon">
               <Icon icon="InfoCircleOutlined"></Icon>
               <span slot="title">{{ $t("common.icon") }}</span>
             </a-menu-item>
-            <a-menu-item key="4">
+            <a-menu-item key="dateTime">
               <Icon icon="ClockCircleOutlined"></Icon>
               <span slot="title">{{ $t("action.dateTime") }}</span>
             </a-menu-item>
-            <a-menu-item key="5">
+            <a-menu-item key="themeWallpaper">
               <Icon icon="FileImageOutlined"></Icon>
               <span slot="title">{{ $t("action.themeWallpaper") }}</span>
             </a-menu-item>
-            <a-menu-item key="6">
+            <a-menu-item key="layout">
               <Icon icon="TableOutlined"></Icon>
               <span slot="title">{{ $t("common.layout") }}</span>
             </a-menu-item>
-            <a-menu-item key="7">
+            <a-menu-item key="backupRecovery">
               <Icon icon="AntCloudOutlined"></Icon>
               <span slot="title">{{ $t("action.backupRecovery") }}</span>
             </a-menu-item>
-            <a-menu-item key="8">
+            <a-menu-item key="about">
               <Icon icon="CrownOutlined"></Icon>
               <span slot="title">{{ $t("action.about") }}</span>
             </a-menu-item>
@@ -57,7 +57,7 @@
                  @click="drawer=false">
               <i class="a-icon-s-unfold"></i>
             </div>
-            <div v-if="menuIndex==='1'">
+            <div v-if="menuIndex==='basicSetting'">
               <div class="settingItem">
                 <span class="title">{{ $t("action.languageSwitch") }}</span>
                 <div class="content">
@@ -88,12 +88,9 @@
                 </div>
               </div>
               <div class="settingItem">
-                <span class="title">{{ $t("common.reset") }} {{ $t("common.icon") }}</span>
+                <span class="title">{{ $t("action.resetIcon") }}</span>
                 <div class="content">
-                  <span class="desc">{{ $t("action.resetIcon") }}</span>
-                  <div>
                     <a-button size="small" type="primary" @click="resetIcon()">{{ $t("common.reset") }}</a-button>
-                  </div>
                 </div>
               </div>
               <div class="settingItem">
@@ -106,7 +103,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="menuIndex==='4'">
+            <div v-if="menuIndex==='dateTime'">
               <div class="settingItem">
                 {{ showTime }}
                 <div class="content">
@@ -165,7 +162,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="menuIndex==='5'">
+            <div v-if="menuIndex==='themeWallpaper'">
               <div class="settingItem">
                 <!-- <a-switch v-model="this.$store.state.settings.themeMode==='dark'" :inactive-text="$t('action.darkMode')" @change="changeThemeMode"></a-switch> -->
               </div>
@@ -178,16 +175,24 @@
                 </div>
               </div>
             </div>
-            <div v-if="menuIndex==='6'">
+            <div v-if="menuIndex==='layout'">
               <div class="settingItem">
-                <a-switch v-model="showNavBar" :inactive-text="t('action.isShowNavBar')"
-                          @change="changeNavBarMode"></a-switch>
+                <span class="title">{{ $t("action.showClock") }}</span>
+                <div class="content">
+                  <a-switch v-model:checked="showClock" @change="changeClock"></a-switch>
+                </div>
+              </div>
+              <div class="settingItem">
+                <span class="title">{{ $t("action.showNavbar") }}</span>
+                <div class="content">
+                  <a-switch v-model:checked="navbarConfig.show" @change="changeNavbar"></a-switch>
+                </div>
               </div>
             </div>
-            <div v-if="menuIndex==='8'">
+            <div v-if="menuIndex==='about'">
               <div class="settingItem">
                 <div class="content">
-                  <span>{{ $t("action.version") }}：1.0.1</span>
+                  <span>{{ $t("action.version") }}：2.0.1</span>
                 </div>
               </div>
               <div class="settingItem">
@@ -249,12 +254,13 @@ import serviceapi from "@/api/serviceapi";
 // import themePicker from "@/components/ThemePicker";
 const {t, locale} = useI18n()
 let showTime = ref();
+let showClock = ref(false);
 const visible = ref(false)
 const height = ref(800)
 const themeMode1 = ref('dark')
 const themeColor = ref(null)
-const showNavBar = ref(true)
-const menuIndex = ref('1')
+const navbarConfig = reactive({ show : true, position: 'left'})
+const menuIndex = ref('basicSetting')
 const currentLanguage = ref('zh_cn')
 const dateTimeConfig = reactive({
   constshowTime: true,
@@ -268,7 +274,7 @@ const dateTimeConfig = reactive({
 const colors = reactive(['#1681ff', '#2ecc71', '#33c5c5', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'])
 
 const afterVisibleChange = (bool) => {
-  console.log('visible', bool);
+  // console.log('visible', bool);
 };
 
 
@@ -279,11 +285,23 @@ const themeChange = (value) => {
   //   value: value
   // })
 }
-const initDateConfig = () => {
+const initConfig = () => {
+  //初始化日期配置
   let dateTimeConfig = localStorage.getItem('dateTimeConfig')
   if (dateTimeConfig && dateTimeConfig.length > 0) {
     dateTimeConfig = JSON.parse(dateTimeConfig);
     showTime.value = dateTimeConfig.showTime
+  }
+
+  //初始化表配置
+  let sc = localStorage.getItem('showClock')
+  if (sc) {
+    showClock.value = sc === 'true'
+  }
+  //初始化导航配置
+  let navbar = localStorage.getItem('navbarConfig')
+  if (navbar) {
+    navbarConfig.value = JSON.parse(navbar)
   }
 }
 
@@ -313,7 +331,7 @@ const changeLanguage = (lang) => {
   localStorage.setItem('language', lang);//将lang 语言存在localStorage里
   window.location.reload();
 }
-const handleOpen = (item, key, keyPath) => {
+const handleOpen = (item) => {
   menuIndex.value = item.key;
 }
 const changeThemeMode = (bool) => {
@@ -324,9 +342,10 @@ const changeThemeMode = (bool) => {
 //   //   value: mode
 //   // })
 }
-const changeNavBarMode = (bool) => {
-  // this.$store.dispatch('settings/changeSetting',{key: 'showNavBar', value: bool})
-  emits('changeNavBarMode', bool);
+const changeNavbar = (bool) => {
+  navbarConfig.show = bool
+  emits("changeNavbar", navbarConfig.show, navbarConfig.position)
+  localStorage.setItem('navbarConfig', JSON.stringify(navbarConfig));
 }
 const changeDateTime = (bool) => {
   showTime.value = bool
@@ -334,6 +353,11 @@ const changeDateTime = (bool) => {
   saveDateSetting();
   emits("changeDateTime", dateTimeConfig)
   // window.location.reload();
+}
+const changeClock = (bool) => {
+  showClock.value = bool
+  emits("changeClock", showClock.value)
+  localStorage.setItem('showClock', showClock.value);
 }
 const changeDateFormat = (value, timestamp) => {
   dateTimeConfig.format = value;
@@ -394,11 +418,11 @@ const resetSetting = () => {
 
 }
 
-initDateConfig();
+initConfig();
 defineExpose({
   visible
 })
-const emits = defineEmits(['changeDateTime','changeThemeMode','changeNavBarMode'])
+const emits = defineEmits(['changeDateTime','changeThemeMode','changeNavbar','changeClock'])
 
 // created() {
 // },
@@ -462,7 +486,7 @@ const emits = defineEmits(['changeDateTime','changeThemeMode','changeNavBarMode'
 }
 
 .settingItem {
-  padding: 10px;
+  padding: 0 10px;
   margin-top: 10px;
   background-color: var(--bg-info);
   border-radius: 10px;
@@ -473,12 +497,14 @@ const emits = defineEmits(['changeDateTime','changeThemeMode','changeNavBarMode'
     font-size: 14px;
     line-height: 20px;
     margin-top: 10px;
+    font-weight:bold;
   }
 
   .content {
-    color: rgba(var(--img-text), 1);
+    color: #898989;
     margin-top: 10px;
-    font-size: 14px;
+    font-size: 12px;
+
     // button{
     //   font-size:13px;
     //   padding:8px;

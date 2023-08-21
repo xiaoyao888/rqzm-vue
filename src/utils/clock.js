@@ -5,12 +5,12 @@
 
 
 //时钟背景
-function drawBackground(context,r,rem,whiteOrBlack) {
+function drawBackground(option,context,r,rem,whiteOrBlack) {
 	
 	// context.fillStyle = "red"
 	// context.fillRect(10,10,120,120);
-	
-	
+
+
 	context.beginPath();//按照下边参数开始绘制新路径
 	context.arc(60,60,55,0,Math.PI*2,true);//（圆心X坐标，圆心Y坐标，半径，开始角度（弧度），结束角度弧度，是否按照顺时针画）
 	context.closePath();//关闭路径
@@ -28,6 +28,9 @@ function drawBackground(context,r,rem,whiteOrBlack) {
 	
 //遍历小时数
     var houseNumble = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2];
+    if(option.hours && option.hours.length===12){
+        houseNumble = option.hours
+    }
     houseNumble.forEach(function (number, i) {
         context.textAlign = 'center';
         context.textBaseline = 'middle'
@@ -58,7 +61,7 @@ function drawBackground(context,r,rem,whiteOrBlack) {
 	
 }
 //定义时针
-function drawHour(context,r,rem,hour,minute,whiteOrBlack) {
+function drawHour(option,context,r,rem,hour,minute,whiteOrBlack) {
     context.save();
     context.beginPath();
     context.lineWidth = 6*rem;
@@ -73,7 +76,7 @@ function drawHour(context,r,rem,hour,minute,whiteOrBlack) {
     context.restore();
 }
 //定义分针
-function drawMinute(context,r,rem,minute,whiteOrBlack) {
+function drawMinute(option,context,r,rem,minute,whiteOrBlack) {
     context.save();
     context.beginPath();
     context.lineWidth = 3*rem;
@@ -87,7 +90,7 @@ function drawMinute(context,r,rem,minute,whiteOrBlack) {
     context.restore();
 }
 //定义秒钟
-function drawSecond(context,r,rem,second) {
+function drawSecond(option,context,r,rem,second) {
     context.save();
     context.beginPath();
     context.lineWidth = 2*rem;
@@ -103,14 +106,14 @@ function drawSecond(context,r,rem,second) {
     context.restore();
 }
 //画中心点
-function drawDot(context,r,rem,fillStyle) {
+function drawDot(option,context,r,rem,fillStyle) {
     context.beginPath();
     context.fillStyle = fillStyle
     context.arc(0, 0, 4*rem, 0, 2 * Math.PI, false);
     context.fill();
 }
 //时间函数，让时钟根据当前时间跳动
-const drawClock = function(context) {
+const drawClock = function(context,option) {
 	var height = context.canvas.height;
 	var width = context.canvas.width;
 	var r = width / 2;
@@ -121,12 +124,11 @@ const drawClock = function(context) {
     var minute = time.getMinutes();
     var second = time.getSeconds();
 	var whiteOrBlack = hour>6 && hour<18 ? "#000" : "#fff"
-    drawBackground(context,r,rem,whiteOrBlack);
-    drawHour(context,r,rem,hour,minute,whiteOrBlack);
-    drawMinute(context,r,rem,minute,whiteOrBlack);
-    drawSecond(context,r,rem,second,whiteOrBlack);
-	
-    drawDot(context,r,rem,whiteOrBlack);
+    drawBackground(option,context,r,rem,whiteOrBlack);
+    drawHour(option,context,r,rem,hour,minute,whiteOrBlack);
+    drawMinute(option,context,r,rem,minute,whiteOrBlack);
+    drawSecond(option,context,r,rem,second,whiteOrBlack);
+    drawDot(option,context,r,rem,whiteOrBlack);
     context.restore()
 }
 

@@ -60,7 +60,7 @@
               @click="showDialog('privatization')">{{ $t("action.privatization") }}</span>
       </div>
     </div>
-    <div class="leftBar">
+    <div class="leftBar" v-show="navbarConfig.show">
       <div class="loginVisible" @click="showDialog('userLogin')">
         <div v-if="userInfo.nickName" class="login" @click="drawer('person')">
           <a>{{ userInfo.nickName }}</a>
@@ -112,9 +112,8 @@
         </div>
       </div>
 
-      <div class="dateTime" :style="(dateTimeConfig.weight?'font-weight:bold':'')"
-           @click="showDialog('calendar')">
-		<span v-if="dateTimeConfig.showTime" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''" @click="nightClockWidget.showModal()">{{ nowDateTime }} </span>
+      <div class="dateTime" :style="(dateTimeConfig.weight?'font-weight:bold':'')" @click="showDialog('calendar')">
+        <span v-if="dateTimeConfig.showTime" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''" @click="nightClockWidget.showModal()">{{ nowDateTime }} </span>
         <span v-if="dateTimeConfig.week" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
 					{{ nowWeek }}
 				</span>
@@ -184,10 +183,11 @@
         {{ $t("common.delete") }}
       </li>
     </ul>
-    <div style="position:absolute;right:10px;bottom:10px;">
-      <canvas style="border-radius:60px;" ref="clock" width="120" height="120"></canvas>
+    <div style="position:absolute;right:10px;bottom:10px;" v-show="clockOption.showClock">
+      <canvas style="border-radius:60px;" ref="clock" :width="clockOption.width" :height="clockOption.height"></canvas>
     </div>
-    <setting ref="settingModal" @changeThemeMode="changeThemeMode" @changeDateTime="changeDateTime"></setting>
+    <setting ref="settingModal" @changeThemeMode="changeThemeMode" @changeDateTime="changeDateTime"
+             @changeClock="initClock" @changeNavbar="initNavbar"></setting>
     <add-app-item ref="addAppItemModal" @ok="initIconList()"></add-app-item>
     <!--		<search-icon ref="searchIcon"></search-icon>-->
     <login ref="userLogin" @success="initUserInfo()"></login>
@@ -293,6 +293,25 @@ export default {
     const todoListModal = ref(null)
     const wallpaper = ref(null)
     const todayPoetry = ref(null)
+    const clockOption = reactive({
+      showClock: false,
+      width: 120,
+      height: 120,
+      shadow: {//阴影
+        color: "#ccc",//颜色
+        offsetX: 5,//偏移量
+        offsetY: 5,
+        blur: 10//模糊度
+      },
+      size: 400,//时钟的尺寸
+      handHeaderLen: 10,//时针、分针、秒针的针头长度
+      secondHandLen: 120,//秒针长度
+      minuteHandLen: 100,//分针长度
+      hourHandLen: 70,//时针长度
+      hours: ["Ⅻ", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ"],//若为空数组，则不显示表盘的数字，默认阿拉伯数字
+      hourFontSize: 18,//数字字体大小
+      hourFontColor: "brown"//显示的数字颜色
+    })
     const {
       t,
       locale
@@ -314,6 +333,7 @@ export default {
       todayPoetry
     }
 
+    const navbarConfig = reactive({show: true, position: 'left'})
     let data = {
       keyword: ref(''),
       windmillRotate: ref(false),
@@ -473,7 +493,9 @@ export default {
       }),
       t,
       locale,
-      clock
+      clock,
+      clockOption,
+      navbarConfig
     }
 
     const state = reactive({
@@ -481,6 +503,8 @@ export default {
       list: [1, 2, 3, 4, 5, 6]
     })
     // themePicker.methods.themeChange(data.themeColor);
+
+    let timer = null
 
     const methods = {
       isDisableItem:()=>{
@@ -813,6 +837,37 @@ export default {
       whiteOrBlack: () => {
         var hour = new Date().getHours()
         return hour > 6 && hour < 18 ? "#fff" : "#000"
+      },
+      initClock:(value)=>{
+        if(typeof (value) === 'undefined'){
+          value = localStorage.getItem("showClock")
+        }
+        if(value && (value==="true" ||value===true)){
+          let ctx = clock.value.getContext('2d')
+          drawClock(ctx,clockOption)
+          timer = setInterval(function () {
+            drawClock(ctx,clockOption)
+            console.log(1)
+          }, 1000)
+          data.clockOption.showClock = value
+        }else{
+          if(timer!==null){
+            clearInterval(timer)
+            data.clockOption.showClock = value
+          }
+        }
+      },
+      initNavbar:(show,position)=> {
+        data.navbarConfig.show = show
+        data.navbarConfig.position = position
+      },
+      initNavbarInfo:()=>{
+        let val = localStorage.getItem("navbarConfig")
+        if(val === null){
+          localStorage.setItem("navbarConfig",JSON.stringify({show:true, position:'left'}))
+        }else{
+          data.navbarConfig.show = JSON.parse(val).show
+        }
       }
     }
 
@@ -823,15 +878,8 @@ export default {
     methods.initSearchEngine();
     methods.initTranslate();
     onMounted(() => {
-      //
-      // nextTick(() => {
-      const ctx = clock.value.getContext('2d');
-      drawClock(ctx)
-      setInterval(function () {
-        drawClock(ctx)
-      }, 1000);
-      //clock.Draw();
-      // })
+      methods.initClock()
+      methods.initNavbarInfo()
     })
     watch(data.rightKeyMenuVisible, (newValue, oldValue) => {
       console.log('值发生了变更', newValue, oldValue);

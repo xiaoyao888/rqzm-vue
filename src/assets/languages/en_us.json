@@ -66,7 +66,7 @@
     "downWallpaper": "Download Wallpaper",
     "backup": "Backup",
     "localSearch": "Local Search",
-    "resetIcon": "Reset your icon to default",
+    "resetIcon": "Reset default icon",
     "resetConfig": "Resets to default configurations such as wallpaper, layout, but does not reset icons",
     "languageSwitch": "Language switch",
     "chinese": "Chinese",
@@ -91,13 +91,14 @@
     "privacy": "Privacy",
     "disclaimer": "Disclaimer",
     "updateRecord": "Update Records",
-    "version": "当前版本",
+    "version": "Current Copyright",
     "douyin": "Tiktok",
     "thanks": "Special thanks",
     "showTime": "Show Time",
+    "showClock": "Show Clock",
     "dateTimeFormat": "Date/Time Format",
     "dateTimeOtherSetting": "Other Setting",
     "dateTimeColor": "Color",
-    "isShowNavBar": "是否展示导航条"
+    "showNavbar": "Show Navbar"
   }
 }
