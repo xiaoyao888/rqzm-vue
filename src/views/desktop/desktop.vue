@@ -594,9 +594,11 @@ export default {
         let bgWallpaper = localStorage.getItem('bgWallpaper')
         if (bgWallpaper && bgWallpaper.length > 0) {
           if(bgWallpaper&&bgWallpaper.indexOf('http') === 0){
-            data.bgWallpaper.value = 'background: url('+bgWallpaper+');background-color:rgb(0,0,0,0.5);background-size:100% 100%;'
+            data.bgWallpaper.value = 'background: url('+bgWallpaper+') no-repeat center center;'+
+                'background-color:rgb(0,0,0,0.5);background-position-x:center;background-position-y:center;'
           }else if(bgWallpaper&&bgWallpaper.indexOf('/img/') === 0){
-            data.bgWallpaper.value = 'background: url('+bgWallpaper+');background-color:rgb(0,0,0,0.5);background-size:100% 100%;'
+            data.bgWallpaper.value = 'background: url('+bgWallpaper+') no-repeat center center;'+
+                'background-color:rgb(0,0,0,0.5);background-position-x:center;background-position-y:center;'
           }else{
             data.bgWallpaper.value = 'background:'+bgWallpaper
           }

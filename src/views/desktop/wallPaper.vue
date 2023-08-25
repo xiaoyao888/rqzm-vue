@@ -6,7 +6,7 @@
           <div class="wallpaper-list">
             <div v-for="(item,index) in pureColorList" :key="index" :style="'background:'+item.background "
                  class="wallpaper-item" @mouseenter="currentHover = index">
-              <div v-if="currentHover===index" class="wallpaper-checked-icon-container" @click="changeWallpaper(item)">
+              <div v-if="currentHover===index" class="wallpaper-checked-icon-container" @click="changeWallpaper(item,1)">
                 <Icon class="wallpaper-checked-icon" icon="CheckOutlined"/>
               </div>
             </div>
@@ -14,9 +14,9 @@
         </a-collapse-panel>
         <a-collapse-panel key="2" header="必应壁纸">
           <div class="wallpaper-list">
-            <div v-for="(item,index) in bingWallpaperList" :key="index" :style="'background:url('+item.thumb+')'"
+            <div v-for="(item,index) in bingWallpaperList" :key="index" :style="'background:url('+item.thumb+');background-size:100% 100%;'"
                  class="wallpaper-item" @mouseenter="currentHover = index">
-              <div v-if="currentHover===index" class="wallpaper-checked-icon-container" @click="changeWallpaper(item)">
+              <div v-if="currentHover===index" class="wallpaper-checked-icon-container" @click="changeWallpaper(item,2)">
                 <Icon class="wallpaper-checked-icon" icon="CheckOutlined"/>
               </div>
             </div>
@@ -24,9 +24,9 @@
         </a-collapse-panel>
         <a-collapse-panel key="3" header="其他壁纸">
           <div class="wallpaper-list">
-            <div v-for="(item,index) in otherWallpaperList" :key="index" :style="'background:url('+item.thumb+')'"
+            <div v-for="(item,index) in otherWallpaperList" :key="index" :style="'background:url('+item.thumb+');background-size:100% 100%;'"
                  class="wallpaper-item" @mouseenter="currentHover = index">
-              <div v-if="currentHover===index" class="wallpaper-checked-icon-container" @click="changeWallpaper(item)">
+              <div v-if="currentHover===index" class="wallpaper-checked-icon-container" @click="changeWallpaper(item,3)">
                 <Icon class="wallpaper-checked-icon" icon="CheckOutlined" />
               </div>
             </div>
@@ -50,8 +50,14 @@ const visible = ref(false);
 const showModal = () => {
   visible.value = true;
 }
-const changeWallpaper = (item)=>{
-  localStorage.setItem("bgWallpaper",item.background)
+const changeWallpaper = (item,flag)=>{
+  if(flag===1){
+    localStorage.setItem("bgWallpaper",item.background)
+  }else if(flag === 2){
+    localStorage.setItem("bgWallpaper",item.fullSrc)
+  }else{
+    localStorage.setItem("bgWallpaper",item.raw)
+  }
   emits('ok',{})
 }
 const emits = defineEmits(['ok'])
