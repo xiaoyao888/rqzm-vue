@@ -311,7 +311,7 @@ export default {
       secondHandLen: 120,//秒针长度
       minuteHandLen: 100,//分针长度
       hourHandLen: 70,//时针长度
-      hours: ["Ⅻ", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ"],//若为空数组，则不显示表盘的数字，默认阿拉伯数字
+      hours: [],//若为空数组，则不显示表盘的数字，默认阿拉伯数字
       hourFontSize: 18,//数字字体大小
       hourFontColor: "brown"//显示的数字颜色
     })
@@ -843,22 +843,34 @@ export default {
         var hour = new Date().getHours()
         return hour > 6 && hour < 18 ? "#fff" : "#000"
       },
-      initClock:(value)=>{
-        if(typeof (value) === 'undefined'){
-          value = localStorage.getItem("showClock")
+      initClock:(show,style)=>{
+        if(typeof (show) === 'undefined'){
+          let clockConfig = localStorage.getItem("clockConfig")
+          if(!clockConfig) return
+          let data = JSON.parse(clockConfig);
+          show = data.show
+          style = data.style
         }
-        if(value && (value==="true" ||value===true)){
+        if(show && (show==="true" ||show===true)){
           let ctx = clock.value.getContext('2d')
+          let clockStyleArr = [
+              ["3", "4", "5", "6", "7", "8","9", "10", "11","12", "1", "2"],
+              ["③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪","⑫", "①", "②"],
+              ["三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "一", "二"],
+              ["叁", "肆", "伍", "陆", "柒", "捌", "玖", "拾", "拾壹", "拾贰", "壹", "贰"],
+              ["Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ","Ⅻ", "Ⅰ", "Ⅱ"]
+          ]
+          clockOption.hours = clockStyleArr[style-1];
           drawClock(ctx,clockOption)
           timer = setInterval(function () {
             drawClock(ctx,clockOption)
             console.log(1)
           }, 1000)
-          data.clockOption.showClock = value
+          data.clockOption.showClock = show
         }else{
           if(timer!==null){
             clearInterval(timer)
-            data.clockOption.showClock = value
+            data.clockOption.showClock = show
           }
         }
       },

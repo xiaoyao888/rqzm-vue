@@ -101,37 +101,36 @@
             </div>
             <div v-if="menuIndex==='dateTime'">
               <div class="settingItem">
-                {{ showTime }}
+                <span class="title">{{ $t("action.showTime") }}</span>
                 <div class="content">
-                  {{ t('action.showTime') }}
                   <a-switch v-model:checked="showTime" @change="changeDateTime"></a-switch>
                 </div>
               </div>
-              <div class="settingItem">
+              <div class="settingItem" v-if="showTime">
                 <span class="title">{{ $t("action.dateTimeFormat") }}</span>
                 <div class="content">
                   <div class="dateTimeFormat">
-                    <a-tag effect="dark" :type="dateTimeConfig.format==='yyyy-MM-dd HH:mm:ss'?'':'info'"
+                    <a-button size="small" effect="dark" :type="dateTimeConfig.format==='yyyy-MM-dd HH:mm:ss'?'primary':''"
                            @click="changeDateFormat('yyyy-MM-dd HH:mm:ss',1000)">年月日时分秒
-                    </a-tag>
-                    <a-tag effect="dark" :type="dateTimeConfig.format==='yyyy-MM-dd HH:mm'?'':'info'"
+                    </a-button>
+                    <a-button size="small" effect="dark" :type="dateTimeConfig.format==='yyyy-MM-dd HH:mm'?'primary':''"
                            @click="changeDateFormat('yyyy-MM-dd HH:mm',6000)">年月日时分
-                    </a-tag>
-                    <a-tag effect="dark" :type="dateTimeConfig.format==='yyyy-MM-dd'?'':'info'"
+                    </a-button>
+                    <a-button size="small" effect="dark" :type="dateTimeConfig.format==='yyyy-MM-dd'?'primary':''"
                            @click="changeDateFormat('yyyy-MM-dd',1000*60*60*24)">年月日
-                    </a-tag>
-                    <a-tag effect="dark" :type="dateTimeConfig.format==='MM-dd HH:mm'?'':'info'"
+                    </a-button>
+                    <a-button size="small" effect="dark" :type="dateTimeConfig.format==='MM-dd HH:mm'?'primary':''"
                            @click="changeDateFormat('MM-dd HH:mm')">月日 时分
-                    </a-tag>
-                    <a-tag effect="dark" :type="dateTimeConfig.format==='MM-dd'?'':'info'"
+                    </a-button>
+                    <a-button size="small" effect="dark" :type="dateTimeConfig.format==='MM-dd'?'primary':''"
                            @click="changeDateFormat('MM-dd')">月日
-                    </a-tag>
-                    <a-tag effect="dark" :type="dateTimeConfig.format==='HH:mm:ss'?'':'info'"
+                    </a-button>
+                    <a-button size="small" effect="dark" :type="dateTimeConfig.format==='HH:mm:ss'?'primary':''"
                            @click="changeDateFormat('HH:mm:ss')">时分秒
-                    </a-tag>
-                    <a-tag effect="dark" :type="dateTimeConfig.format==='HH:mm'?'':'info'"
+                    </a-button>
+                    <a-button size="small" effect="dark" :type="dateTimeConfig.format==='HH:mm'?'primary':''"
                            @click="changeDateFormat('HH:mm')">时分
-                    </a-tag>
+                    </a-button>
                   </div>
                 </div>
               </div>
@@ -139,24 +138,27 @@
                 <span class="title">{{ $t("action.dateTimeOtherSetting") }}</span>
                 <div class="content">
                   <div class="dateTimeOtherSetting">
-                    <a-switch v-model="dateTimeConfig.week" inactive-text="星期" @change="changeWeek"></a-switch>
+                    星期 <a-switch v-model:checked="showWeek" @change="changeWeek"></a-switch>
                   </div>
                   <div class="dateTimeOtherSetting">
-                    <a-switch v-model="dateTimeConfig.weight" inactive-text="粗细" @change="changeDateWeight"></a-switch>
+                    粗细 <a-switch v-model:checked="showWeight" @change="changeDateWeight"></a-switch>
                   </div>
                   <div class="dateTimeOtherSetting">
-                    <a-switch v-model="dateTimeConfig.lunar" inactive-text="阴历" @change="changeDateLunar"></a-switch>
+                    阴历 <a-switch v-model:checked="showLunar" @change="changeDateLunar"></a-switch>
+                  </div>
+                  <div class="dateTimeOtherSetting">
+                    天/周 <a-switch v-model:checked="showDay" @change="changeDateDay"></a-switch>
                   </div>
                 </div>
               </div>
-              <div class="settingItem">
-                <span class="title">{{ $t("action.dateTimeColor") }}</span>
-                <div class="content">
-                  <div class="iconStyle">
-                    <color-picker @ok="selectColor"></color-picker>
-                  </div>
-                </div>
-              </div>
+<!--              <div class="settingItem">-->
+<!--                <span class="title">{{ $t("action.dateTimeColor") }}</span>-->
+<!--                <div class="content">-->
+<!--                  <div class="iconStyle">-->
+<!--                    <color-picker @ok="selectColor"></color-picker>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
             </div>
             <div v-if="menuIndex==='themeWallpaper'">
               <div class="settingItem">
@@ -175,21 +177,36 @@
               <div class="settingItem">
                 <span class="title">{{ $t("action.showClock") }}</span>
                 <div class="content">
-                  <a-switch v-model:checked="showClock" @change="changeClock"></a-switch>
+                  <a-switch v-model:checked="clockShow" @change="changeClock"></a-switch>
+                </div>
+              </div>
+
+              <div class="settingItem" v-if="clockShow">
+                <span class="title">{{ $t("action.clockStyle") }}</span>
+                <div class="content">
+                  <a-button-group>
+                    <a-button :type="clockStyle ===1?'primary':''" @click="changeStyle(1)">1</a-button>
+                    <a-button :type="clockStyle ===2?'primary':''" @click="changeStyle(2)">①</a-button>
+                    <a-button :type="clockStyle ===3?'primary':''" @click="changeStyle(3)">一</a-button>
+                    <a-button :type="clockStyle ===4?'primary':''" @click="changeStyle(4)">壹</a-button>
+                    <a-button :type="clockStyle ===5?'primary':''" @click="changeStyle(5)">Ⅰ</a-button>
+                  </a-button-group>
                 </div>
               </div>
               <div class="settingItem">
                 <span class="title">{{ $t("action.showNavbar") }}</span>
                 <div class="content">
-                  <a-switch v-model:checked="navbarConfig.show" @change="changeNavbar"></a-switch>
+                  <a-switch v-model:checked="navbarShow" @change="changeNavbar"></a-switch>
                 </div>
+              </div>
+              <div class="settingItem" v-if="navbarShow">
                 <span class="title">{{ $t("action.navbarPosition") }}</span>
                 <div class="content">
                   <a-button-group>
-                    <a-button :type="navbarConfig.position ==='top'?'primary':''" @click="changePosition('top')">上</a-button>
-                    <a-button :type="navbarConfig.position ==='bottom'?'primary':''" @click="changePosition('bottom')">下</a-button>
-                    <a-button :type="navbarConfig.position ==='left'?'primary':''" @click="changePosition('left')">左</a-button>
-                    <a-button :type="navbarConfig.position ==='right'?'primary':''" @click="changePosition('right')">右</a-button>
+                    <a-button :type="navbarPosition ==='top'?'primary':''" @click="changePosition('top')">上</a-button>
+                    <a-button :type="navbarPosition ==='bottom'?'primary':''" @click="changePosition('bottom')">下</a-button>
+                    <a-button :type="navbarPosition ==='left'?'primary':''" @click="changePosition('left')">左</a-button>
+                    <a-button :type="navbarPosition ==='right'?'primary':''" @click="changePosition('right')">右</a-button>
                   </a-button-group>
                 </div>
               </div>
@@ -259,27 +276,35 @@ import serviceapi from "@/api/serviceapi";
 // import themePicker from "@/components/ThemePicker";
 const {t, locale} = useI18n()
 let showTime = ref();
-let showClock = ref(false);
+const clockShow = ref(false)
+const clockStyle = ref(1)
 const visible = ref(false)
 const height = ref(800)
 const themeMode1 = ref('dark')
 const themeColor = ref(null)
-const navbarConfig = reactive({ show : true, position: 'left'})
+const navbarShow =  ref(false)
+const navbarPosition =  ref('left')
 const menuIndex = ref('basicSetting')
 const currentLanguage = ref('zh_cn')
 const dateTimeConfig = reactive({
-  constshowTime: true,
+  showTime: true,
   format: "yyyy-MM-dd",
-  week: true,
-  lunar: true,
   color: '#000000',
+  timestamp: 1000 * 60 * 60 * 2,
+  week: true,
   weight: true,
-  timestamp: 1000 * 60 * 60 * 2
+  lunar: true,
+  day: true
 })
+const showWeek = ref(false)
+const showWeight = ref(false)
+const showLunar = ref(false)
+const showDay = ref(false)
+
 const colors = reactive(['#1681ff', '#2ecc71', '#33c5c5', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'])
 
 const afterVisibleChange = (bool) => {
-  // console.log('visible', bool);
+  initConfig();
 };
 
 
@@ -294,19 +319,27 @@ const initConfig = () => {
   //初始化日期配置
   let dateTimeConfig = localStorage.getItem('dateTimeConfig')
   if (dateTimeConfig && dateTimeConfig.length > 0) {
-    dateTimeConfig = JSON.parse(dateTimeConfig);
+    dateTimeConfig = JSON.parse(dateTimeConfig)
     showTime.value = dateTimeConfig.showTime
+    showWeek.value = dateTimeConfig.week
+    showWeight.value = dateTimeConfig.weight
+    showLunar.value = dateTimeConfig.lunar
+    showDay.value = dateTimeConfig.day
   }
 
   //初始化表配置
-  let sc = localStorage.getItem('showClock')
-  if (sc) {
-    showClock.value = sc === 'true'
+  let cc = localStorage.getItem('clockConfig')
+  if (cc) {
+    let data = JSON.parse(cc)
+    clockShow.value = data.show
+    clockStyle.value = data.style
   }
   //初始化导航配置
   let navbar = localStorage.getItem('navbarConfig')
   if (navbar) {
-    navbarConfig.value = JSON.parse(navbar)
+    let data = JSON.parse(navbar)
+    navbarShow.value = data.show
+    navbarPosition.value = data.position
   }
 }
 
@@ -348,56 +381,72 @@ const changeThemeMode = (bool) => {
 //   // })
 }
 const changeNavbar = (bool) => {
-  navbarConfig.show = bool
-  emits("changeNavbar", navbarConfig.show, navbarConfig.position)
-  let data = {show: navbarConfig.show, position: navbarConfig.position}
+  navbarShow.value = bool
+  emits("changeNavbar", navbarShow.value, navbarPosition.value)
+  let data = {show: navbarShow.value, position: navbarPosition.value}
   localStorage.setItem('navbarConfig', JSON.stringify(data));
 }
 const changePosition = (position) => {
-  navbarConfig.position = position
-  emits("changeNavbar", navbarConfig.show, navbarConfig.position)
-  localStorage.setItem('navbarConfig', JSON.stringify(navbarConfig));
+  navbarPosition.value = position
+  emits("changeNavbar", navbarShow.value, navbarPosition.value)
+  let data = {show: navbarShow.value, position: navbarPosition.value}
+  localStorage.setItem('navbarConfig', JSON.stringify(data));
 }
+
+const changeClock = (bool) => {
+  clockShow.value = bool
+  emits("changeClock", clockShow.value, clockStyle.value)
+  let data = {show: clockShow.value, style: clockStyle.value}
+  localStorage.setItem('clockConfig', JSON.stringify(data));
+}
+const changeStyle = (style) => {
+  clockStyle.value = style
+  emits("changeClock", clockShow.value, clockStyle.value)
+  let data = {show: clockShow.value, style: clockStyle.value}
+  localStorage.setItem('clockConfig', JSON.stringify(data));
+}
+
 const changeDateTime = (bool) => {
   showTime.value = bool
   dateTimeConfig.showTime = bool;
-  saveDateSetting();
-  emits("changeDateTime", dateTimeConfig)
-  // window.location.reload();
-}
-const changeClock = (bool) => {
-  showClock.value = bool
-  emits("changeClock", showClock.value)
-  localStorage.setItem('showClock', showClock.value);
+  saveDateSetting()
 }
 const changeDateFormat = (value, timestamp) => {
-  dateTimeConfig.format = value;
-  dateTimeConfig.timestamp = timestamp;
-  saveDateSetting();
+  dateTimeConfig.format = value
+  dateTimeConfig.timestamp = timestamp
+  saveDateSetting()
 }
 const changeWeek = (bool) => {
-  dateTimeConfig.week = bool;
-  saveDateSetting();
+  dateTimeConfig.week = bool
+  showWeek.value = bool
+  saveDateSetting()
 }
 const changeDateWeight = (bool) => {
-  dateTimeConfig.weight = bool;
-  saveDateSetting();
+  dateTimeConfig.weight = bool
+  showWeight.value = bool
+  saveDateSetting()
 }
 const changeDateLunar = (bool) => {
-  dateTimeConfig.lunar = bool;
-  saveDateSetting();
+  dateTimeConfig.lunar = bool
+  showLunar.value = bool
+  saveDateSetting()
 }
-const selectColor = (value) => {
-  dateTimeConfig.color = value;
-  saveDateSetting();
+const changeDateDay = (bool) => {
+  dateTimeConfig.day = bool
+  showDay.value = bool
+  saveDateSetting()
 }
+// const selectColor = (value) => {
+//   dateTimeConfig.color = value
+//   saveDateSetting()
+// }
 const selectThemeColor = (value) => {
   // this.$store.state.settings.themeColor = value
   // this.$refs.themePicker.themeChange(value);
 }
 const saveDateSetting = () => {
-  // this.$emit('changeDateTime', this.dateTimeConfig);
   localStorage.setItem('dateTimeConfig', JSON.stringify(dateTimeConfig));
+  emits("changeDateTime", dateTimeConfig)
 }
 // const saveThemeSetting = () => {
 //   // this.$emit('changeDateTime', this.dateTimeConfig);
@@ -429,7 +478,7 @@ const resetSetting = () => {
 
 }
 
-initConfig();
+
 defineExpose({
   visible
 })
