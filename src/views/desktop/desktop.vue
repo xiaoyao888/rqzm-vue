@@ -40,7 +40,7 @@
                 <today-sentence-widget v-else-if="element.type==='component' && element.component==='todaySentence'"
                                        :size="element.size?element.size:'1x1'"/>
                 <today-poetry-widget v-else-if="element.type==='component' && element.component==='todayPoetry'"
-                                       :size="element.size?element.size:'1x1'"/>
+                                     :size="element.size?element.size:'1x1'"/>
               </div>
               <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
             </div>
@@ -63,7 +63,7 @@
     <div class="leftBar" :class="navbarConfig.position==='top'?'topBar':
         navbarConfig.position==='right'?'rightBar':
         navbarConfig.position==='bottom'?'bottomBar':
-        '1'" v-show="navbarConfig.show"  >
+        '1'" v-show="navbarConfig.show">
       <div class="loginVisible" @click="showDialog('userLogin')">
         <div v-if="userInfo.nickName" class="login" @click="drawer('person')">
           <a>{{ userInfo.nickName }}</a>
@@ -116,15 +116,16 @@
       </div>
 
       <div class="dateTime" :style="(dateTimeConfig.weight?'font-weight:bold':'')" @click="showDialog('calendar')">
-        <span v-if="dateTimeConfig.showTime" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''" @click="nightClockWidget.showModal()">{{ nowDateTime }} </span>
+        <span v-if="dateTimeConfig.showTime" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''"
+              @click="nightClockWidgetModal.showModal()">{{ nowDateTime }} </span>
         <span v-if="dateTimeConfig.week" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
 					{{ nowWeek }}
 				</span>
         <span v-if="dateTimeConfig.lunar" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
 					{{ nowLunar }}
 				</span>
-        <span v-if="dateTimeConfig.lunar" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
-        {{currentDay}}
+        <span v-if="dateTimeConfig.day" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
+          {{ currentDay }}
 				</span>
       </div>
       <div style="clear:both"></div>
@@ -176,7 +177,8 @@
         <Icon icon="EditOutlined"/>
         {{ $t("common.edit") }}
       </li>
-      <li class="contextmenu-item hover" v-if="isDisableItem()" @click="batchDeleteAppItemVisible = !batchDeleteAppItemVisible">
+      <li class="contextmenu-item hover" v-if="isDisableItem()"
+          @click="batchDeleteAppItemVisible = !batchDeleteAppItemVisible">
         <Icon icon="DeleteOutlined"/>
         {{ batchDeleteAppItemVisible ? $t("common.cancelBatchDelete") : $t("common.batchDelete") }}
       </li>
@@ -193,20 +195,20 @@
              @changeClock="initClock" @changeNavbar="initNavbar"></setting>
     <add-app-item ref="addAppItemModal" @ok="initIconList()"></add-app-item>
     <!--		<search-icon ref="searchIcon"></search-icon>-->
-    <login ref="userLogin" @success="initUserInfo()"></login>
+    <login ref="userLoginModal" @success="initUserInfo()"></login>
     <todo-list ref="todoListModal"></todo-list>
-    <support-author ref="supportAuthor"></support-author>
-    <privatization ref="privatization"></privatization>
-    <countdown ref="countdown" @ok="initIconList()"></countdown>
-    <calendar ref="calendar"></calendar>
+    <support-author ref="supportAuthorModal"></support-author>
+    <privatization ref="privatizationModal"></privatization>
+    <countdown ref="countdownModal" @ok="initIconList()"></countdown>
+    <calendar ref="calendarModal"></calendar>
     <app-store ref="appStoreModal" @addIcon="addIcon"></app-store>
-    <night-clock-widget ref="nightClockWidget" />
-    <wall-paper ref="wallpaper" @ok="initWallPaper"></wall-paper>
-    <today-poetry ref="todayPoetry"></today-poetry>
+    <night-clock-widget ref="nightClockWidgetModal"/>
+    <wall-paper ref="wallpaperModal" @ok="initWallPaper"></wall-paper>
+    <today-poetry ref="todayPoetryModal"></today-poetry>
     <!--		<person ref="person" :user-info="userInfo"></person>-->
   </div>
 </template>
-<script>
+<script setup>
 import {
   ref,
   toRefs,
@@ -254,663 +256,604 @@ import {
 } from "ant-design-vue";
 import wallPaper from "@/views/desktop/wallPaper";
 import TodayPoetry from "@/views/widgets/todayPoetry";
-export default {
-  name: "desktopIndex",
-  directives: {
-    // waves
+
+
+const nightClockWidgetModal = ref(null)
+const clock = ref(null)
+const supportAuthorModal = ref(null)
+const privatizationModal = ref(null)
+const settingModal = ref(null)
+const userLoginModal = ref(null)
+const calendarModal = ref(null)
+const countdownModal = ref(null)
+const appStoreModal = ref(null)
+const addAppItemModal = ref(null)
+const todoListModal = ref(null)
+const wallpaperModal = ref(null)
+const todayPoetryModal = ref(null)
+
+const clockOption = reactive({
+  showClock: false,
+  width: 120,
+  height: 120,
+  shadow: {//阴影
+    color: "#ccc",//颜色
+    offsetX: 5,//偏移量
+    offsetY: 5,
+    blur: 10//模糊度
   },
-  components: {
-    TodayPoetry,
-    wallPaper,
-    nightClockWidget,
-    todayEnglishWidget,
-    todaySentenceWidget,
-    todayPoetryWidget,
-    AppStore,
-    Icon,
-    draggable,
-    setting,
-    addAppItem,
-    // searchIcon,
-    login,
-    todoList,
-    supportAuthor,
-    privatization,
-    calendar,
-    calendarWidget,
-    countdown,
-    countdownWidget
-    // person
+  size: 400,//时钟的尺寸
+  handHeaderLen: 10,//时针、分针、秒针的针头长度
+  secondHandLen: 120,//秒针长度
+  minuteHandLen: 100,//分针长度
+  hourHandLen: 70,//时针长度
+  hours: [],//若为空数组，则不显示表盘的数字，默认阿拉伯数字
+  hourFontSize: 18,//数字字体大小
+  hourFontColor: "brown"//显示的数字颜色
+})
+const {t, locale} = useI18n()
+const navbarConfig = reactive({show: true, position: 'left'})
+const keyword = ref('')
+const windmillRotate = ref(false)
+const drawerVisible = ref(false)
+const dateTimeConfig = reactive({
+  showTime: true,
+  format: "yyyy-MM-dd",
+  week: true,
+  lunar: true,
+  color: '#ffffff',
+  weight: true,
+  timestamp: 1000 * 60 * 60 * 24,
+  day: true,
+})
+// background: "https://dogefs.s3.ladydaily.com/~/source/unsplash/photo-1673912402587-57ac40f1b4a5?ixid=M3w0MjI2NjN8MHwxfHRvcGljfHx4alBSNGhsa0JHQXx8fHx8Mnx8MTY4ODE5OTQyN3w&ixlib=rb-4.0.3&w=2560&h=1440&fmt=webp",
+const bgWallpaper = ref(null)
+const themeMode = ref('light') //this.$store.state.settings.themeMode,
+const themeColor = ref('#000000') //this.$store.state.settings.themeColor,
+const options = reactive({
+  navigation: true,
+  slidesNavigation: true,
+  slidesNavPosition: 'bottom',
+  css3: true,
+  scrollingSpeed: 700,
+})
+const nowDateTime = ref('')
+const nowWeek = ref('')
+const nowLunar = ref('')
+const currentDay = ref('')
+const currentIconPage = ref(0)
+const iconDefaultData = reactive([])
+const searchEngine = ref('')
+const searchEngineList = reactive([{
+  "key": "baidu",
+  "name": "百度",
+  "nameEn": "Baidu",
+  "url": "https://www.baidu.com/s?wd="
+},
+  {
+    "key": "bing",
+    "name": "必应",
+    "nameEn": "Bing",
+    "url": "https://cn.bing.com/search?q="
   },
-  setup() {
-    const nightClockWidget= ref(null)
-    const clock = ref(null)
-    const supportAuthor = ref(null)
-    const privatization = ref(null)
-    const settingModal = ref(null)
-    const userLogin = ref(null)
-    const calendar = ref(null)
-    const countdown = ref(null)
-    const appStoreModal = ref(null)
-    const addAppItemModal = ref(null)
-    const todoListModal = ref(null)
-    const wallpaper = ref(null)
-    const todayPoetry = ref(null)
-    const clockOption = reactive({
-      showClock: false,
-      width: 120,
-      height: 120,
-      shadow: {//阴影
-        color: "#ccc",//颜色
-        offsetX: 5,//偏移量
-        offsetY: 5,
-        blur: 10//模糊度
-      },
-      size: 400,//时钟的尺寸
-      handHeaderLen: 10,//时针、分针、秒针的针头长度
-      secondHandLen: 120,//秒针长度
-      minuteHandLen: 100,//分针长度
-      hourHandLen: 70,//时针长度
-      hours: [],//若为空数组，则不显示表盘的数字，默认阿拉伯数字
-      hourFontSize: 18,//数字字体大小
-      hourFontColor: "brown"//显示的数字颜色
-    })
-    const {
-      t,
-      locale
-    } = useI18n()
-    let components = {
-      supportAuthor,
-      privatization,
-      settingModal,
-      userLogin,
-      calendar,
-      calendarWidget,
-      countdown,
-      countdownWidget,
-      appStoreModal,
-      addAppItemModal,
-      todoListModal,
-      nightClockWidget,
-      wallpaper,
-      todayPoetry
+  {
+    "key": "google",
+    "name": "谷歌",
+    "nameEn": "Google",
+    "url": "https://www.google.com/search?q="
+  },
+  {
+    "key": "github",
+    "name": "Github",
+    "nameEn": "Github",
+    "url": "https://github.com/search?q="
+  },
+  {
+    "key": "gitee",
+    "name": "Gitee",
+    "nameEn": "Gitee",
+    "url": "https://search.gitee.com/?skin=rec&type=repository&q="
+  },
+  {
+    "key": "douyin",
+    "name": "抖音",
+    "nameEn": "DouYin",
+    "url": "https://www.douyin.com/search/"
+  },
+  {
+    "key": "kuaishou",
+    "name": "快手",
+    "nameEn": "Kwai",
+    "url": "https://kuaishou.cn/search/video?searchKey="
+  },
+  {
+    "key": "xiaohongshu",
+    "name": "小红书",
+    "nameEn": "RedBook",
+    "href": "https://www.xiaohongshu.com/search_result/?&m_source=itab&keyword="
+  },
+  {
+    "key": "duckduckgo",
+    "name": "DuckDuckGo",
+    "nameEn": "DuckDuckGo",
+    "href": "https://duckduckgo.com/?q="
+  },
+  {
+    "key": "zhihu",
+    "name": "知乎",
+    "nameEn": "ZhiHu",
+    "href": "https://www.zhihu.com/search?type=content&q="
+  },
+  {
+    "key": "sougou",
+    "name": "搜狗",
+    "nameEn": "Sogou",
+    "href": "https://www.sogou.com/sogou?query="
+  },
+  {
+    "key": "360",
+    "name": "360",
+    "nameEn": "360",
+    "href": "https://www.so.com/s?q="
+  },
+  {
+    "key": "stackoverflow",
+    "name": "StackOverflow",
+    "nameEn": "StackOverflow",
+    "href": "https://stackoverflow.com/nocaptcha?s="
+  },
+  {
+    "key": "toutiao",
+    "name": "头条搜索",
+    "nameEn": "TouTiao",
+    "href": "https://so.toutiao.com/search?dvpf=pc&keyword="
+  },
+  {
+    "key": "douban",
+    "name": "豆瓣",
+    "nameEn": "DouBan",
+    "href": "https://www.douban.com/search?q="
+  },
+  {
+    "key": "bilibili",
+    "name": "哔哩哔哩",
+    "nameEn": "BiLiBiLi",
+    "href": "https://search.bilibili.com/all?keyword="
+  },
+  {
+    "key": "kaifabaidu",
+    "name": "开发者搜索",
+    "nameEn": "DevSearch",
+    "href": "https://kaifa.baidu.com/searchPage?wd="
+  },
+  {
+    "key": "mdn",
+    "name": "MDN",
+    "nameEn": "MDN",
+    "href": "https://developer.mozilla.org/zh-CN/search?q="
+  }
+])
+const translateList = reactive([])
+const selectSectionAppItem = reactive({})
+const selectSectionAppItemSectionIndex = ref(0)
+const selectSectionAppItemIndex = ref(0)
+const rightKeyMenuVisible = ref(false)
+const iconRightMenuVisible = ref(false)
+const rightKeyMenuTop = ref(0)
+const rightKeyMenuLeft = ref(0)
+const dragNav = reactive({})
+const batchDeleteAppItemVisible = ref(false)
+const userInfo = reactive({
+  nickName: "",
+  avatarUrl: "",
+  lastLoginTime: "",
+  lastLoginIp: ""
+})
+
+const state = reactive({
+  drag: false,
+  list: [1, 2, 3, 4, 5, 6]
+})
+// themePicker.themeChange(data.themeColor);
+
+let timer = null
+
+const isDisableItem = () => {
+  if (selectSectionAppItem.value) {
+    if (selectSectionAppItem.value.id === 'da0ebd0b0f2142c723f3s37df80d3241' ||
+        selectSectionAppItem.value.id === 'fb9934a62e194e67ab46102c05ee45ce' ||
+        selectSectionAppItem.value.id === '8aa6b3c126a94b939988e184a2c10f26') {
+      return false
     }
+  }
+  return true
+}
+const initTranslate = () => {
+  translateList.value = require('@/assets/json/translate.json')
+}
+const getTranslateUrl = (item) => {
+  return strFormat(item.url, [keyword.value]);
+}
+const addIcon = (item) => {
+  iconDefaultData.value[item.index].children.push(item.app);
+}
+const rotate = () => {
+  windmillRotate.value = true;
 
-    const navbarConfig = reactive({show: true, position: 'left'})
-    let data = {
-      keyword: ref(''),
-      windmillRotate: ref(false),
-      drawerVisible: ref(false),
-      dateTimeConfig: reactive({
-        showTime: true,
-        format: "yyyy-MM-dd",
-        week: true,
-        lunar: true,
-        color: '#ffffff',
-        weight: true,
-        timestamp: 1000 * 60 * 60 * 24,
-        day: true,
-      }),
-      // background: "https://dogefs.s3.ladydaily.com/~/source/unsplash/photo-1673912402587-57ac40f1b4a5?ixid=M3w0MjI2NjN8MHwxfHRvcGljfHx4alBSNGhsa0JHQXx8fHx8Mnx8MTY4ODE5OTQyN3w&ixlib=rb-4.0.3&w=2560&h=1440&fmt=webp",
-      bgWallpaper: ref(null),
-      themeMode: ref('light'), //this.$store.state.settings.themeMode,
-      themeColor: ref('#000000'), //this.$store.state.settings.themeColor,
-      options: reactive({
-        navigation: true,
-        slidesNavigation: true,
-        slidesNavPosition: 'bottom',
-        css3: true,
-        scrollingSpeed: 700,
-      }),
-      nowDateTime: ref(''),
-      nowWeek: ref(''),
-      nowLunar: ref(''),
-      currentDay: ref(''),
-      currentIconPage: ref(0),
-      iconDefaultData: reactive([]),
-      searchEngine: ref(''),
-      searchEngineList: reactive([{
-        "key": "baidu",
-        "name": "百度",
-        "nameEn": "Baidu",
-        "url": "https://www.baidu.com/s?wd="
-      },
-        {
-          "key": "bing",
-          "name": "必应",
-          "nameEn": "Bing",
-          "url": "https://cn.bing.com/search?q="
-        },
-        {
-          "key": "google",
-          "name": "谷歌",
-          "nameEn": "Google",
-          "url": "https://www.google.com/search?q="
-        },
-        {
-          "key": "github",
-          "name": "Github",
-          "nameEn": "Github",
-          "url": "https://github.com/search?q="
-        },
-        {
-          "key": "gitee",
-          "name": "Gitee",
-          "nameEn": "Gitee",
-          "url": "https://search.gitee.com/?skin=rec&type=repository&q="
-        },
-        {
-          "key": "douyin",
-          "name": "抖音",
-          "nameEn": "DouYin",
-          "url": "https://www.douyin.com/search/"
-        },
-        {
-          "key": "kuaishou",
-          "name": "快手",
-          "nameEn": "Kwai",
-          "url": "https://kuaishou.cn/search/video?searchKey="
-        },
-        {
-          "key": "xiaohongshu",
-          "name": "小红书",
-          "nameEn": "RedBook",
-          "href": "https://www.xiaohongshu.com/search_result/?&m_source=itab&keyword="
-        },
-        {
-          "key": "duckduckgo",
-          "name": "DuckDuckGo",
-          "nameEn": "DuckDuckGo",
-          "href": "https://duckduckgo.com/?q="
-        },
-        {
-          "key": "zhihu",
-          "name": "知乎",
-          "nameEn": "ZhiHu",
-          "href": "https://www.zhihu.com/search?type=content&q="
-        },
-        {
-          "key": "sougou",
-          "name": "搜狗",
-          "nameEn": "Sogou",
-          "href": "https://www.sogou.com/sogou?query="
-        },
-        {
-          "key": "360",
-          "name": "360",
-          "nameEn": "360",
-          "href": "https://www.so.com/s?q="
-        },
-        {
-          "key": "stackoverflow",
-          "name": "StackOverflow",
-          "nameEn": "StackOverflow",
-          "href": "https://stackoverflow.com/nocaptcha?s="
-        },
-        {
-          "key": "toutiao",
-          "name": "头条搜索",
-          "nameEn": "TouTiao",
-          "href": "https://so.toutiao.com/search?dvpf=pc&keyword="
-        },
-        {
-          "key": "douban",
-          "name": "豆瓣",
-          "nameEn": "DouBan",
-          "href": "https://www.douban.com/search?q="
-        },
-        {
-          "key": "bilibili",
-          "name": "哔哩哔哩",
-          "nameEn": "BiLiBiLi",
-          "href": "https://search.bilibili.com/all?keyword="
-        },
-        {
-          "key": "kaifabaidu",
-          "name": "开发者搜索",
-          "nameEn": "DevSearch",
-          "href": "https://kaifa.baidu.com/searchPage?wd="
-        },
-        {
-          "key": "mdn",
-          "name": "MDN",
-          "nameEn": "MDN",
-          "href": "https://developer.mozilla.org/zh-CN/search?q="
-        }
-      ]),
-      translateList: reactive([]),
-      selectSectionAppItem: reactive({}),
-      selectSectionAppItemSectionIndex: ref(0),
-      selectSectionAppItemIndex: ref(0),
-      rightKeyMenuVisible: ref(false),
-      iconRightMenuVisible: ref(false),
-      rightKeyMenuTop: ref(0),
-      rightKeyMenuLeft: ref(0),
-      dragNav: reactive({}),
-      batchDeleteAppItemVisible: ref(false),
-      userInfo: reactive({
-        nickName: "",
-        avatarUrl: "",
-        lastLoginTime: "",
-        lastLoginIp: ""
-      }),
-      t,
-      locale,
-      clock,
-      clockOption,
-      navbarConfig
+  setTimeout(function () {
+    windmillRotate.value = false;
+    const bgData = require('@/assets/json/otherWallpaper.json');
+    const random = Number(randomNumber(0, 111))
+    const bg = bgData[random].raw;
+    bgWallpaper.value = bg;
+    localStorage.setItem("bgWallpaper", bg);
+    initWallPaper();
+  }, 3000);
+}
+let dateTimeTimer = null
+const initDateTime = () => {
+  if(dateTimeTimer!==null){
+    clearInterval(dateTimeTimer)
+  }
+  let dateTimeConfiguration = localStorage.getItem('dateTimeConfig')
+  if (dateTimeConfiguration && dateTimeConfiguration.length > 0) {
+    dateTimeConfiguration = JSON.parse(dateTimeConfiguration);
+    dateTimeConfig.showTime = dateTimeConfiguration.showTime
+    dateTimeConfig.format = dateTimeConfiguration.format
+    dateTimeConfig.color = dateTimeConfiguration.color
+    dateTimeConfig.timestamp = dateTimeConfiguration.timestamp
+    dateTimeConfig.week = dateTimeConfiguration.week
+    dateTimeConfig.weight = dateTimeConfiguration.weight
+    dateTimeConfig.lunar = dateTimeConfiguration.lunar
+    dateTimeConfig.day = dateTimeConfiguration.day
+  } else {
+    localStorage.setItem("dateTimeConfig", JSON.stringify(dateTimeConfig))
+  }
+  let date = new Date()
+  if (dateTimeConfig.showTime) {
+    nowDateTime.value = dateFormat(dateTimeConfig.format, new Date());
+    dateTimeTimer = setInterval(function () {
+      nowDateTime.value = dateFormat(dateTimeConfig.format, new Date())
+    }, dateTimeConfig.timestamp)
+  }
+  if (dateTimeConfig.week) {
+    nowWeek.value = parseTime(date, '{a}', locale.value)
+  }
+  if (dateTimeConfig.lunar) {
+    nowLunar.value = getLunar(date);
+  }
+  if (dateTimeConfig.day) {
+    let year = new Date(date.getFullYear(), 0, 0);
+    let day = parseInt((date - year) / 24 / 60 / 60 / 1000)
+    currentDay.value = "第" + day + "天  第" + Math.ceil(day / 7) + "周"
+  }
+}
+const initIconList = () => {
+  //鍒ゆ柇icon鍒楄〃鏄惁鏈夋暟鎹
+  let defaultData = localStorage.getItem('iconDefaultData') || []
+  if (defaultData) {
+    if (defaultData.length > 0) {
+      defaultData = JSON.parse(defaultData);
+    } else {
+      defaultData = require('@/assets/json/navJsonData.json');
+      localStorage.setItem("iconDefaultData", JSON.stringify(defaultData));
     }
+    iconDefaultData.value = defaultData;
+  }
+}
+const initUserInfo = () => {
+  let user = localStorage.getItem('userInfo')
+  if (user) {
+    userInfo.value = JSON.parse(crypto.decrypt(user));
+  }
+}
+const initWallPaper = () => {
+  let wallpaper = localStorage.getItem('bgWallpaper')
+  if (wallpaper && wallpaper.length > 0) {
+    if (wallpaper && wallpaper.indexOf('http') === 0) {
+      bgWallpaper.value = 'background: url(' + wallpaper + ') no-repeat center center;' +
+          'background-color:rgb(0,0,0,0.5);background-position-x:center;background-position-y:center;'
+    } else if (wallpaper && wallpaper.indexOf('/img/') === 0) {
+      bgWallpaper.value = 'background: url(' + wallpaper + ') no-repeat center center;' +
+          'background-color:rgb(0,0,0,0.5);background-position-x:center;background-position-y:center;'
+    } else {
+      bgWallpaper.value = 'background:' + wallpaper
+    }
+  } else {
+    let bg = getBackgroundImgUrl('background.jpg');
+    localStorage.setItem("bgWallpaper", bg)
+    bgWallpaper.value = 'background: url(' + bg + ');background-color:rgb(0,0,0,0.5);background-size:100% 100%;'
+  }
+}
+const selectDesktop = (item, index) => {
+  currentIconPage.value = index
+}
+const changeThemeMode = (mode) => {
+  this.themeMode = mode;
+}
+const changeDateTime = () => {
+  initDateTime()
+}
+const changeWallpaper = () => {
+  wallpaperModal.value.showModal()
+}
+const showDialog = (value) => {
+  if (value === 'supportAuthor') {
+    supportAuthorModal.value.showModal();
+  } else if (value === 'privatization') {
+    privatizationModal.value.showModal();
+  } else if (value === 'userLogin') {
+    userLoginModal.value.showModal();
+  } else if (value === 'setting') {
+    settingModal.value.visible = true;
+  }
+}
+const getImgUrl = (item) => {
+  if (!item.src) {
+    return;
+  }
+  if (item.src.indexOf("http") !== -1) {
+    return item.src
+  } else {
+    try {
+      return require('@/assets/images/logos/' + item.src + "");
+    } catch (e) {
+    }
+  }
+}
+const getBackgroundImgUrl = (image) => {
+  return require('@/assets/images/wallpaper/' + image);
+}
+const allowDrop = (event) => {
+  event.preventDefault();
+}
+const dragEnterEvent = (event) => {
+  dragNav.value = event.item;
+}
+const dragEnterOver = (event) => {
+  dragNav.value = null;
+  localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData.value))
+}
+const dropEvent = (event) => {
+  event.preventDefault();
+  if (!dragNav.id) {
+    return;
+  }
+}
+const iconBackground = (app) => {
+  if (app.backgroundColor) {
+    return app.backgroundColor;
+  } else {
+    if (app.config && app.config.bgColor) {
+      return app.config.bgColor;
+    } else {
+      return '#ffffff'
+    }
+  }
+}
+const openMenu = (e, sectionIndex, app) => {
+  rightKeyMenuVisible.value = false;
+  iconRightMenuVisible.value = false;
+  if (e.currentTarget.offsetHeight - e.pageY < 110) {
+    rightKeyMenuTop.value = e.pageY;
+  } else {
+    rightKeyMenuTop.value = e.pageY;
+  }
+  if (e.currentTarget.offsetWidth - e.pageX < 110) {
+    rightKeyMenuLeft.value = e.pageX - 120;
+  } else {
+    rightKeyMenuLeft.value = e.pageX;
+  }
 
-    const state = reactive({
-      drag: false,
-      list: [1, 2, 3, 4, 5, 6]
-    })
-    // themePicker.methods.themeChange(data.themeColor);
-
-    let timer = null
-
-    const methods = {
-      isDisableItem:()=>{
-        if(data.selectSectionAppItem.value){
-          if(data.selectSectionAppItem.value.id ==='da0ebd0b0f2142c723f3s37df80d3241' ||
-              data.selectSectionAppItem.value.id ==='fb9934a62e194e67ab46102c05ee45ce' ||
-              data.selectSectionAppItem.value.id ==='8aa6b3c126a94b939988e184a2c10f26'){
-            return false
-          }
+  selectSectionAppItemSectionIndex.value = sectionIndex;
+  if (e.currentTarget.id && e.currentTarget.id.startsWith("appItem")) {
+    let appIndex = 0
+    if (app) {
+      for (let it of iconDefaultData.value[sectionIndex].children) {
+        if (it.name === app.name && it.id === app.id) {
+          break;
         }
-        return true
-      },
-      initTranslate:()=>{
-        data.translateList= require('@/assets/json/translate.json')
-      },
-      getTranslateUrl: (item) => {
-        return strFormat(item.url, [data.keyword.value]);
-      },
-      addIcon: (item) => {
-        data.iconDefaultData.value[item.index].children.push(item.app);
-      },
-      rotate: () => {
-        data.windmillRotate.value = true;
-
-        setTimeout(function () {
-          data.windmillRotate.value = false;
-          const bgData = require('@/assets/json/otherWallpaper.json');
-          const random = Number(randomNumber(0, 111))
-          const bg = bgData[random].raw;
-          data.bgWallpaper.value = bg;
-          localStorage.setItem("bgWallpaper", bg);
-          methods.initWallPaper();
-        }, 3000);
-      },
-      initDateTime: () => {
-        let dateTimeConfig = localStorage.getItem('dateTimeConfig')
-        if (dateTimeConfig && dateTimeConfig.length > 0) {
-          data.dateTimeConfig = reactive(JSON.parse(dateTimeConfig));
-        } else {
-          let config = data.dateTimeConfig
-          localStorage.setItem("dateTimeConfig", JSON.stringify(config))
-        }
-        let date = new Date()
-        if (data.dateTimeConfig.showTime) {
-          data.nowDateTime = dateFormat(data.dateTimeConfig.format, new Date());
-          setInterval(function () {
-            data.nowDateTime = dateFormat(data.dateTimeConfig.format, new Date())
-          }, data.dateTimeConfig.timestamp)
-        }
-        if (data.dateTimeConfig.week) {
-          data.nowWeek = parseTime(date, '{a}', locale.value)
-        }
-        if (data.dateTimeConfig.lunar) {
-          data.nowLunar = getLunar(date);
-        }
-
-        if (data.dateTimeConfig.day) {
-          let year = new Date(date.getFullYear(), 0, 0);
-          let day = parseInt((date - year) / 24 / 60 / 60 / 1000)
-          data.currentDay = "第"+day + "天  第"+Math.ceil(day / 7)+"周"
-        }
-      },
-      initIconList: () => {
-        //鍒ゆ柇icon鍒楄〃鏄惁鏈夋暟鎹
-        let iconDefaultData = localStorage.getItem('iconDefaultData') || []
-        if (iconDefaultData) {
-          if (iconDefaultData.length > 0) {
-            iconDefaultData = JSON.parse(iconDefaultData);
-          } else {
-            iconDefaultData = require('@/assets/json/navJsonData.json');
-            localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData));
-          }
-          data.iconDefaultData.value = iconDefaultData;
-        }
-      },
-      initUserInfo: () => {
-        let userInfo = localStorage.getItem('userInfo')
-        if (userInfo) {
-          userInfo = crypto.decrypt(userInfo);
-          this.userInfo = JSON.parse(userInfo);
-        }
-      },
-      initWallPaper: () => {
-        let bgWallpaper = localStorage.getItem('bgWallpaper')
-        if (bgWallpaper && bgWallpaper.length > 0) {
-          if(bgWallpaper&&bgWallpaper.indexOf('http') === 0){
-            data.bgWallpaper.value = 'background: url('+bgWallpaper+') no-repeat center center;'+
-                'background-color:rgb(0,0,0,0.5);background-position-x:center;background-position-y:center;'
-          }else if(bgWallpaper&&bgWallpaper.indexOf('/img/') === 0){
-            data.bgWallpaper.value = 'background: url('+bgWallpaper+') no-repeat center center;'+
-                'background-color:rgb(0,0,0,0.5);background-position-x:center;background-position-y:center;'
-          }else{
-            data.bgWallpaper.value = 'background:'+bgWallpaper
-          }
-        } else {
-          let bg = methods.getBackgroundImgUrl('background.jpg');
-          localStorage.setItem("bgWallpaper", bg)
-          data.bgWallpaper.value = 'background: url('+bg+');background-color:rgb(0,0,0,0.5);background-size:100% 100%;'
-        }
-      },
-      selectDesktop: (item, index) => {
-        data.currentIconPage.value = index
-      },
-      changeThemeMode: (mode) => {
-        this.themeMode = mode;
-      },
-      changeDateTime: (value) => {
-        data.dateTimeConfig = value;
-        if (data.dateTimeConfig.showTime) {
-          methods.initDateTime()
-        }
-      },
-      changeWallpaper:()=>{
-        wallpaper.value.showModal()
-      },
-      showDialog: (value) => {
-        if (value === 'supportAuthor') {
-          supportAuthor.value.showModal();
-        } else if (value === 'privatization') {
-          privatization.value.showModal();
-        } else if (value === 'userLogin') {
-          userLogin.value.showModal();
-        } else if (value === 'setting') {
-          settingModal.value.visible = true;
-        }
-      },
-      getImgUrl: (item) => {
-        if (!item.src) {
-          return;
-        }
-        if(item.src.indexOf("http") !== -1) {
-          return item.src
-        }else{
-          try {
-            return require('@/assets/images/logos/' + item.src + "");
-          } catch (e) {}
-        }
-      },
-      getBackgroundImgUrl: (image) => {
-        return require('@/assets/images/wallpaper/' +image);
-      },
-      allowDrop: (event) => {
-        event.preventDefault();
-      },
-      dragEnterEvent: (event) => {
-        data.dragNav = event.item;
-      },
-      dragEnterOver: (event) => {
-        data.dragNav = null;
-        localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
-      },
-      dropEvent: (event) => {
-        event.preventDefault();
-        if (!data.dragNav.id) {
-          return;
-        }
-      },
-      iconBackground: (app) => {
-        if (app.backgroundColor) {
-          return app.backgroundColor;
-        } else {
-          if (app.config && app.config.bgColor) {
-            return app.config.bgColor;
-          } else {
-            return '#ffffff'
-          }
-        }
-      },
-      openMenu: (e, sectionIndex, app) => {
-        data.rightKeyMenuVisible.value = false;
-        data.iconRightMenuVisible.value = false;
-        if (e.currentTarget.offsetHeight - e.pageY < 110) {
-          data.rightKeyMenuTop.value = e.pageY;
-        } else {
-          data.rightKeyMenuTop.value = e.pageY;
-        }
-        if (e.currentTarget.offsetWidth - e.pageX < 110) {
-          data.rightKeyMenuLeft.value = e.pageX - 120;
-        } else {
-          data.rightKeyMenuLeft.value = e.pageX;
-        }
-
-        data.selectSectionAppItemSectionIndex.value = sectionIndex;
-        if (e.currentTarget.id && e.currentTarget.id.startsWith("appItem")) {
-          let appIndex = 0
-          if (app) {
-            for (let it of data.iconDefaultData.value[sectionIndex].children) {
-              if (it.name === app.name && it.id === app.id) {
-                break;
-              }
-              appIndex++;
-            }
-            data.selectSectionAppItemIndex.value = appIndex;
-            data.selectSectionAppItem.value = app;
-          }
-          data.iconRightMenuVisible.value = true; //在这里控制右键菜单的打开
-          if (event && event.stopPropagation) { //W3C
-            event.stopPropagation();
-          }
-        } else {
-          data.rightKeyMenuVisible.value = true; //在这里控制右键菜单的打开
-        }
-      },
-      closeMenu: (e) => {
-        data.rightKeyMenuVisible.value = false;
-        data.iconRightMenuVisible.value = false;
-      },
-      deleteAppItem: () => {
-        Modal.confirm({
-          title: t('common.confirmDelete'),
-          icon: Icon("ExclamationCircleOutlined"),
-          okText: '确认',
-          cancelText: '取消',
-          onOk() {
-            return new Promise((resolve, reject) => {
-              let i = 0
-              let item = data.selectSectionAppItem.value
-              let sectionIndex = data.selectSectionAppItemSectionIndex.value
-              for (let it of data.iconDefaultData.value[sectionIndex].children) {
-                if (it.name === item.name && it.id === item.id) {
-                  data.iconDefaultData.value[sectionIndex].children.splice(i,
-                      1);
-                  break
-                }
-                i++
-              }
-              localStorage.setItem("iconDefaultData", JSON.stringify(data
-                  .iconDefaultData.value))
-              resolve();
-            }).catch(() => console.log('Oops errors!'));
-          },
-          onCancel() {
-          },
-        });
-
-      },
-      batchDeleteAppItem: (item) => {
+        appIndex++;
+      }
+      selectSectionAppItemIndex.value = appIndex;
+      selectSectionAppItem.value = app;
+    }
+    iconRightMenuVisible.value = true; //在这里控制右键菜单的打开
+    if (event && event.stopPropagation) { //W3C
+      event.stopPropagation();
+    }
+  } else {
+    rightKeyMenuVisible.value = true; //在这里控制右键菜单的打开
+  }
+}
+const closeMenu = (e) => {
+  rightKeyMenuVisible.value = false;
+  iconRightMenuVisible.value = false;
+}
+const deleteAppItem = () => {
+  Modal.confirm({
+    title: t('common.confirmDelete'),
+    icon: Icon("ExclamationCircleOutlined"),
+    okText: '确认',
+    cancelText: '取消',
+    onOk() {
+      return new Promise((resolve, reject) => {
         let i = 0
-        let sectionIndex = data.selectSectionAppItemSectionIndex.value
-        for (let it of data.iconDefaultData.value[sectionIndex].children) {
+        let item = selectSectionAppItem.value
+        let sectionIndex = selectSectionAppItemSectionIndex.value
+        for (let it of iconDefaultData.value[sectionIndex].children) {
           if (it.name === item.name && it.id === item.id) {
-            data.iconDefaultData.value[sectionIndex].children.splice(i,
-                1);
+            iconDefaultData.value[sectionIndex].children.splice(i, 1);
             break
           }
           i++
         }
-        localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value))
-      },
-      initSearchEngine: () => {
-        let defaultSearchEngine = localStorage.getItem("defaultSearchEngine")
-        if (defaultSearchEngine) {
-          defaultSearchEngine = JSON.parse(defaultSearchEngine);
-          data.searchEngine.value = locale.value === 'zh_cn' ? defaultSearchEngine.name :
-              defaultSearchEngine.nameEn
-        }
-        if (!data.searchEngine.value) {
-          data.searchEngine.value = locale.value === 'zh_cn' ? '百度' : 'Baidu'
-        }
-      },
-      changeSearchEngine: () => {
-        for (let engine of data.searchEngineList) {
-          const name = locale.value === 'zh_cn' ? engine.name : engine.nameEn
-          if (name === data.searchEngine.value) {
-            localStorage.setItem("defaultSearchEngine", JSON.stringify(engine));
-            break;
-          }
-        }
-      },
-      search: () => {
-        if (data.searchEngine.value && data.keyword.value) {
-          let url = '';
-          for (let engine of data.searchEngineList) {
-            if (engine.name === data.searchEngine.value) {
-              url = engine.url;
-              break;
-            }
-          }
-          window.open(url + data.keyword.value, "_blank");
-        }
-      },
-      appClick: (item, sectionIndex) => {
-        let appIndex = 0;
-        for (let it of data.iconDefaultData.value[sectionIndex].children) {
-          if (it.name === item.name && it.id === item.id) {
-            break;
-          }
-          appIndex++;
-        }
-        if (item.type === 'icon' || item.type === 'text') {
-          window.open(item.url, "_blank");
-        } else if (item.type === 'component') {
-          if (item.id === 'fb9934a62e194e67ab46102c05ee45ce') {
-            addAppItemModal.value.showModal()
-          } else if (item.id === '96eb2b757ec54b35b1d2a5d6bf13311a') {
-            todoListModal.value.showModal()
-          } else if (item.id === '8aa6b3c126a94b939988e184a2c10f26') {
-            settingModal.value.visible = true;
-          } else if (item.id === 'da0ebd0b0f2142c723f3s37df80d3241') {
-            appStoreModal.value.showModal()
-          } else if (item.component === 'countdown' || item.component === 'countdownTime') {
-            countdown.value.showModal()
-            countdown.value.editWidget(item, sectionIndex, appIndex)
-          } else if (item.id === '134df2c360e14809b15054a0be4eb57b') {
-            calendar.value.showModal()
-          } else if (item.id === '006e4b384ffb4e60b823454bb4fk49fk') {
-            nightClockWidget.value.showModal()
-          } else if (item.id === 'a5f51a862bfd408ba456b8d6c7afcd78') {
-            todayPoetry.value.showModal()
-          }
-        }
-      },
-      moveToFirstPage: (index) => {
-        const appItem = data.selectSectionAppItem.value
-        const appIndex = data.selectSectionAppItemIndex.value
-        const sectionIndex = data.selectSectionAppItemSectionIndex.value
-        data.iconDefaultData.value[index].children.push(appItem);
-        data.iconDefaultData.value[sectionIndex].children.splice(appIndex, 1);
-        methods.saveIconDefaultData()
-        message.info("操作成功！")
-      },
-      saveIconDefaultData: () => {
-        localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value));
-      },
-      changeAppIconlayout: (value) => {
-        let sectionIndex = data.selectSectionAppItemSectionIndex.value;
-        let appIndex = data.selectSectionAppItemIndex.value;
-        data.selectSectionAppItem.size = value;
-        data.iconDefaultData.value[sectionIndex].children[appIndex].size = value;
-        localStorage.setItem("iconDefaultData", JSON.stringify(data.iconDefaultData.value));
-      },
-      whiteOrBlack: () => {
-        var hour = new Date().getHours()
-        return hour > 6 && hour < 18 ? "#fff" : "#000"
-      },
-      initClock:(show,style)=>{
-        if(typeof (show) === 'undefined'){
-          let clockConfig = localStorage.getItem("clockConfig")
-          if(!clockConfig) return
-          let data = JSON.parse(clockConfig);
-          show = data.show
-          style = data.style
-        }
-        if(show && (show==="true" ||show===true)){
-          let ctx = clock.value.getContext('2d')
-          let clockStyleArr = [
-              ["3", "4", "5", "6", "7", "8","9", "10", "11","12", "1", "2"],
-              ["③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪","⑫", "①", "②"],
-              ["三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "一", "二"],
-              ["叁", "肆", "伍", "陆", "柒", "捌", "玖", "拾", "拾壹", "拾贰", "壹", "贰"],
-              ["Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ","Ⅻ", "Ⅰ", "Ⅱ"]
-          ]
-          clockOption.hours = clockStyleArr[style-1];
-          drawClock(ctx,clockOption)
-          timer = setInterval(function () {
-            drawClock(ctx,clockOption)
-            console.log(1)
-          }, 1000)
-          data.clockOption.showClock = show
-        }else{
-          if(timer!==null){
-            clearInterval(timer)
-            data.clockOption.showClock = show
-          }
-        }
-      },
-      initNavbar:(show,position)=> {
-        data.navbarConfig.show = show
-        data.navbarConfig.position = position
-      },
-      initNavbarInfo:()=>{
-        let val = localStorage.getItem("navbarConfig")
-        if(val === null){
-          localStorage.setItem("navbarConfig",JSON.stringify({show:true, position:'left'}))
-        }else{
-          data.navbarConfig.show = JSON.parse(val).show
-          data.navbarConfig.position = JSON.parse(val).position
-        }
-      }
-    }
+        localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData.value))
+        resolve();
+      }).catch(() => console.log('Oops errors!'));
+    },
+    onCancel() {
+    },
+  });
 
-    methods.initDateTime();
-    methods.initIconList();
-    methods.initUserInfo();
-    methods.initWallPaper();
-    methods.initSearchEngine();
-    methods.initTranslate();
-    onMounted(() => {
-      methods.initClock()
-      methods.initNavbarInfo()
-    })
-    watch(data.rightKeyMenuVisible, (newValue, oldValue) => {
-      console.log('值发生了变更', newValue, oldValue);
-    });
-    document.body.addEventListener('click', methods.closeMenu)
-    return {
-      ...components,
-      ...data,
-      ...methods,
-      ...toRefs(state)
-    };
+}
+const batchDeleteAppItem = (item) => {
+  let i = 0
+  let sectionIndex = selectSectionAppItemSectionIndex.value
+  for (let it of iconDefaultData.value[sectionIndex].children) {
+    if (it.name === item.name && it.id === item.id) {
+      iconDefaultData.value[sectionIndex].children.splice(i, 1);
+      break
+    }
+    i++
+  }
+  localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData.value))
+}
+const initSearchEngine = () => {
+  let defaultSearchEngine = localStorage.getItem("defaultSearchEngine")
+  if (defaultSearchEngine) {
+    defaultSearchEngine = JSON.parse(defaultSearchEngine);
+    searchEngine.value = locale.value === 'zh_cn' ? defaultSearchEngine.name :
+        defaultSearchEngine.nameEn
+  }
+  if (!searchEngine.value) {
+    searchEngine.value = locale.value === 'zh_cn' ? '百度' : 'Baidu'
   }
 }
+const changeSearchEngine = () => {
+  for (let engine of searchEngineList) {
+    const name = locale.value === 'zh_cn' ? engine.name : engine.nameEn
+    if (name === searchEngine.value) {
+      localStorage.setItem("defaultSearchEngine", JSON.stringify(engine));
+      break;
+    }
+  }
+}
+const search = () => {
+  if (searchEngine.value && keyword.value) {
+    let url = '';
+    for (let engine of searchEngineList) {
+      if (engine.name === searchEngine.value) {
+        url = engine.url;
+        break;
+      }
+    }
+    window.open(url + keyword.value, "_blank");
+  }
+}
+const appClick = (item, sectionIndex) => {
+  let appIndex = 0;
+  for (let it of iconDefaultData.value[sectionIndex].children) {
+    if (it.name === item.name && it.id === item.id) {
+      break;
+    }
+    appIndex++;
+  }
+  if (item.type === 'icon' || item.type === 'text') {
+    window.open(item.url, "_blank");
+  } else if (item.type === 'component') {
+    if (item.id === 'fb9934a62e194e67ab46102c05ee45ce') {
+      addAppItemModal.value.showModal()
+    } else if (item.id === '96eb2b757ec54b35b1d2a5d6bf13311a') {
+      todoListModal.value.showModal()
+    } else if (item.id === '8aa6b3c126a94b939988e184a2c10f26') {
+      settingModal.value.visible = true;
+    } else if (item.id === 'da0ebd0b0f2142c723f3s37df80d3241') {
+      appStoreModal.value.showModal()
+    } else if (item.component === 'countdown' || item.component === 'countdownTime') {
+      countdownModal.value.showModal()
+      countdownModal.value.editWidget(item, sectionIndex, appIndex)
+    } else if (item.id === '134df2c360e14809b15054a0be4eb57b') {
+      calendarModal.value.showModal()
+    } else if (item.id === '006e4b384ffb4e60b823454bb4fk49fk') {
+      nightClockWidgetModal.value.showModal()
+    } else if (item.id === 'a5f51a862bfd408ba456b8d6c7afcd78') {
+      todayPoetryModal.value.showModal()
+    }
+  }
+}
+const moveToFirstPage = (index) => {
+  const appItem = selectSectionAppItem.value
+  const appIndex = selectSectionAppItemIndex.value
+  const sectionIndex = selectSectionAppItemSectionIndex.value
+  iconDefaultData.value[index].children.push(appItem);
+  iconDefaultData.value[sectionIndex].children.splice(appIndex, 1);
+  saveIconDefaultData()
+  message.info("操作成功！")
+}
+const saveIconDefaultData = () => {
+  localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData.value));
+}
+const changeAppIconlayout = (value) => {
+  let sectionIndex = selectSectionAppItemSectionIndex.value;
+  let appIndex = selectSectionAppItemIndex.value;
+  selectSectionAppItem.size = value;
+  iconDefaultData.value[sectionIndex].children[appIndex].size = value;
+  localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData.value));
+}
+const whiteOrBlack = () => {
+  var hour = new Date().getHours()
+  return hour > 6 && hour < 18 ? "#fff" : "#000"
+}
+const initClock = (show, style) => {
+  if (typeof (show) === 'undefined') {
+    let clockConfig = localStorage.getItem("clockConfig")
+    if (!clockConfig) return
+    let data = JSON.parse(clockConfig);
+    show = data.show
+    style = data.style
+  }
+  if (show && (show === "true" || show === true)) {
+    let ctx = clock.value.getContext('2d')
+    let clockStyleArr = [
+      ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2"],
+      ["③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "①", "②"],
+      ["三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "一", "二"],
+      ["叁", "肆", "伍", "陆", "柒", "捌", "玖", "拾", "拾壹", "拾贰", "壹", "贰"],
+      ["Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ", "Ⅹ", "Ⅺ", "Ⅻ", "Ⅰ", "Ⅱ"]
+    ]
+    clockOption.hours = clockStyleArr[style - 1];
+    drawClock(ctx, clockOption)
+    timer = setInterval(function () {
+      drawClock(ctx, clockOption)
+    }, 1000)
+    clockOption.showClock = show
+  } else {
+    if (timer !== null) {
+      clearInterval(timer)
+      clockOption.showClock = show
+    }
+  }
+}
+const initNavbar = (show, position) => {
+  navbarConfig.show = show
+  navbarConfig.position = position
+}
+const initNavbarInfo = () => {
+  let val = localStorage.getItem("navbarConfig")
+  if (val === null) {
+    localStorage.setItem("navbarConfig", JSON.stringify({show: true, position: 'left'}))
+  } else {
+    navbarConfig.show = JSON.parse(val).show
+    navbarConfig.position = JSON.parse(val).position
+  }
+}
+
+initDateTime();
+initIconList();
+initUserInfo();
+initWallPaper();
+initSearchEngine();
+initTranslate();
+onMounted(() => {
+  initClock()
+  initNavbarInfo()
+})
+// defineWatch(rightKeyMenuVisible, (newValue, oldValue) => {
+//   console.log('值发生了变更', newValue, oldValue);
+// });
+document.body.addEventListener('click', closeMenu)
+
 </script>
 <style lang="less">
 .windmill {
@@ -965,6 +908,7 @@ export default {
       box-sizing: border-box;
       cursor: pointer;
       position: relative;
+
       .app-title {
         font-size: 12px;
         color: #ffffff;
@@ -1216,25 +1160,29 @@ export default {
   color: var(--color);
   font-size: inherit;
 }
-.rightBar{
-  top:0!important;
-  right:0!important;
+
+.rightBar {
+  top: 0 !important;
+  right: 0 !important;
 }
-.topBar{
-  top:0!important;
-  flex-direction: row!important;
-  width: 100%!important;
-  height: auto!important;
+
+.topBar {
+  top: 0 !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  height: auto !important;
   padding: 0 10px;
 }
-.bottomBar{
-  top: auto!important;
-  bottom:0!important;
-  flex-direction: row!important;
-  width: 100%!important;
-  height: auto!important;
+
+.bottomBar {
+  top: auto !important;
+  bottom: 0 !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  height: auto !important;
   padding: 0 10px;
 }
+
 .leftBar {
   transition: .1s;
   text-align: center;
@@ -1250,6 +1198,7 @@ export default {
   line-height: 40px;
   position: absolute;
   top: 0;
+
   .leftBarItem {
     min-height: 30px;
   }

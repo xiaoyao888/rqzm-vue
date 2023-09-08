@@ -317,14 +317,23 @@ const themeChange = (value) => {
 }
 const initConfig = () => {
   //初始化日期配置
-  let dateTimeConfig = localStorage.getItem('dateTimeConfig')
-  if (dateTimeConfig && dateTimeConfig.length > 0) {
-    dateTimeConfig = JSON.parse(dateTimeConfig)
-    showTime.value = dateTimeConfig.showTime
-    showWeek.value = dateTimeConfig.week
-    showWeight.value = dateTimeConfig.weight
-    showLunar.value = dateTimeConfig.lunar
-    showDay.value = dateTimeConfig.day
+  let dateTimeConfiguration = localStorage.getItem('dateTimeConfig')
+  if (dateTimeConfiguration && dateTimeConfiguration.length > 0) {
+    dateTimeConfiguration = JSON.parse(dateTimeConfiguration)
+    dateTimeConfig.showTime = dateTimeConfiguration.showTime
+    dateTimeConfig.format = dateTimeConfiguration.format
+    dateTimeConfig.color = dateTimeConfiguration.color
+    dateTimeConfig.timestamp = dateTimeConfiguration.timestamp
+    dateTimeConfig.week = dateTimeConfiguration.week
+    dateTimeConfig.weight = dateTimeConfiguration.weight
+    dateTimeConfig.lunar = dateTimeConfiguration.lunar
+    dateTimeConfig.day = dateTimeConfiguration.day
+
+    showTime.value = dateTimeConfiguration.showTime
+    showWeek.value = dateTimeConfiguration.week
+    showWeight.value = dateTimeConfiguration.weight
+    showLunar.value = dateTimeConfiguration.lunar
+    showDay.value = dateTimeConfiguration.day
   }
 
   //初始化表配置
