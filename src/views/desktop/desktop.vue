@@ -1,19 +1,66 @@
 <template>
   <div id="fullpage" class="fullpage " :class="themeMode"
        :style="bgWallpaper">
-    <!--    <full-page ref="fullpage" :options="options">-->
-    <!-- style="backdrop-filter: blur(1px)" -->
-    <div :id="'section'+(index+1)" class="section" :class="'section'+(index+1)"
+    <swiper class="mySwiper" :class="swpierDragIsEnable === 1?'swiper-no-swiping':''" :modules="modules" :rewind="true"
+            :mousewheel="true" :keyboard="true"
+            :space-between="50"
+            :pagination="pagination"
+            @swiper="onSwiper"
+            @slideChange="onSlideChange">
+      <swiper-slide v-for="(item,index) in iconDefaultData.value" v-bind:key="index" @contextmenu.prevent="openMenu($event)">
+        <div class="app-grid">
+          <draggable class="wrapper" v-model="item.children" @mouseover="swpierDragIsEnable=1"
+                     @mouseleave="swpierDragIsEnable=0" @start.prevent="dragEnterEvent" @end.prevent="dragEnterOver"
+                     item-key="index">
+            <template #item="{ element }">
+              <div class="item" :class="'icon-size-'+(element.size?element.size:'1x1')">
+                <!--              {{element.id}}-->
+                <div v-if="batchDeleteAppItemVisible"
+                     style="position: absolute;top:-7px;right:10px;z-index:1000">
+                  <Icon icon="CloseCircleFilled" style="font-size:18px;color:#ffffff;"
+                        @click="batchDeleteAppItem(element)"/>
+                </div>
+                <div :id="'appItem'+element.id" :data-index="element.id" class="app-icon"
+
+                     @click="appClick(element,index,i)" :style="'background:'+iconBackground(element)"
+                     @contextmenu.prevent="openMenu($event,index,element)">
+								<span v-if="element.type==='text'"
+                      :class="'widget-'+(element.size?element.size:'1x1')">{{ element.iconWord }}</span>
+                  <img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon"
+                       :class="'img-'+(element.size?element.size:'1x1')">
+                  <img v-else-if="element.type==='component' && element.component==='icon'"
+                       :src="getImgUrl(element)" class="icon" :class="'img-'+(element.size?element.size:'1x1')">
+                  <countdown-widget
+                      v-else-if="element.type==='component' && (element.component==='countdown'||element.component==='countdownTime')"
+                      :size="element.size?element.size:'1x1'" :form="element"></countdown-widget>
+                  <calendar-widget v-else-if="element.type==='component' && element.component==='calendar'"
+                                   :size="element.size?element.size:'1x1'"></calendar-widget>
+
+                  <today-english-widget v-else-if="element.type==='component' && element.component==='todayEnglish'"
+                                        :size="element.size?element.size:'1x1'"/>
+                  <today-sentence-widget v-else-if="element.type==='component' && element.component==='todaySentence'"
+                                         :size="element.size?element.size:'1x1'"/>
+                  <today-poetry-widget v-else-if="element.type==='component' && element.component==='todayPoetry'"
+                                       :size="element.size?element.size:'1x1'"/>
+                </div>
+                <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
+              </div>
+            </template>
+          </draggable>
+        </div>
+      </swiper-slide>
+    </swiper>
+<!--    <div :id="'section'+(index+1)" class="section" :class="'section'+(index+1)"
          v-for="(item,index) in iconDefaultData.value" v-bind:key="index" @contextmenu.prevent="openMenu($event)">
       <div class="app-grid" :style="currentIconPage === index?'':'display:none'">
 
-        <!--            @start="drag = true"-->
-        <!--            @end="drag = false"-->
+        &lt;!&ndash;            @start="drag = true"&ndash;&gt;
+        &lt;!&ndash;            @end="drag = false"&ndash;&gt;
         <draggable class="wrapper" v-model="item.children" @start="dragEnterEvent" @end="dragEnterOver"
                    item-key="index">
           <template #item="{ element }">
             <div class="item" :class="'icon-size-'+(element.size?element.size:'1x1')">
-              <!--              {{element.id}}-->
+              &lt;!&ndash;              {{element.id}}&ndash;&gt;
               <div v-if="batchDeleteAppItemVisible"
                    style="position: absolute;top:-7px;right:10px;z-index:1000">
                 <Icon icon="CloseCircleFilled" style="font-size:18px;color:#ffffff;"
@@ -47,51 +94,31 @@
           </template>
         </draggable>
       </div>
-    </div>
+    </div>-->
     <!--    </full-page>-->
     <div class="toolsBar">
-      <div data-menu="none" :class="windmillRotate?'windmill':''" style="float:right;margin-right:10px;"
+      <div data-menu="none" :class="windmillRotate?'windmill':''" style="float:right;margin-right:10px;cursor: pointer"
            @click="rotate()">
         <img id="windmill" data-menu="none" style="width:30px;height:30px;" src="@/assets/images/windmill.svg">
       </div>
       <div class="supportAuthor">
-        <span style="cursor:pointer" @click="showDialog('supportAuthor')">{{ $t("action.admiration") }}</span>
-        <span style="cursor:pointer;margin-left:10px;"
-              @click="showDialog('privatization')">{{ $t("action.privatization") }}</span>
-      </div>
-    </div>
-    <div class="leftBar" :class="navbarConfig.position==='top'?'topBar':
-        navbarConfig.position==='right'?'rightBar':
-        navbarConfig.position==='bottom'?'bottomBar':
-        '1'" v-show="navbarConfig.show">
-      <div class="loginVisible" @click="showDialog('userLogin')">
-        <div v-if="userInfo.nickName" class="login" @click="drawer('person')">
-          <a>{{ userInfo.nickName }}</a>
+        <div @click="showDialog('supportAuthor')"><Icon class="icon" icon="WalletOutlined"/>{{ $t("action.admiration") }}</div>
+        <div @click="showDialog('privatization')"><Icon class="icon" icon="CommentOutlined"/>{{ $t("action.privatization") }}</div>
+        <div @click="showDialog('setting')">
+          <Icon icon="SettingOutlined"/>{{ $t('common.setting') }}
         </div>
-        <div v-else class="login">
-          <a-tooltip placement="right">
-            <template #title>
-              <span>{{ $t('common.login') }}</span>
-            </template>
+        <div @click="showDialog('userLogin')">
+          <span v-if="userInfo.nickName" @click="drawer('person')">
+            <a>{{ userInfo.nickName }}</a>
+          </span>
+          <span v-else>
             <Icon class="icon" icon="UserOutlined"/>
-          </a-tooltip>
+            <span>{{ $t('common.login') }}</span>
+          </span>
         </div>
-      </div>
-      <div v-for="(item,index) in iconDefaultData.value" v-bind:key="index" @click="selectDesktop(item,index)"
-           class="leftBarItem"
-           :class="currentIconPage === index?'leftBarItemSelected':''">
-        <a><i :class="'el-icon-'+item.icon"></i>{{ locale === 'zh_cn' ? item.name : item.nameEn }}</a>
-      </div>
-      <a>
-        <Icon class="leftBarPlus" icon="PlusCircleOutlined"/>
-      </a>
-      <div class="settingVisible" @click="showDialog('setting')">
-        <a-tooltip placement="right">
-          <template #title>
-            <span>{{ $t('common.setting') }}</span>
-          </template>
-          <Icon icon="SettingOutlined"/>
-        </a-tooltip>
+        <a>
+          <Icon class="leftBarPlus" icon="PlusCircleOutlined"/>
+        </a>
       </div>
     </div>
     <div class="search-container">
@@ -214,8 +241,10 @@ import {
   toRefs,
   reactive,
   onMounted,
-  watch
+  defineComponent
 } from 'vue'
+import { Keyboard, Mousewheel, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
 import draggable from 'vuedraggable'
 import drawClock from '@/utils/clock'
 import {
@@ -224,9 +253,7 @@ import {
   parseTime,
   strFormat
 } from '@/utils/util'
-import {
-  getLunar
-} from '@/utils/getLunar.js'
+import {getLunar} from '@/utils/getLunar.js'
 // import {waves} from '@/directive/waves'
 import setting from './setting';
 // import person from './person';
@@ -256,7 +283,16 @@ import {
 } from "ant-design-vue";
 import wallPaper from "@/views/desktop/wallPaper";
 import TodayPoetry from "@/views/widgets/todayPoetry";
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/keyboard'
+import 'swiper/css/mousewheel'
+import 'swiper/css/pagination';
 
+defineComponent({
+  Swiper,
+  SwiperSlide
+})
 
 const nightClockWidgetModal = ref(null)
 const clock = ref(null)
@@ -292,7 +328,6 @@ const clockOption = reactive({
   hourFontColor: "brown"//显示的数字颜色
 })
 const {t, locale} = useI18n()
-const navbarConfig = reactive({show: true, position: 'left'})
 const keyword = ref('')
 const windmillRotate = ref(false)
 const drawerVisible = ref(false)
@@ -324,7 +359,9 @@ const currentDay = ref('')
 const currentIconPage = ref(0)
 const iconDefaultData = reactive([])
 const searchEngine = ref('')
-const searchEngineList = reactive([{
+const searchEngineList = reactive(
+    [
+    {
   "key": "baidu",
   "name": "百度",
   "nameEn": "Baidu",
@@ -450,6 +487,7 @@ const userInfo = reactive({
   lastLoginIp: ""
 })
 
+const swpierDragIsEnable = ref(0)
 const state = reactive({
   drag: false,
   list: [1, 2, 3, 4, 5, 6]
@@ -457,6 +495,26 @@ const state = reactive({
 // themePicker.themeChange(data.themeColor);
 
 let timer = null
+const modules = [Keyboard,Mousewheel,Pagination]
+const pagination = {
+  clickable: true,
+  renderBullet: function (index, className) {
+    let item = iconDefaultData.value[index];
+    let name = locale.value === 'zh_cn' ? item.name : item.nameEn
+    return '<span class="' + className + '">' + name + '</span>';
+  },
+}
+
+
+
+
+const onSwiper = (swiper) => {
+  console.log(swiper);
+};
+const onSlideChange = () => {
+  console.log('slide change');
+};
+
 
 const isDisableItem = () => {
   if (selectSectionAppItem.value) {
@@ -788,10 +846,6 @@ const changeAppIconlayout = (value) => {
   iconDefaultData.value[sectionIndex].children[appIndex].size = value;
   localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData.value));
 }
-const whiteOrBlack = () => {
-  var hour = new Date().getHours()
-  return hour > 6 && hour < 18 ? "#fff" : "#000"
-}
 const initClock = (show, style) => {
   if (typeof (show) === 'undefined') {
     let clockConfig = localStorage.getItem("clockConfig")
@@ -822,19 +876,7 @@ const initClock = (show, style) => {
     }
   }
 }
-const initNavbar = (show, position) => {
-  navbarConfig.show = show
-  navbarConfig.position = position
-}
-const initNavbarInfo = () => {
-  let val = localStorage.getItem("navbarConfig")
-  if (val === null) {
-    localStorage.setItem("navbarConfig", JSON.stringify({show: true, position: 'left'}))
-  } else {
-    navbarConfig.show = JSON.parse(val).show
-    navbarConfig.position = JSON.parse(val).position
-  }
-}
+
 
 initDateTime();
 initIconList();
@@ -843,7 +885,6 @@ initWallPaper();
 initSearchEngine();
 onMounted(() => {
   initClock()
-  initNavbarInfo()
 })
 // defineWatch(rightKeyMenuVisible, (newValue, oldValue) => {
 //   console.log('值发生了变更', newValue, oldValue);
@@ -886,10 +927,8 @@ document.body.addEventListener('click', closeMenu)
 .app-grid {
   overflow-y: auto;
   min-height: 700px;
-  padding-top: 130px;
+  padding-top: 160px;
   width: 80%;
-  margin-left: 10%;
-
   .wrapper {
     display: grid;
     grid-template-columns: repeat(auto-fill, calc(var(--item-size) + var(--item-gap-y)));
@@ -961,7 +1000,7 @@ document.body.addEventListener('click', closeMenu)
   justify-content: center;
   height: 50px;
   position: absolute;
-  top: 50px;
+  top: 40px;
   left: 50%;
   width: 500px;
   margin-left: -250px;
@@ -1179,106 +1218,31 @@ document.body.addEventListener('click', closeMenu)
   padding: 0 10px;
 }
 
-.leftBar {
-  transition: .1s;
-  text-align: center;
-  color: rgba(var(--img-text), .9);
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  backdrop-filter: blur(4px);
-  background-color: rgba(var(--alpha-bg), .6);
-  height: 100%;
-  width: 60px;
-  line-height: 40px;
-  position: absolute;
-  top: 0;
-
-  .leftBarItem {
-    min-height: 30px;
-  }
-
-  .leftBarItem:hover {
-    background-color: rgba(var(--alpha-bg), .6);
-  }
-
-  .leftBarItemSelected {
-    background-color: rgba(var(--alpha-bg), .4);
-  }
-
-  .leftBarPlus {
-    font-size: 18px;
-  }
-
-  .leftBarPlus:hover {
-    color: #fff;
-    font-size: 20px;
-  }
-}
-
-.settingVisible {
-  position: absolute;
-  bottom: 10px;
-  text-align: center;
-  font-size: 18px;
-  left: 0;
-  right: 0;
-}
-
-.settingVisible:hover {
-  color: #fff;
-  font-size: 20px;
-}
-
-.loginVisible {
-  position: absolute;
-  top: 10px;
-  text-align: center;
-  font-size: 18px;
-  left: 0;
-  right: 0;
-}
-
-.loginVisible:hover {
-  color: #fff;
-  font-size: 20px;
-}
 
 
 .toolsBar {
   transition: .1s;
-  //text-align: center;
-  //font-size: 12px;
-  //display: flex;
-  //flex-direction: column;
   justify-content: center;
   height: 40px;
   width: 100%;
   line-height: 40px;
   position: absolute;
-  top: 0px;
-
-  .login {
-    font-size: 14px;
-    float: left;
-    cursor: pointer;
-    margin-left: 20px;
-  }
-
+  top: 0;
+  z-index:1;
   .supportAuthor {
-    float: right;
-    margin-right: 15px;
-
-    span {
+    margin-top:5px;
+    div {
       line-height: 30px;
       display: inline-block;
       background-color: rgba(var(--alpha-bg), 0.6);
       padding: 0 10px;
       border-radius: 15px;
+      float: right;
+      margin-right: 15px;
+      cursor:pointer;
     }
 
-    span:hover {
+    div:hover {
       background-color: rgba(var(--alpha-bg), 0.8);
     }
   }
@@ -1364,5 +1328,47 @@ document.body.addEventListener('click', closeMenu)
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+}
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  //background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-pagination-bullet {
+  min-width: 70px;
+  width:auto;
+  padding:0 5px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 14px;
+  color: #000;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+
+}
+
+.swiper-pagination-bullet-active {
+  color: #fff;
+  background: #007aff;
 }
 </style>

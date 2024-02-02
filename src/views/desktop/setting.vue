@@ -193,28 +193,11 @@
                   </a-button-group>
                 </div>
               </div>
-              <div class="settingItem">
-                <span class="title">{{ $t("action.showNavbar") }}</span>
-                <div class="content">
-                  <a-switch v-model:checked="navbarShow" @change="changeNavbar"></a-switch>
-                </div>
-              </div>
-              <div class="settingItem" v-if="navbarShow">
-                <span class="title">{{ $t("action.navbarPosition") }}</span>
-                <div class="content">
-                  <a-button-group>
-                    <a-button :type="navbarPosition ==='top'?'primary':''" @click="changePosition('top')">上</a-button>
-                    <a-button :type="navbarPosition ==='bottom'?'primary':''" @click="changePosition('bottom')">下</a-button>
-                    <a-button :type="navbarPosition ==='left'?'primary':''" @click="changePosition('left')">左</a-button>
-                    <a-button :type="navbarPosition ==='right'?'primary':''" @click="changePosition('right')">右</a-button>
-                  </a-button-group>
-                </div>
-              </div>
             </div>
             <div v-if="menuIndex==='about'">
               <div class="settingItem">
                 <div class="content">
-                  <span>{{ $t("action.version") }}：2.0.1</span>
+                  <span>{{ $t("action.version") }}：2.1.1</span>
                 </div>
               </div>
               <div class="settingItem">
@@ -282,8 +265,6 @@ const visible = ref(false)
 const height = ref(800)
 const themeMode1 = ref('dark')
 const themeColor = ref(null)
-const navbarShow =  ref(false)
-const navbarPosition =  ref('left')
 const menuIndex = ref('basicSetting')
 const currentLanguage = ref('zh_cn')
 const dateTimeConfig = reactive({
@@ -343,13 +324,6 @@ const initConfig = () => {
     clockShow.value = data.show
     clockStyle.value = data.style
   }
-  //初始化导航配置
-  let navbar = localStorage.getItem('navbarConfig')
-  if (navbar) {
-    let data = JSON.parse(navbar)
-    navbarShow.value = data.show
-    navbarPosition.value = data.position
-  }
 }
 
 /*logout:()=> {
@@ -388,18 +362,6 @@ const changeThemeMode = (bool) => {
 //   //   key: 'themeMode',
 //   //   value: mode
 //   // })
-}
-const changeNavbar = (bool) => {
-  navbarShow.value = bool
-  emits("changeNavbar", navbarShow.value, navbarPosition.value)
-  let data = {show: navbarShow.value, position: navbarPosition.value}
-  localStorage.setItem('navbarConfig', JSON.stringify(data));
-}
-const changePosition = (position) => {
-  navbarPosition.value = position
-  emits("changeNavbar", navbarShow.value, navbarPosition.value)
-  let data = {show: navbarShow.value, position: navbarPosition.value}
-  localStorage.setItem('navbarConfig', JSON.stringify(data));
 }
 
 const changeClock = (bool) => {

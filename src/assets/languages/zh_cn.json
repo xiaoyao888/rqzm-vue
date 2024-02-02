@@ -99,8 +99,6 @@
     "dateTimeFormat": "日期/时间格式",
     "dateTimeOtherSetting": "其他设置",
     "dateTimeColor": "颜色",
-    "showNavbar": "是否展示导航条",
-    "navbarPosition": "导航条位置",
     "calendar": "日历",
     "countDown": "倒计时",
     "todoList": "待办事项"

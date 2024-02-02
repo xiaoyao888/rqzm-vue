@@ -1,0 +1,110 @@
+[
+  {
+    "key": "baidu",
+    "name": "百度",
+    "nameEn": "Baidu",
+    "url": "https://www.baidu.com/s?wd="
+  },
+  {
+    "key": "bing",
+    "name": "必应",
+    "nameEn": "Bing",
+    "url": "https://cn.bing.com/search?q="
+  },
+  {
+    "key": "google",
+    "name": "谷歌",
+    "nameEn": "Google",
+    "url": "https://www.google.com/search?q="
+  },
+  {
+    "key": "github",
+    "name": "Github",
+    "nameEn": "Github",
+    "url": "https://github.com/search?q="
+  },
+  {
+    "key": "gitee",
+    "name": "Gitee",
+    "nameEn": "Gitee",
+    "url": "https://search.gitee.com/?skin=rec&type=repository&q="
+  },
+  {
+    "key": "douyin",
+    "name": "抖音",
+    "nameEn": "DouYin",
+    "url": "https://www.douyin.com/search/"
+  },
+  {
+    "key": "kuaishou",
+    "name": "快手",
+    "nameEn": "Kwai",
+    "url": "https://kuaishou.cn/search/video?searchKey="
+  },
+  {
+    "key": "xiaohongshu",
+    "name": "小红书",
+    "nameEn": "RedBook",
+    "href": "https://www.xiaohongshu.com/search_result/?&m_source=itab&keyword="
+  },
+  {
+    "key": "duckduckgo",
+    "name": "DuckDuckGo",
+    "nameEn": "DuckDuckGo",
+    "href": "https://duckduckgo.com/?q="
+  },
+  {
+    "key": "zhihu",
+    "name": "知乎",
+    "nameEn": "ZhiHu",
+    "href": "https://www.zhihu.com/search?type=content&q="
+  },
+  {
+    "key": "sougou",
+    "name": "搜狗",
+    "nameEn": "Sogou",
+    "href": "https://www.sogou.com/sogou?query="
+  },
+  {
+    "key": "360",
+    "name": "360",
+    "nameEn": "360",
+    "href": "https://www.so.com/s?q="
+  },
+  {
+    "key": "stackoverflow",
+    "name": "StackOverflow",
+    "nameEn": "StackOverflow",
+    "href": "https://stackoverflow.com/nocaptcha?s="
+  },
+  {
+    "key": "toutiao",
+    "name": "头条搜索",
+    "nameEn": "TouTiao",
+    "href": "https://so.toutiao.com/search?dvpf=pc&keyword="
+  },
+  {
+    "key": "douban",
+    "name": "豆瓣",
+    "nameEn": "DouBan",
+    "href": "https://www.douban.com/search?q="
+  },
+  {
+    "key": "bilibili",
+    "name": "哔哩哔哩",
+    "nameEn": "BiLiBiLi",
+    "href": "https://search.bilibili.com/all?keyword="
+  },
+  {
+    "key": "kaifabaidu",
+    "name": "开发者搜索",
+    "nameEn": "DevSearch",
+    "href": "https://kaifa.baidu.com/searchPage?wd="
+  },
+  {
+    "key": "mdn",
+    "name": "MDN",
+    "nameEn": "MDN",
+    "href": "https://developer.mozilla.org/zh-CN/search?q="
+  }
+]
