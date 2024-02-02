@@ -433,7 +433,7 @@ const searchEngineList = reactive([{
     "href": "https://developer.mozilla.org/zh-CN/search?q="
   }
 ])
-const translateList = reactive([])
+const translateList = reactive(require('@/assets/json/translate.json'))
 const selectSectionAppItem = reactive({})
 const selectSectionAppItemSectionIndex = ref(0)
 const selectSectionAppItemIndex = ref(0)
@@ -467,9 +467,6 @@ const isDisableItem = () => {
     }
   }
   return true
-}
-const initTranslate = () => {
-  translateList.value = require('@/assets/json/translate.json')
 }
 const getTranslateUrl = (item) => {
   return strFormat(item.url, [keyword.value]);
@@ -844,7 +841,6 @@ initIconList();
 initUserInfo();
 initWallPaper();
 initSearchEngine();
-initTranslate();
 onMounted(() => {
   initClock()
   initNavbarInfo()
