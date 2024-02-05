@@ -1,16 +1,21 @@
 <template>
-<!--  <Desktop msg="Welcome to Your Vue.js App"/>-->
-  <router-view />
+  <a-config-provider :locale="locale">
+    <router-view />
+  </a-config-provider>
 </template>
 
-<script>
-import Desktop from '@/views/desktop/desktop.vue'
-
-export default {
-  name: 'App',
-  components: {
-    Desktop
-  }
+<script setup>
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import enUS from 'ant-design-vue/es/locale/en_US';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/en-us';
+import crypto from "@/utils/crypto";
+dayjs.locale('zh-cn');
+let locale = zhCN
+const language = localStorage.getItem("language");
+if(language && language==='en_us'){
+  locale = enUS
 }
 </script>
 

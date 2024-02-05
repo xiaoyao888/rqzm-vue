@@ -991,7 +991,6 @@ document.body.addEventListener('click', closeMenu)
     width: 100% !important;
     left: 0;
     margin-left: -50% !important;
-
   }
 }
 
