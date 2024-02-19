@@ -350,7 +350,8 @@ const changeLanguage = (lang) => {
   locale.value = lang
   // this.$store.dispatch('ToggleLanguage', lang)
   localStorage.setItem('language', lang);//将lang 语言存在localStorage里
-  window.location.reload();
+
+  // window.location.reload();
 }
 const handleOpen = (item) => {
   menuIndex.value = item.key;

@@ -1,162 +1,122 @@
 <template>
   <div id="fullpage" class="fullpage " :class="themeMode"
        :style="bgWallpaper">
-    <swiper class="mySwiper" :class="swpierDragIsEnable === 1?'swiper-no-swiping':''" :modules="modules" :rewind="true"
+    <a-layout>
+      <a-layout-header style="height:125px;">
+        <div class="toolsBar">
+          <div data-menu="none" :class="windmillRotate?'windmill':''" style="float:right;margin-right:10px;cursor: pointer"
+               @click="rotate()">
+            <img id="windmill" data-menu="none" style="width:30px;height:30px;" src="@/assets/images/windmill.svg">
+          </div>
+          <div class="supportAuthor">
+            <div @click="showDialog('supportAuthor')"><Icon class="icon" icon="WalletOutlined"/>{{ $t("action.admiration") }}</div>
+            <div @click="showDialog('privatization')"><Icon class="icon" icon="CommentOutlined"/>{{ $t("action.privatization") }}</div>
+            <div @click="showDialog('setting')">
+              <Icon class="icon" icon="SettingOutlined"/>{{ $t('common.setting') }}
+            </div>
+            <div @click="showDialog('userLogin')">
+          <span v-if="userInfo.nickName" @click="drawer('person')">
+            <a>{{ userInfo.nickName }}</a>
+          </span>
+              <span v-else>
+            <Icon class="icon" icon="UserOutlined"/>
+            <span>{{ $t('common.login') }}</span>
+          </span>
+            </div>
+            <a>
+              <Icon class="leftBarPlus" icon="PlusCircleOutlined"/>
+            </a>
+          </div>
+        </div>
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search">
+              <a-select v-model:value="searchEngine" style="width:30%;" @change="changeSearchEngine()">
+                <a-select-option v-for="(item,index) in searchEngineList" :key="index"
+                                 :label="locale ==='zh_cn'?item.name:item.nameEn"
+                                 :value="locale ==='zh_cn'?item.name:item.nameEn">
+                </a-select-option>
+              </a-select>
+              <a-input style="width:63%;" v-model:value="keyword" type="text" autocomplete="off"
+                       :placeholder="$t('action.pleaseInputContent')" @keyup.enter="search"/>
+              <Icon v-if="keyword!=null && keyword!==''" class="icon" icon="CloseOutlined" @click="keyword = ''"/>
+            </div>
+            <div v-if="keyword!=null && keyword!==''" style="position: absolute;top: 69px;">
+              <div class="translate">
+                <a :href="getTranslateUrl(item)" target="_blank" v-for="item in translateList"
+                   :key="item.name">{{ item.name }}</a>
+              </div>
+            </div>
+          </div>
+          <div class="dateTime" :style="(dateTimeConfig.weight?'font-weight:bold':'')" @click="showDialog('calendar')">
+            <span v-if="dateTimeConfig.showTime" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''"
+                  @click="nightClockWidgetModal.showModal()">{{ nowDateTime }} </span>
+                <span v-if="dateTimeConfig.week" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
+              {{ nowWeek }}
+            </span>
+                <span v-if="dateTimeConfig.lunar" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
+              {{ nowLunar }}
+            </span>
+                <span v-if="dateTimeConfig.day" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
+              {{ currentDay }}
+            </span>
+          </div>
+          <div style="clear:both"></div>
+        </div>
+      </a-layout-header>
+      <a-layout-content>
+        <swiper class="mySwiper" :class="swpierDragIsEnable === 1?'swiper-no-swiping':''" :modules="modules" :rewind="true"
             :mousewheel="true" :keyboard="true"
             :space-between="50"
             :pagination="pagination"
             @swiper="onSwiper"
             @slideChange="onSlideChange">
-      <swiper-slide v-for="(item,index) in iconDefaultData.value" v-bind:key="index" @contextmenu.prevent="openMenu($event)">
-        <div class="app-grid">
-          <draggable class="wrapper" v-model="item.children" @mouseover="swpierDragIsEnable=1"
-                     @mouseleave="swpierDragIsEnable=0" @start.prevent="dragEnterEvent" @end.prevent="dragEnterOver"
-                     item-key="index">
-            <template #item="{ element }">
-              <div class="item" :class="'icon-size-'+(element.size?element.size:'1x1')">
-                <!--              {{element.id}}-->
-                <div v-if="batchDeleteAppItemVisible"
-                     style="position: absolute;top:-7px;right:10px;z-index:1000">
-                  <Icon icon="CloseCircleFilled" style="font-size:18px;color:#ffffff;"
-                        @click="batchDeleteAppItem(element)"/>
-                </div>
-                <div :id="'appItem'+element.id" :data-index="element.id" class="app-icon"
+          <swiper-slide v-for="(item,index) in iconDefaultData.value" v-bind:key="index" @contextmenu.prevent="openMenu($event)">
+            <div class="app-grid">
+              <draggable class="wrapper" v-model="item.children" @mouseover="swpierDragIsEnable=1"
+                         @mouseleave="swpierDragIsEnable=0" @start.prevent="dragEnterEvent" @end.prevent="dragEnterOver"
+                         item-key="index">
+                <template #item="{ element }">
+                  <div class="item" :class="'icon-size-'+(element.size?element.size:'1x1')">
+                    <!--              {{element.id}}-->
+                    <div v-if="batchDeleteAppItemVisible"
+                         style="position: absolute;top:-7px;right:10px;z-index:1000">
+                      <Icon icon="CloseCircleFilled" style="font-size:18px;color:#ffffff;"
+                            @click="batchDeleteAppItem(element)"/>
+                    </div>
+                    <div :id="'appItem'+element.id" :data-index="element.id" class="app-icon"
+                         @click="appClick(element,index,i)" :style="'background:'+iconBackground(element)"
+                         @contextmenu.prevent="openMenu($event,index,element)">
+                    <span v-if="element.type==='text'"
+                          :class="'widget-'+(element.size?element.size:'1x1')">{{ element.iconWord }}</span>
+                      <img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon"
+                           :class="'img-'+(element.size?element.size:'1x1')">
+                      <img v-else-if="element.type==='component' && element.component==='icon'"
+                           :src="getImgUrl(element)" class="icon" :class="'img-'+(element.size?element.size:'1x1')">
+                      <countdown-widget
+                          v-else-if="element.type==='component' && (element.component==='countdown'||element.component==='countdownTime')"
+                          :size="element.size?element.size:'1x1'" :form="element"></countdown-widget>
+                      <calendar-widget v-else-if="element.type==='component' && element.component==='calendar'"
+                                       :size="element.size?element.size:'1x1'"></calendar-widget>
 
-                     @click="appClick(element,index,i)" :style="'background:'+iconBackground(element)"
-                     @contextmenu.prevent="openMenu($event,index,element)">
-								<span v-if="element.type==='text'"
-                      :class="'widget-'+(element.size?element.size:'1x1')">{{ element.iconWord }}</span>
-                  <img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon"
-                       :class="'img-'+(element.size?element.size:'1x1')">
-                  <img v-else-if="element.type==='component' && element.component==='icon'"
-                       :src="getImgUrl(element)" class="icon" :class="'img-'+(element.size?element.size:'1x1')">
-                  <countdown-widget
-                      v-else-if="element.type==='component' && (element.component==='countdown'||element.component==='countdownTime')"
-                      :size="element.size?element.size:'1x1'" :form="element"></countdown-widget>
-                  <calendar-widget v-else-if="element.type==='component' && element.component==='calendar'"
-                                   :size="element.size?element.size:'1x1'"></calendar-widget>
-
-                  <today-english-widget v-else-if="element.type==='component' && element.component==='todayEnglish'"
-                                        :size="element.size?element.size:'1x1'"/>
-                  <today-sentence-widget v-else-if="element.type==='component' && element.component==='todaySentence'"
-                                         :size="element.size?element.size:'1x1'"/>
-                  <today-poetry-widget v-else-if="element.type==='component' && element.component==='todayPoetry'"
-                                       :size="element.size?element.size:'1x1'"/>
-                </div>
-                <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
-              </div>
-            </template>
-          </draggable>
-        </div>
-      </swiper-slide>
-    </swiper>
-<!--    <div :id="'section'+(index+1)" class="section" :class="'section'+(index+1)"
-         v-for="(item,index) in iconDefaultData.value" v-bind:key="index" @contextmenu.prevent="openMenu($event)">
-      <div class="app-grid" :style="currentIconPage === index?'':'display:none'">
-
-        &lt;!&ndash;            @start="drag = true"&ndash;&gt;
-        &lt;!&ndash;            @end="drag = false"&ndash;&gt;
-        <draggable class="wrapper" v-model="item.children" @start="dragEnterEvent" @end="dragEnterOver"
-                   item-key="index">
-          <template #item="{ element }">
-            <div class="item" :class="'icon-size-'+(element.size?element.size:'1x1')">
-              &lt;!&ndash;              {{element.id}}&ndash;&gt;
-              <div v-if="batchDeleteAppItemVisible"
-                   style="position: absolute;top:-7px;right:10px;z-index:1000">
-                <Icon icon="CloseCircleFilled" style="font-size:18px;color:#ffffff;"
-                      @click="batchDeleteAppItem(element)"/>
-              </div>
-              <div :id="'appItem'+element.id" :data-index="element.id" class="app-icon"
-
-                   @click="appClick(element,index,i)" :style="'background:'+iconBackground(element)"
-                   @contextmenu.prevent="openMenu($event,index,element)">
-								<span v-if="element.type==='text'"
-                      :class="'widget-'+(element.size?element.size:'1x1')">{{ element.iconWord }}</span>
-                <img v-else-if="element.type==='icon'" :src="getImgUrl(element)" class="icon"
-                     :class="'img-'+(element.size?element.size:'1x1')">
-                <img v-else-if="element.type==='component' && element.component==='icon'"
-                     :src="getImgUrl(element)" class="icon" :class="'img-'+(element.size?element.size:'1x1')">
-                <countdown-widget
-                    v-else-if="element.type==='component' && (element.component==='countdown'||element.component==='countdownTime')"
-                    :size="element.size?element.size:'1x1'" :form="element"></countdown-widget>
-                <calendar-widget v-else-if="element.type==='component' && element.component==='calendar'"
-                                 :size="element.size?element.size:'1x1'"></calendar-widget>
-
-                <today-english-widget v-else-if="element.type==='component' && element.component==='todayEnglish'"
-                                      :size="element.size?element.size:'1x1'"/>
-                <today-sentence-widget v-else-if="element.type==='component' && element.component==='todaySentence'"
-                                       :size="element.size?element.size:'1x1'"/>
-                <today-poetry-widget v-else-if="element.type==='component' && element.component==='todayPoetry'"
-                                     :size="element.size?element.size:'1x1'"/>
-              </div>
-              <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
+                      <today-english-widget v-else-if="element.type==='component' && element.component==='todayEnglish'"
+                                            :size="element.size?element.size:'1x1'"/>
+                      <today-sentence-widget v-else-if="element.type==='component' && element.component==='todaySentence'"
+                                             :size="element.size?element.size:'1x1'"/>
+                      <today-poetry-widget v-else-if="element.type==='component' && element.component==='todayPoetry'"
+                                           :size="element.size?element.size:'1x1'"/>
+                      <hotrank-widget v-else-if="element.type==='component' && element.component==='hotRank'"
+                                           :widgetProps="element"/>
+                    </div>
+                    <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
+                  </div>
+                </template>
+              </draggable>
             </div>
-          </template>
-        </draggable>
-      </div>
-    </div>-->
-    <!--    </full-page>-->
-    <div class="toolsBar">
-      <div data-menu="none" :class="windmillRotate?'windmill':''" style="float:right;margin-right:10px;cursor: pointer"
-           @click="rotate()">
-        <img id="windmill" data-menu="none" style="width:30px;height:30px;" src="@/assets/images/windmill.svg">
-      </div>
-      <div class="supportAuthor">
-        <div @click="showDialog('supportAuthor')"><Icon class="icon" icon="WalletOutlined"/>{{ $t("action.admiration") }}</div>
-        <div @click="showDialog('privatization')"><Icon class="icon" icon="CommentOutlined"/>{{ $t("action.privatization") }}</div>
-        <div @click="showDialog('setting')">
-          <Icon icon="SettingOutlined"/>{{ $t('common.setting') }}
-        </div>
-        <div @click="showDialog('userLogin')">
-          <span v-if="userInfo.nickName" @click="drawer('person')">
-            <a>{{ userInfo.nickName }}</a>
-          </span>
-          <span v-else>
-            <Icon class="icon" icon="UserOutlined"/>
-            <span>{{ $t('common.login') }}</span>
-          </span>
-        </div>
-        <a>
-          <Icon class="leftBarPlus" icon="PlusCircleOutlined"/>
-        </a>
-      </div>
-    </div>
-    <div class="search-container">
-      <div class="search-box">
-        <div class="search">
-          <a-select v-model:value="searchEngine" style="width:30%;" @change="changeSearchEngine()">
-            <a-select-option v-for="(item,index) in searchEngineList" :key="index"
-                             :label="locale ==='zh_cn'?item.name:item.nameEn"
-                             :value="locale ==='zh_cn'?item.name:item.nameEn">
-            </a-select-option>
-          </a-select>
-          <a-input style="width:63%;" v-model:value="keyword" type="text" autocomplete="off"
-                   :placeholder="$t('action.pleaseInputContent')" @keyup.enter="search"/>
-          <Icon v-if="keyword!=null && keyword!==''" class="icon" icon="CloseOutlined" @click="keyword = ''"/>
-        </div>
-        <div v-if="keyword!=null && keyword!==''" style="position: absolute;top: 69px;">
-          <div class="translate">
-            <a :href="getTranslateUrl(item)" target="_blank" v-for="item in translateList"
-               :key="item.name">{{ item.name }}</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="dateTime" :style="(dateTimeConfig.weight?'font-weight:bold':'')" @click="showDialog('calendar')">
-        <span v-if="dateTimeConfig.showTime" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''"
-              @click="nightClockWidgetModal.showModal()">{{ nowDateTime }} </span>
-        <span v-if="dateTimeConfig.week" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
-					{{ nowWeek }}
-				</span>
-        <span v-if="dateTimeConfig.lunar" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
-					{{ nowLunar }}
-				</span>
-        <span v-if="dateTimeConfig.day" :style="dateTimeConfig.color?'color:'+dateTimeConfig.color:''">
-          {{ currentDay }}
-				</span>
-      </div>
-      <div style="clear:both"></div>
-    </div>
+          </swiper-slide>
+        </swiper>
+      </a-layout-content>
+    </a-layout>
     <!--图标应用右键菜单-->
     <ul class="contextmenu" id="menuhome_section" v-show="rightKeyMenuVisible"
         :style="{left:rightKeyMenuLeft+'px',top:rightKeyMenuTop+'px'}">
@@ -219,7 +179,7 @@
       <canvas style="border-radius:60px;" ref="clock" :width="clockOption.width" :height="clockOption.height"></canvas>
     </div>
     <setting ref="settingModal" @changeThemeMode="changeThemeMode" @changeDateTime="changeDateTime"
-             @changeClock="initClock" @changeNavbar="initNavbar"></setting>
+             @changeClock="initClock" ></setting>
     <add-app-item ref="addAppItemModal" @ok="initIconList()"></add-app-item>
     <!--		<search-icon ref="searchIcon"></search-icon>-->
     <login ref="userLoginModal" @success="initUserInfo()"></login>
@@ -232,13 +192,14 @@
     <night-clock-widget ref="nightClockWidgetModal"/>
     <wall-paper ref="wallpaperModal" @ok="initWallPaper"></wall-paper>
     <today-poetry ref="todayPoetryModal"></today-poetry>
+    <hotrank ref="hotRankModal"></hotrank>
+
     <!--		<person ref="person" :user-info="userInfo"></person>-->
   </div>
 </template>
 <script setup>
 import {
   ref,
-  toRefs,
   reactive,
   onMounted,
   defineComponent
@@ -277,10 +238,7 @@ import nightClockWidget from "@/views/widgets/nightClockWidget";
 // import crypto from "@/utils/crypto";
 import {useI18n} from "vue-i18n";
 import Icon from "@/components/icon"
-import {
-  Modal,
-  message
-} from "ant-design-vue";
+import {Modal, message} from "ant-design-vue";
 import wallPaper from "@/views/desktop/wallPaper";
 import TodayPoetry from "@/views/widgets/todayPoetry";
 // Import Swiper styles
@@ -288,6 +246,8 @@ import 'swiper/css';
 import 'swiper/css/keyboard'
 import 'swiper/css/mousewheel'
 import 'swiper/css/pagination';
+import HotrankWidget from "@/views/widgets/hotrankWidget";
+import Hotrank from "@/views/widgets/hotrank";
 
 defineComponent({
   Swiper,
@@ -307,6 +267,7 @@ const addAppItemModal = ref(null)
 const todoListModal = ref(null)
 const wallpaperModal = ref(null)
 const todayPoetryModal = ref(null)
+const hotRankModal = ref(null)
 
 const clockOption = reactive({
   showClock: false,
@@ -807,7 +768,9 @@ const appClick = (item, sectionIndex) => {
   if (item.type === 'icon' || item.type === 'text') {
     window.open(item.url, "_blank");
   } else if (item.type === 'component') {
-    if (item.id === 'fb9934a62e194e67ab46102c05ee45ce') {
+    if (item.id === '96eb2b757ec51234b1d2a5d6bf13311a') { // 热点榜单
+      hotRankModal.value.showModal()
+    } else if (item.id === 'fb9934a62e194e67ab46102c05ee45ce') {
       addAppItemModal.value.showModal()
     } else if (item.id === '96eb2b757ec54b35b1d2a5d6bf13311a') {
       todoListModal.value.showModal()
@@ -892,6 +855,16 @@ onMounted(() => {
 document.body.addEventListener('click', closeMenu)
 
 </script>
+<style lang="less" scoped>
+.ant-layout{
+  background: none;
+}
+.ant-layout-header{
+  background: none;
+  padding:0;
+  line-height:normal;
+}
+</style>
 <style lang="less">
 .windmill {
   img {
@@ -908,8 +881,6 @@ document.body.addEventListener('click', closeMenu)
     transform: rotate(360deg);
   }
 }
-</style>
-<style lang="less">
 /* <768px */
 @media screen and (max-width: 768px) {
   .app-grid {
@@ -926,8 +897,7 @@ document.body.addEventListener('click', closeMenu)
 
 .app-grid {
   overflow-y: auto;
-  min-height: 700px;
-  padding-top: 160px;
+  min-height: 500px;
   width: 80%;
   .wrapper {
     display: grid;
@@ -977,12 +947,6 @@ document.body.addEventListener('click', closeMenu)
   -moz-background-size: 100% 100%;
   background-size: 100% 100%;
   height: 100vh;
-}
-
-@media screen and (max-width: 768px) {
-  .navMenu {
-    display: none !important;
-  }
 }
 
 /* <768px */
@@ -1225,8 +1189,8 @@ document.body.addEventListener('click', closeMenu)
   height: 40px;
   width: 100%;
   line-height: 40px;
-  position: absolute;
-  top: 0;
+  //position: absolute;
+  //top: 0;
   z-index:1;
   .supportAuthor {
     margin-top:5px;
@@ -1238,7 +1202,11 @@ document.body.addEventListener('click', closeMenu)
       border-radius: 15px;
       float: right;
       margin-right: 15px;
+      margin-top:6px;
       cursor:pointer;
+      .icon{
+        margin-right:5px;
+      }
     }
 
     div:hover {
@@ -1258,26 +1226,7 @@ document.body.addEventListener('click', closeMenu)
   }
 }
 
-.navMenu {
-  font-size: 14px;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  width: 40px;
-  margin-left: 5px;
 
-  div {
-    cursor: pointer;
-    margin-right: 10px;
-    height: 38px;
-    padding: 0 10px;
-    border-radius: 8px;
-  }
-
-  div:hover {
-    background: rgba(var(--bg-body), .3);
-  }
-}
 
 //.appTextIcon {
 //  height: 55px;

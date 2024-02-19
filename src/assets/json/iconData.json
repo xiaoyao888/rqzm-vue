@@ -164,6 +164,18 @@
     "icon": "code",
     "children": [
       {
+        "name": "热点榜单",
+        "nameEn": "Hot Rank",
+        "component": "hotRank",
+        "src": "todo.svg",
+        "type": "component",
+        "size": "2x4",
+        "sizeList": "2x4",
+        "id": "96eb2b757ec51234b1d2a5d6bf13311a",
+        "view": null,
+        "backgroundColor": "linear-gradient(180deg, #ffc7b7 0%, #f8e0cf 26%, #fffefd 100%)"
+      },
+      {
         "name": "待办事项",
         "nameEn": "Todo List",
         "component": "icon",

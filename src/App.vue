@@ -1,21 +1,22 @@
 <template>
-  <a-config-provider :locale="locale">
+  <a-config-provider>
     <router-view />
   </a-config-provider>
 </template>
 
 <script setup>
-import zhCN from 'ant-design-vue/es/locale/zh_CN';
-import enUS from 'ant-design-vue/es/locale/en_US';
+import {useI18n} from "vue-i18n";
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
-import 'dayjs/locale/en-us';
-import crypto from "@/utils/crypto";
-dayjs.locale('zh-cn');
-let locale = zhCN
+import 'dayjs/locale/en';
+const {locale} = useI18n()
 const language = localStorage.getItem("language");
 if(language && language==='en_us'){
-  locale = enUS
+  locale.value = 'en_us'
+  dayjs.locale('en');
+}else{
+  locale.value = 'zh_cn'
+  dayjs.locale('zh-cn');
 }
 </script>
 
