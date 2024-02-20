@@ -81,19 +81,19 @@ const props = defineProps({
 </script>
 
 <style lang="less" scoped>
-/deep/ .ant-tabs-top > .ant-tabs-nav, .ant-tabs-bottom > .ant-tabs-nav, .ant-tabs-top > div > .ant-tabs-nav, .ant-tabs-bottom > div > .ant-tabs-nav {
+:deep(.ant-tabs-top > .ant-tabs-nav, .ant-tabs-bottom > .ant-tabs-nav, .ant-tabs-top > div > .ant-tabs-nav, .ant-tabs-bottom > div > .ant-tabs-nav) {
   margin-bottom: 0 !important;
 }
 
-/deep/ .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap, .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
+:deep(.ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap, .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap) {
   justify-content: center !important;
 }
 
-/deep/ .ant-tabs-nav {
+:deep(.ant-tabs-nav) {
   height: 30px;
 }
 
-/deep/ .ant-tabs-tab + .ant-tabs-tab {
+:deep(.ant-tabs-tab + .ant-tabs-tab) {
   margin-left: 20px;
 }
 
