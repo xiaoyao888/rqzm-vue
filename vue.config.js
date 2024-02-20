@@ -27,7 +27,7 @@ module.exports = defineConfig({
       },
       '/todaySentence':{
         // 需要代理的后端接口
-        target: 'https://v1.hitokoto.cn/',
+        target: 'https://tenapi.cn/v2/baiduhot',
         //开启代理：在本地会创建一个虚拟服务端，然后发送请求的数据，并同时接收请求
         changeOrigin: true,
         //非HTTPS
