@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkrqzm_vue"]=self["webpackChunkrqzm_vue"]||[]).push([[782],{40089:function(n,t){t.Z=(n,t)=>{const c=n.__vccOpts||n;for(const[r,e]of t)c[r]=e;return c}},92782:function(n,t,c){c.r(t),c.d(t,{default:function(){return f}});var r=c(73396);const e={class:"wscn-http404-container"};function s(n,t){return(0,r.wg)(),(0,r.iD)("div",e," 404 ")}var u=c(40089);const o={},a=(0,u.Z)(o,[["render",s],["__scopeId","data-v-3f9bbc48"]]);var f=a}}]);
+//# sourceMappingURL=782.3b5dd7d0.js.map
