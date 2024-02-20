@@ -6,8 +6,6 @@ const i18n = createI18n({
   messages: {
     'zh_cn': require('@/assets/languages/zh_cn.json'),
     'en_us': require('@/assets/languages/en_us.json'),
-    'ja': require('@/assets/languages/ja.json'),
-    'ko-KR': require('@/assets/languages/ko-KR.json')
   }
 })
 export default i18n

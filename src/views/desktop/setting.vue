@@ -66,12 +66,6 @@
                   <a-button size="small" :type="currentLanguage === 'en_us'?'primary':''" @click="changeLanguage('en_us')">
                     {{ $t("action.english") }}
                   </a-button>
-                  <a-button size="small" :type="currentLanguage === 'ja'?'primary':''" @click="changeLanguage('ja')">
-                    {{ $t("action.japanese") }}
-                  </a-button>
-                  <a-button size="small" :type="currentLanguage === 'ko-KR'?'primary':''" @click="changeLanguage('ko-KR')">
-                    {{ $t("action.korean") }}
-                  </a-button>
                 </div>
               </div>
               <div class="settingItem">
