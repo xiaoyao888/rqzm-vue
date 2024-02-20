@@ -41,7 +41,7 @@ const todayPoetry = ref({
   "recommendedReason": "",
   "cacheAt": ""
 })
-const bgWallpaper = ref()
+const bgWallpaper = ref('#ffffff')
 const showRefresh = ref(false)
 const visible = ref(false);
 //方法

@@ -71,7 +71,7 @@ const initHotRank = () => {
       hotrank[activeKey.value].data = h.data.data
     return;
   }
-  axios.get("/"+url).then((res) => {
+  axios.get("/tenapi/v2/"+url).then((res) => {
     if (res.status === 200 && res.data.code === 200) {
       hotrank[0].data = res.data
       let jsonStr = JSON.stringify({expiryTime: dayjs().valueOf(), data: res.data});
