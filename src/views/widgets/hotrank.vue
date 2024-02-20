@@ -67,9 +67,10 @@ const initHotRank = () => {
   let hot = localStorage.getItem(url);
   if(hot){
     let h = JSON.parse(hot);
-    if(dayjs().valueOf() - h.expiryTime< 1000*60*60*2 && h.data.data)
+    if(dayjs().valueOf() - h.expiryTime< 1000*60*60*2 && h.data.data){
       hotrank[activeKey.value].data = h.data.data
-    return;
+      return;
+    }
   }
   axios.get("https://tenapi.cn/v2/"+url).then((res) => {
     if (res.status === 200 && res.data.code === 200) {
