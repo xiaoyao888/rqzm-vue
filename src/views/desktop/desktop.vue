@@ -1,7 +1,7 @@
 <template>
   <div id="fullpage" class="fullpage " :class="themeMode"
-       :style="bgWallpaper">
-    <a-layout>
+       :style="bgWallpaper" @contextmenu.prevent="openMenu($event)">
+    <a-layout style="height:100vh">
       <a-layout-header style="height:125px;">
         <div class="toolsBar">
           <div data-menu="none" :class="windmillRotate?'windmill':''" style="float:right;margin-right:10px;cursor: pointer"
@@ -64,7 +64,7 @@
           <div style="clear:both"></div>
         </div>
       </a-layout-header>
-      <a-layout-content>
+      <a-layout-content >
         <swiper class="mySwiper" :class="swpierDragIsEnable === 1?'swiper-no-swiping':''" :modules="modules" :rewind="true"
             :mousewheel="true" :keyboard="true"
             :space-between="50"
@@ -1290,7 +1290,7 @@ document.body.addEventListener('click', closeMenu)
   /* Center slide text vertically */
   display: flex;
   justify-content: center;
-  align-items: center;
+  //align-items: center;
 }
 
 .swiper-slide img {
