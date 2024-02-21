@@ -1,80 +1,79 @@
 <template>
   <div class="app-store">
-    <a-modal v-model:visible="visible" style="top: 20px" :body-style="{'background-color':'#f1f0f5','padding':'0 0 '}" width="920px" :footer="null" :closable="false">
-	  
-        <div class="app-store-nav" style="width:95%">
-          <div class="app-store-nav-title">应用商店</div>
-          <div style="display:inline-flex;width:270px;">
-          <div @click="showStatus=true" class="app-store-nav-item" :class="showStatus?'app-store-nav-item-selected':''"><a>小图标</a></div>
-          <div @click="showStatus=false" class="app-store-nav-item" :class="!showStatus?'app-store-nav-item-selected':''"><a>小组件</a></div>
-          <a-select ref="select" style="border-radius: 16px;" v-model:value="currentSection.name" @change="handleChange($event)">
-            <a-select-option :value="item.name" v-for="item in sectionList.value" :key="item.name">{{item.name}}</a-select-option>
-          </a-select>
-          </div>
-          <a-input class="app-store-nav-input" @keyup="init"/>
+    <a-modal v-model:visible="visible" style="top: 20px" :body-style="{'padding':'0 0 '}" width="920px" :footer="null" :closable="false">
+      <div class="app-store-nav" style="width:95%">
+        <div class="app-store-nav-title">应用商店</div>
+        <div style="display:inline-flex;width:270px;">
+        <div @click="showStatus=true" class="app-store-nav-item" :class="showStatus?'app-store-nav-item-selected':''"><a>小图标</a></div>
+        <div @click="showStatus=false" class="app-store-nav-item" :class="!showStatus?'app-store-nav-item-selected':''"><a>小组件</a></div>
+        <a-select ref="select" style="border-radius: 16px;" v-model:value="currentSection.name" @change="handleChange($event)">
+          <a-select-option :value="item.name" v-for="item in sectionList.value" :key="item.name">{{item.name}}</a-select-option>
+        </a-select>
         </div>
-	  <div class="closable" @click="visible=false"><Icon icon="CloseOutlined"></Icon></div>
-        
-        
+        <a-input class="app-store-nav-input" @keyup="init"/>
+      </div>
+      <div class="closable" @click="visible=false"><Icon icon="CloseOutlined"></Icon></div>
       <div v-if="showStatus">
-        <div style="display:inline-flex;">
-            <div style="display: flex;flex-direction: column;align-items: flex-start;margin-left:5px;width:50px;" class="icon-nav">
-              <div v-for="(item,index) in data" :key="index">
-                <a-tag>{{ item }}</a-tag>
-              </div>
-            </div>
-            <div style="display:flex;flex-wrap: wrap;justify-content: flex-start;height:600px;overflow-y: auto;">
-              <div class="icon-item" v-for="(item,index) in iconList" :key="index">
-                <div style="text-align: center">
-                  <div style="display:flex;justify-content: space-between">
-                    <div>
-                      <Icon style="color:#ff7a06" icon="FireFilled"></Icon>{{Number.parseInt(Math.random()*1000)}}
-                    </div>
-                    <a-button type="primary" size="small" @click="addIcon(item)" style="padding:0 4px;">
-                      <Icon icon="PlusOutlined"></Icon>
-                    </a-button>
-                  </div>
-                  <div id="appItem4fb906f7bb9a4fdba6a0c81d652858d1" data-index="4fb906f7bb9a4fdba6a0c81d652858d1" class="app-icon" :style="'background:'+iconBackground(item)">
-                    <img :src="getImgUrl(item)" class="icon">
-                  </div>
-                  <div>
-                    {{item.name}}
-                  </div>
+        <div style="display: flex;flex-direction: row;flex-wrap:wrap;align-items: flex-start;margin-left:5px;" class="icon-nav">
+          <a-tag>全部</a-tag>
+          <div v-for="(item,index) in data" :key="index">
+            <a-tag>{{ item }}</a-tag>
+          </div>
+        </div>
+        <div class="icon-list">
+          <div class="icon-item" v-for="(item,index) in iconList" :key="index" @mouseenter="iconMouseEnterIndex = index">
+            <div style="text-align: center">
+              <div style="display:flex;justify-content: space-between">
+                <div>
+                  <Icon style="color:#ff7a06" icon="FireFilled"></Icon>{{item.count}}
                 </div>
+                <a-button type="primary" size="small" @click="addIcon(item)" v-if="index === iconMouseEnterIndex" style="padding:0 4px;">
+                  <Icon icon="PlusOutlined"></Icon>
+                </a-button>
+              </div>
+              <div id="appItem4fb906f7bb9a4fdba6a0c81d652858d1" data-index="4fb906f7bb9a4fdba6a0c81d652858d1" class="app-icon" :style="'background:'+iconBackground(item)">
+                <img :src="getImgUrl(item)" class="icon">
+              </div>
+              <div>
+                {{item.name}}
               </div>
             </div>
           </div>
+        </div>
       </div>
       <div class="widget-list" v-if="!showStatus">
-        <div class="widget-item" v-for="(item,index) in widgetList" :key="index" >
+        <div class="widget-item" v-for="(item,index) in widgetList" :key="index" @mouseenter="iconMouseEnterIndex = index">
           <div style="height:200px;text-align: center">
-            <div style="display: flex;flex-direction: row; justify-content: space-between">
-              <div><Icon style="color:#ff0000" icon="FireFilled"></Icon>{{Number.parseInt(Math.random()*1000)}}</div>
-              <div>
-                <a-tag @click="changeAppIconlayout('1x1')">1x1</a-tag>
-                <a-tag @click="changeAppIconlayout('1x2')">1x2</a-tag>
-                <a-tag @click="changeAppIconlayout('2x1')">2x1</a-tag>
-                <a-tag @click="changeAppIconlayout('2x2')">2x2</a-tag>
-                <a-tag @click="changeAppIconlayout('2x4')">2x4</a-tag>
+            <div style="position:relative">
+              <div style="position:absolute;top:0;left:0"><Icon style="color:#ff0000" icon="FireFilled"></Icon>{{item.count}}</div>
+              <div style="text-align: center;height:20px;">
+                <div v-if="item.sizeList && item.sizeList.length>1">
+                  <a-tag style="cursor: pointer;" :color="item.size===it?'var(--ant-primary-color)':''" @click="changeAppIconlayout(item,it)"  v-for="(it,i) in item.sizeList" :key="i">{{it}}</a-tag>
+                </div>
+                <div  v-if="!item.sizeList || item.sizeList.length===0">
+                  <a-tag style="cursor: pointer" :color="item.size === '1x1'?'var(--ant-primary-color)':''" @click="changeAppIconlayout(item,'1x1')">1x1</a-tag>
+                  <a-tag style="cursor: pointer" :color="item.size === '1x2'?'var(--ant-primary-color)':''" @click="changeAppIconlayout(item,'1x2')">1x2</a-tag>
+                  <a-tag style="cursor: pointer" :color="item.size === '2x1'?'var(--ant-primary-color)':''" @click="changeAppIconlayout(item,'2x1')">2x1</a-tag>
+                  <a-tag style="cursor: pointer" :color="item.size === '2x2'?'var(--ant-primary-color)':''" @click="changeAppIconlayout(item,'2x2')">2x2</a-tag>
+                  <a-tag style="cursor: pointer" :color="item.size === '2x4'?'var(--ant-primary-color)':''" @click="changeAppIconlayout(item,'2x4')">2x4</a-tag>
+                </div>
               </div>
-              <a-button type="primary" size="small" @click="addIcon(item)" style="padding:0 4px;">
+              <a-button type="primary" size="small"
+                        @click="addIcon(item)" v-if="index === iconMouseEnterIndex"
+                        style="padding:0 4px;position:absolute;top:0;right:0">
                 <Icon icon="PlusOutlined" ></Icon>
               </a-button>
             </div>
-            <div class="app-icon" :class="'icon-size-'+(item.size?item.size:'1x1')" :style="'background:'+item.backgroundColor">
-			  <img v-if="item.type==='component' && item.component==='icon'"
-				     :src="getImgUrl(item)" class="icon" :class="'img-'+(item.size?item.size:'1x1')">
-              <countdown-widget
-                  v-else-if="item.type==='component' && (item.component==='countdown'||item.component==='countdownTime')"
-                  :size="item.size?item.size:'1x1'" :form="item"/>
-              <calendar-widget v-else-if="item.type==='component' && item.component==='calendar'"
-                               :size="item.size?item.size:'1x1'"/>
-              <today-english-widget v-else-if="item.type==='component' && item.component==='todayEnglish'"
-                                    :size="item.size?item.size:'1x1'"/>
-              <today-sentence-widget v-else-if="item.type==='component' && item.component==='todaySentence'"
-                                     :size="item.size?item.size:'1x1'"/>
-              <today-poetry-widget v-else-if="item.type==='component' && item.component==='todayPoetry'"
-                                   :size="item.size?item.size:'1x1'"/>
+            <div class="app-icon" :class="'icon-size-'+(item.size)" :style="'background:'+item.backgroundColor">
+              <img v-if="item.type==='component' && item.component==='icon'" alt=""
+                   :src="getImgUrl(item)" class="icon" :class="'img-'+(item.size)">
+              <countdown-widget v-else-if="item.component==='countdown'||item.component==='countdownTime'"
+                                :size="item.size" :form="item"/>
+              <calendar-widget v-else-if="item.component==='calendar'" :size="item.size"/>
+              <today-english-widget v-else-if="item.component==='todayEnglish'" :size="item.size"/>
+              <today-sentence-widget v-else-if="item.component==='todaySentence'" :size="item.size"/>
+              <today-poetry-widget v-else-if="item.component==='todayPoetry'" :size="item.size"/>
+              <hotrank-widget v-else-if="item.component==='hotRank'" :widgetProps="item"></hotrank-widget>
             </div>
             <div style="margin-top:10px;">{{item.name}}</div>
           </div>
@@ -93,13 +92,14 @@ import {useI18n} from "vue-i18n";
 
 import countdownWidget from "@/views/widgets/countdownWidget";
 import calendarWidget from "@/views/widgets/calendarWidget";
-import todayEnglishWidget from "@/views/widgets/todayEnglishWidget";
-import todaySentenceWidget from "@/views/widgets/todaySentenceWidget";
-import todayPoetryWidget from "@/views/widgets/todayPoetryWidget";
+import HotrankWidget from "@/views/widgets/hotrankWidget";
+import TodayPoetryWidget from "@/views/widgets/todayPoetryWidget";
+import TodaySentenceWidget from "@/views/widgets/todaySentenceWidget";
+import TodayEnglishWidget from "@/views/widgets/todayEnglishWidget";
 
 const { locale} = useI18n()
 const visible = ref(false)
-
+const iconMouseEnterIndex =ref()
 const data = ['AI','热门','新闻','视频','音乐','图片','效率','开发','学习','游戏','购物','社交','阅读','出行','金融','其他'];
 const showStatus = ref(true)
 const widgetList = reactive([])
@@ -119,6 +119,7 @@ const init =()=> {
   if(iconData){
     for(let item of iconData){
       for(let it of item.children) {
+        it.count = Number.parseInt(Math.random()*1000)
         if (it.type === 'component') {
           widgetList.push(it)
         } else {
@@ -193,12 +194,15 @@ const iconBackground = (app) => {
     }
   }
 }
+const changeAppIconlayout = (app,size)=>{
+  app.size = size
+}
 defineComponent({
   countdownWidget,
   calendarWidget,
-  todayEnglishWidget,
-  todaySentenceWidget,
-  todayPoetryWidget
+  TodayEnglishWidget,
+  TodaySentenceWidget,
+  TodayPoetryWidget
 })
 defineExpose({
   showModal
@@ -228,11 +232,13 @@ const emits = defineEmits(["addIcon"])
   border-radius: 16px;
 }
 .app-store-nav-item-selected{
-  background: #46a6ff;color:#ffffff;
+  background: var(--ant-primary-color);
+  color:#ffffff;
 }
 .app-store-nav-title{
   line-height: 32px;
   font-size:16px;
+  margin-left:20px;
 }
 .app-store-nav-input{
   width:200px;
@@ -242,14 +248,29 @@ const emits = defineEmits(["addIcon"])
   display:flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-content: flex-start;
   height:600px;
   overflow-y:auto;
   padding-left:7px;
+  &::-webkit-scrollbar {
+    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    // -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(144, 147, 153, 0.5);
+  }
+  &::-webkit-scrollbar-track {
+    // -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    background: transparent;
+  }
 }
 .widget-item{
   background:#ffffff;
+  box-shadow: 0 1px 13px 1px #0000002a;
   width: 432px;
   height: 245px;
   margin:8px;
@@ -293,14 +314,29 @@ const emits = defineEmits(["addIcon"])
   display:flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-content: flex-start;
   height:600px;
   overflow-y:auto;
   padding-left:7px;
+  &::-webkit-scrollbar {
+    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    // -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: rgba(144, 147, 153, 0.5);
+  }
+  &::-webkit-scrollbar-track {
+    // -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    background: transparent;
+  }
 }
 .icon-item{
   background:#ffffff;
+  box-shadow: 0 1px 13px 1px #0000002a;
   width: 188px;
   height: 150px;
   margin:8px;

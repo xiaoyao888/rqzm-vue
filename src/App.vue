@@ -9,6 +9,8 @@ import {useI18n} from "vue-i18n";
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/en';
+import {ConfigProvider} from "ant-design-vue";
+import {reactive} from "vue";
 const {locale} = useI18n()
 const language = localStorage.getItem("language");
 if(language && language==='en_us'){
@@ -18,6 +20,19 @@ if(language && language==='en_us'){
   locale.value = 'zh_cn'
   dayjs.locale('zh-cn');
 }
+const colorState = reactive({
+  primaryColor: '#1890ff',
+});
+if(localStorage.getItem("theme")){
+  Object.assign(colorState, {
+    ["primaryColor"]: localStorage.getItem("theme"),
+  });
+  ConfigProvider.config({
+    theme: colorState,
+  });
+}
+
+
 </script>
 
 <style>

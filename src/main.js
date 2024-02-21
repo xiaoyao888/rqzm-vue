@@ -1,7 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css'
+// import 'ant-design-vue/dist/antd.css'
+import 'ant-design-vue/dist/antd.variable.min.css';
 import i18n from './i18n'
 import '@/styles/index.less' // global css
 import router from './router'

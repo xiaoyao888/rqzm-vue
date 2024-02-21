@@ -170,10 +170,10 @@
         "src": "todo.svg",
         "type": "component",
         "size": "2x4",
-        "sizeList": "2x4",
+        "sizeList": ["2x4"],
         "id": "96eb2b757ec51234b1d2a5d6bf13311a",
         "view": null,
-        "backgroundColor": "linear-gradient(180deg, #ffc7b7 0%, #f8e0cf 26%, #fffefd 100%)"
+        "backgroundColor": "linear-gradient(180deg, var(--ant-primary-2) 0%, var(--ant-primary-1) 26%, #fffefd 100%)"
       },
       {
         "name": "待办事项",
@@ -182,6 +182,7 @@
         "src": "todo.svg",
         "type": "component",
         "size": "1x1",
+        "sizeList": ["1x1"],
         "id": "96eb2b757ec54b35b1d2a5d6bf13311a",
         "view": null,
         "backgroundColor": "#1581ff"
@@ -194,6 +195,7 @@
         "insetType": "",
         "src": "yiyan.svg",
         "size": "2x2",
+        "sizeList": ["1x1","2x2","2x4"],
         "backgroundColor": "#03a297",
         "id": "a5f51a862bfd408ba456b8d6c7afcd77"
       },
@@ -205,6 +207,7 @@
         "insetType": "",
         "src": "yiyan.svg",
         "size": "2x2",
+        "sizeList": ["2x2","2x4"],
         "backgroundColor": "#03a297",
         "id": "a5f51a862bfd408ba456b8d6c7afcd78"
       },
@@ -216,6 +219,7 @@
         "insetType": "",
         "src": "movieCalendar.svg",
         "size": "2x2",
+        "sizeList": ["2x2","2x4"],
         "backgroundColor": "#03a297",
         "id": "006e4b384ffb4e60b823454bb60a8d15"
       },
@@ -227,6 +231,7 @@
         "insetType": "",
         "src": "eat.svg",
         "size": "1x1",
+        "sizeList": ["1x1","2x2","2x4"],
         "id": "1445d3b195564a7192605ecf5c9f9935",
         "view": null
       },
@@ -236,6 +241,7 @@
         "component": "calendar",
         "type": "component",
         "size": "2x2",
+        "sizeList": ["1x1","1x2","2x1","2x2","2x4"],
         "id": "134df2c360e14809b15054a0be4eb57b"
       },
       {
@@ -243,6 +249,7 @@
         "name": "倒计时",
         "nameEn": "Countdown",
         "size": "2x2",
+        "sizeList": ["1x1","1x2","2x1","2x2","2x4"],
         "type": "component",
         "config": {
           "name": "恋爱日期",
@@ -257,20 +264,12 @@
         "id": "3693ac9d24b745549edfc83075da1e01"
       },
       {
-        "name": "股市",
-        "nameEn": "stock",
-        "component": "icon",
-        "type": "component",
-        "size": "2x2",
-        "id": "f63eede61e36446fafcea5f1b3fba089",
-        "view": null
-      },
-      {
         "name": "倒数日",
         "nameEn": "Countdown",
         "component": "countdown",
         "type": "component",
         "size": "2x2",
+        "sizeList": ["1x1","1x2","2x1","2x2","2x4"],
         "id": "45045452fae042b28da4524b91eda919",
         "config": {
           "name": "节日倒计时",
@@ -288,6 +287,7 @@
         "name": "倒计时",
         "nameEn": "Countdown",
         "size": "2x2",
+        "sizeList": ["1x1","1x2","2x1","2x2","2x4"],
         "type": "component",
         "config": {
           "name": "下班倒计时",
@@ -303,22 +303,13 @@
         "view": 1
       },
       {
-        "name": "电影日历",
-        "nameEn": "Movies",
-        "component": "icon",
-        "type": "component",
-        "insetType": "",
-        "src": "movieCalendar.svg",
-        "size": "2x2",
-        "id": "006e4b384ffb4e60b89c761bb60a8d15"
-      },
-      {
         "name": "小夜表",
         "nameEn": "Night Clock",
         "component": "icon",
         "type": "component",
         "src": "clock.svg",
         "size": "1x1",
+        "sizeList": ["1x1"],
         "backgroundColor": "#FFFFFF",
         "id": "006e4b384ffb4e60b823454bb4fk49fk"
       }

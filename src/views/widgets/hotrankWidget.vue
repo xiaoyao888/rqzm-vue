@@ -102,9 +102,9 @@ const props = defineProps({
   list-style-type: demical;
   li {
     margin-left: -15px;
-    font-size: 13px;
+    font-size: 12px;
     text-align: left;
-    line-height: 22px;
+    line-height: 23px;
   }
 }
 </style>

@@ -78,7 +78,6 @@
                          item-key="index">
                 <template #item="{ element }">
                   <div class="item" :class="'icon-size-'+(element.size?element.size:'1x1')">
-                    <!--              {{element.id}}-->
                     <div v-if="batchDeleteAppItemVisible"
                          style="position: absolute;top:-7px;right:10px;z-index:1000">
                       <Icon icon="CloseCircleFilled" style="font-size:18px;color:#ffffff;"
@@ -128,7 +127,7 @@
         <Icon class="icon" icon="SlackOutlined"/>
         {{ $t("action.changeWallpaper") }}
       </li>
-      <li class="contextmenu-item hover"><a :href="bgWallpaper.indexOf('http')===0?bgWallpaper:'#'" target="_blank">
+      <li v-if="bgWallpaper.indexOf('http')===0" class="contextmenu-item hover"><a :href="bgWallpaper.indexOf('http')===0?bgWallpaper:'#'" target="_blank">
         <Icon class="icon" icon="DownloadOutlined"/>
         {{ $t("action.downWallpaper") }}
       </a>
@@ -142,7 +141,7 @@
         :style="{left:rightKeyMenuLeft+'px',top:rightKeyMenuTop+'px'}">
       <li class="contextmenu-item hover">
         <Icon icon="SwapOutlined"/>
-        {{ $t("action.moveToHome") }}
+        {{ $t("action.moveTo") }}
         <div class="contextmenu-layout">
           <em v-for="(item,index) in iconDefaultData.value" :key="index" @click="moveToFirstPage(index)">
             {{ locale === 'zh_cn' ? item.name : item.nameEn }}
@@ -151,13 +150,14 @@
       </li>
       <li class="contextmenu-item" v-if="isDisableItem()">
         <Icon icon="LayoutOutlined"/>
-        {{ $t("common.layout") }}
+        {{ $t("common.layout")  }}
         <div class="contextmenu-layout">
           <em class="" @click="changeAppIconlayout('1x1')">1x1</em>
-          <em class="" @click="changeAppIconlayout('1x2')">1x2</em>
-          <em class="" @click="changeAppIconlayout('2x1')">2x1</em>
+          <em v-if="selectSectionAppItem.type!=='icon'" class="" @click="changeAppIconlayout('1x2')">1x2</em>
+          <em v-if="selectSectionAppItem.type!=='icon'" class="" @click="changeAppIconlayout('2x1')">2x1</em>
           <em class="" @click="changeAppIconlayout('2x2')">2x2</em>
-          <em class="" @click="changeAppIconlayout('2x4')">2x4</em>
+          <em v-if="selectSectionAppItem.type!=='icon' && selectSectionAppItem.component!=='countdown' " class=""
+              @click="changeAppIconlayout('2x4')">2x4</em>
         </div>
       </li>
       <li class="contextmenu-item hover" v-if="isDisableItem()">
@@ -432,7 +432,7 @@ const searchEngineList = reactive(
   }
 ])
 const translateList = reactive(require('@/assets/json/translate.json'))
-const selectSectionAppItem = reactive({})
+const selectSectionAppItem = ref({})
 const selectSectionAppItemSectionIndex = ref(0)
 const selectSectionAppItemIndex = ref(0)
 const rightKeyMenuVisible = ref(false)
@@ -805,7 +805,7 @@ const saveIconDefaultData = () => {
 const changeAppIconlayout = (value) => {
   let sectionIndex = selectSectionAppItemSectionIndex.value;
   let appIndex = selectSectionAppItemIndex.value;
-  selectSectionAppItem.size = value;
+  selectSectionAppItem.value.size = value;
   iconDefaultData.value[sectionIndex].children[appIndex].size = value;
   localStorage.setItem("iconDefaultData", JSON.stringify(iconDefaultData.value));
 }
@@ -1314,9 +1314,11 @@ document.body.addEventListener('click', closeMenu)
   border-radius: 10px;
 
 }
-
+.swiper-pagination-bullet{
+  background: var(--ant-primary-color-active-deprecated-f-30) ;
+}
 .swiper-pagination-bullet-active {
   color: #fff;
-  background: #007aff;
+  background: var(--ant-primary-color);
 }
 </style>

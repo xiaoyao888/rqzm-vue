@@ -96,7 +96,7 @@ defineExpose({
 }
 :global(.ant-modal){
   border-radius: 20px;
-  background: linear-gradient(180deg, #ffc7b7 0%, #f8e0cf 26%, #fffefd 100%)
+  background: linear-gradient(180deg, var(--ant-primary-2) 0%, var(--ant-primary-1) 26%, #fffefd 100%)
 }
 .rank-item {
   height:400px;
@@ -118,9 +118,9 @@ defineExpose({
   }
   li {
     margin-left: -15px;
-    font-size: 13px;
+    font-size: 12px;
     text-align: left;
-    line-height: 22px;
+    line-height: 23px;
   }
 }
 </style>

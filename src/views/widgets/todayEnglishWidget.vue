@@ -1,21 +1,5 @@
 <template>
   <div>
-    <div class="widget a-button--primary" v-if="props.size==='1x1'">
-      <div class="widget-1x1">
-
-      </div>
-    </div>
-
-    <div class="widget a-button--primary" v-if="props.size==='1x2'">
-      <div class="widget-1x2">
-
-      </div>
-    </div>
-    <div class="widget a-button--primary" v-if="props.size==='2x1'">
-      <div class="widget-2x1">
-
-      </div>
-    </div>
     <div :style="'background:url(' + todayEnglish.picture3+');background-size:100% 100%;'">
       <div class="widget a-button--primary" v-if="props.size==='2x2'" @mouseover="showPlay = true" @mouseleave="showPlay=false">
         <div class="widget-2x2" style="height:145px;">

@@ -60,7 +60,7 @@
   "action": {
     "admiration": "Admiration",
     "privatization": "Privatization",
-    "moveToHome": "Move to home",
+    "moveTo": "Move to",
     "addIcon": "Add Icon",
     "changeWallpaper": "Change Wallpaper",
     "downWallpaper": "Download Wallpaper",

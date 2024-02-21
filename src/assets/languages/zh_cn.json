@@ -59,7 +59,7 @@
   "action": {
     "admiration": "支持作者",
     "privatization": "私有化",
-    "moveToHome": "移动到首页",
+    "moveTo": "移动到",
     "addIcon": "添加图标",
     "changeWallpaper": "切换壁纸",
     "downWallpaper": "下载壁纸",

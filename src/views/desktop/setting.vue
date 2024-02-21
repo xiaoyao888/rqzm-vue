@@ -8,8 +8,8 @@
         :title="t('common.setting')"
         placement="right"
         @after-visible-change="afterVisibleChange">
-      <a-row :gutter="20" style="margin:0">
-        <a-col :span="8" :style="'height:'+height+'px;border-right:1px solid #ccc;padding-right:0;padding-left:0;overflow-x:hidden'">
+      <a-row :gutter="20" style="margin:0;height:100%">
+        <a-col :span="8" :style="'border-right:1px solid #ccc;padding-right:0;padding-left:0;overflow-x:hidden'">
           <a-menu
               default-active="basicSetting"
               class="a-menu-vertical-demo"
@@ -163,7 +163,9 @@
                 <div class="iconStyle">
                   <div v-for="(item,index) in colors" :key="index" class="colorIcon" :style="'background: '+item"
                        @click="selectThemeColor(item)"/>
-                  <theme-picker style="margin-top:5px;" ref="themePicker" @change="themeChange"></theme-picker>
+                </div>
+                <div class="iconStyle" style="margin-top:20px;">
+                  <input type="color" :value="colorState.primaryColor" @input="selectThemeColor"/>
                 </div>
               </div>
             </div>
@@ -247,7 +249,7 @@
 import {ref, reactive,defineExpose,defineEmits} from "vue";
 import {useI18n} from "vue-i18n";
 import Icon from "@/components/icon"
-import {Modal,message} from "ant-design-vue";
+import {Modal, message, ConfigProvider} from "ant-design-vue";
 import serviceapi from "@/api/serviceapi";
 // import ColorPicker from "@/components/colorPicker";
 // import themePicker from "@/components/ThemePicker";
@@ -256,7 +258,6 @@ let showTime = ref();
 const clockShow = ref(false)
 const clockStyle = ref(1)
 const visible = ref(false)
-const height = ref(800)
 const themeMode1 = ref('dark')
 const themeColor = ref(null)
 const menuIndex = ref('basicSetting')
@@ -276,7 +277,7 @@ const showWeight = ref(false)
 const showLunar = ref(false)
 const showDay = ref(false)
 
-const colors = reactive(['#1681ff', '#2ecc71', '#33c5c5', '#9b59b6', '#f1c40f', '#e67e22', '#e74c3c'])
+const colors = reactive(['#1681ff','#9694FF','#9b59b6','#B96489','#2ecc71', '#33c5c5', '#519090','#275F8A', '#f1c40f', '#e67e22', '#e74c3c','#E0106A'])
 
 const afterVisibleChange = (bool) => {
   initConfig();
@@ -318,6 +319,12 @@ const initConfig = () => {
     clockShow.value = data.show
     clockStyle.value = data.style
   }
+
+  //初始化语言
+  let language = localStorage.getItem('language');
+  if(language){
+    currentLanguage.value = language;
+  }
 }
 
 /*logout:()=> {
@@ -342,10 +349,8 @@ const initConfig = () => {
 }*/
 const changeLanguage = (lang) => {
   locale.value = lang
-  // this.$store.dispatch('ToggleLanguage', lang)
+  currentLanguage.value = lang
   localStorage.setItem('language', lang);//将lang 语言存在localStorage里
-
-  // window.location.reload();
 }
 const handleOpen = (item) => {
   menuIndex.value = item.key;
@@ -406,10 +411,22 @@ const changeDateDay = (bool) => {
 //   dateTimeConfig.color = value
 //   saveDateSetting()
 // }
+const colorState = reactive({
+  primaryColor: localStorage.getItem("theme")?localStorage.getItem("theme"):'#1890ff',
+});
 const selectThemeColor = (value) => {
-  // this.$store.state.settings.themeColor = value
-  // this.$refs.themePicker.themeChange(value);
+  if(value instanceof Event){
+    value = value.target.value;
+  }
+  Object.assign(colorState, {
+    primaryColor: value,
+  });
+  ConfigProvider.config({
+    theme: colorState,
+  });
+  localStorage.setItem("theme",value)
 }
+
 const saveDateSetting = () => {
   localStorage.setItem('dateTimeConfig', JSON.stringify(dateTimeConfig));
   emits("changeDateTime", dateTimeConfig)
@@ -463,7 +480,6 @@ const emits = defineEmits(['changeDateTime','changeThemeMode','changeNavbar','ch
 //     }else{
 //       localStorage.setItem('dateTimeConfig', JSON.stringify(this.dateTimeConfig)) ;//将lang 语言存在localStorage里
 //     }
-//     this.currentLanguage = localStorage.getItem('language')||'zh_cn';
 //     this.showNavBar = this.$store.state.settings.showNavBar;
 //   }
 // },
@@ -530,7 +546,9 @@ const emits = defineEmits(['changeDateTime','changeThemeMode','changeNavbar','ch
     color: #898989;
     margin-top: 10px;
     font-size: 12px;
-
+    button{
+      margin-right:5px;
+    }
     // button{
     //   font-size:13px;
     //   padding:8px;
@@ -574,6 +592,7 @@ const emits = defineEmits(['changeDateTime','changeThemeMode','changeNavbar','ch
 .iconStyle {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 
   .colorIcon {
     height: 20px;
