@@ -1,25 +1,25 @@
 <template>
-  <a-modal v-model:visible="visible" class="dialogWidth" width="60%" :footer="null" >
-    <div></div>
-        <a-calendar v-model="value" :mode="month" :locale="locale">
-          <template #headerRender="{ value, type, onChange, onTypeChange }">
-            <div class="header">
-              {{value.year()}}年{{value.month()+1}}月
-                <a-button-group>
-                  <a-button type="primary" @click="prev(value, type, onChange, onTypeChange)"><Icon icon="LeftOutlined" ></Icon>上一月</a-button>
-                  <a-button type="primary" @click="showToday(value, type, onChange, onTypeChange)">今日</a-button>
-                  <a-button type="primary" @click="next(value, type, onChange, onTypeChange)">下一月<Icon icon="RightOutlined"></Icon></a-button>
-                </a-button-group>
-            </div>
-          </template>
-          <template #dateCellRender="{ current }">
-            <div class="work" v-if="isWork(current)">{{ isWork(current) }}</div>
-            <div class="festival">{{ getEvent(current,'festivals') }}</div>
-            <div class="lunar" v-if="!getEvent(current,'festivals')" >{{ getEvent(current,'lunar').split("月")[1] }}</div>
-          </template>
-        </a-calendar>
-
-  </a-modal>
+  <div ref="calendar">
+    <a-modal v-model:visible="visible" class="dialogWidth" width="60%" :footer="null" :get-container="()=>$refs.calendar" >
+      <a-calendar v-model="value" :mode="month" :locale="locale">
+        <template #headerRender="{ value, type, onChange, onTypeChange }">
+          <div class="header">
+            <span style="margin-left: 20px;">{{value.year()}}年{{value.month()+1}}月</span>
+            <a-button-group>
+              <a-button type="primary" @click="prev(value, type, onChange, onTypeChange)"><Icon icon="LeftOutlined" ></Icon>上一月</a-button>
+              <a-button type="primary" @click="showToday(value, type, onChange, onTypeChange)">今日</a-button>
+              <a-button type="primary" @click="next(value, type, onChange, onTypeChange)">下一月<Icon icon="RightOutlined"></Icon></a-button>
+            </a-button-group>
+          </div>
+        </template>
+        <template #dateCellRender="{ current }">
+          <div class="work" v-if="isWork(current)">{{ isWork(current) }}</div>
+          <div class="festival">{{ getEvent(current,'festivals') }}</div>
+          <div class="lunar" v-if="!getEvent(current,'festivals')" >{{ getEvent(current,'lunar').split("月")[1] }}</div>
+        </template>
+      </a-calendar>
+    </a-modal>
+  </div>
 </template>
 <script>
 import {reactive, toRefs} from "vue";
@@ -136,6 +136,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.header{
+  display: flex;
+  justify-content: flex-start;
+}
 .festival{
   text-align:center;
   font-size: 12px;
@@ -172,7 +176,15 @@ export default {
   justify-content: flex-start!important;
 }
 .ant-btn-group{
-  margin-left:260px;
+  margin-left:240px;
+  margin-top:-5px;
 }
+:deep(.ant-picker-panel){
+  background: none;
+}
+:deep(.ant-picker-calendar){
+  background: none;
+}
+
 
 </style>

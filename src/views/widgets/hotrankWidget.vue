@@ -6,7 +6,7 @@
           <ul class="rank-item" v-if="item.data.length>0">
             <li v-for="(info,index) in item.data" :key="index">
               <div style="display: flex;flex-direction: row; justify-content: space-between">
-                <a :href="info.url" target="_blank" style="white-space: nowrap;overflow:hidden;text-overflow: ellipsis;">{{info.name}}</a>
+                <a :href="info.url" onclick="window.event.cancelBubble=true" target="_blank" style="white-space: nowrap;overflow:hidden;text-overflow: ellipsis;">{{info.name}}</a>
                 <div v-if="info.hot && info.hot.indexOf('万')!==-1" style="margin-right:5px;">{{info.hot?info.hot.replace(' 万热度','w'):""}}</div>
                 <div v-else style="margin-right:5px;">{{info.hot?(info.hot/10000).toFixed(2)+'w':""}}</div>
               </div>
@@ -61,9 +61,11 @@ const initHotRank = () => {
   let hot = localStorage.getItem(url);
   if(hot){
     let h = JSON.parse(hot);
-    if(dayjs().valueOf() - h.expiryTime< 1000*60*60*2 && h.data.data){
+    if(h.data.data){
       hotrank[activeKey.value].data = h.data.data.slice(0, 5)
-      return;
+      if(dayjs().valueOf() - h.expiryTime< 1000*60*60*2){
+        return;
+      }
     }
   }
   axios.get("https://tenapi.cn/v2/"+url).then((res) => {
@@ -72,6 +74,8 @@ const initHotRank = () => {
       let jsonStr = JSON.stringify({expiryTime: dayjs().valueOf(), data: res.data});
       localStorage.setItem(url,jsonStr);
     }
+  }).catch(error=>{
+    console.log(error)
   });
 }
 initHotRank();

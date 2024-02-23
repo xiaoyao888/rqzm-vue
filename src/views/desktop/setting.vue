@@ -156,7 +156,7 @@
             </div>
             <div v-if="menuIndex==='themeWallpaper'">
               <div class="settingItem">
-                <!-- <a-switch v-model="this.$store.state.settings.themeMode==='dark'" :inactive-text="$t('action.darkMode')" @change="changeThemeMode"></a-switch> -->
+                 <a-switch v-model="themeMode" :inactive-text="$t('action.darkMode')" @change="changeThemeMode"></a-switch>
               </div>
               <div class="settingItem">
                 <span class="title">{{ $t("action.changeThemeColor") }}</span>
@@ -193,7 +193,7 @@
             <div v-if="menuIndex==='about'">
               <div class="settingItem">
                 <div class="content">
-                  <span>{{ $t("action.version") }}：2.1.1</span>
+                  <span>{{ $t("action.version") }}：2.1.2</span>
                 </div>
               </div>
               <div class="settingItem">
@@ -258,7 +258,7 @@ let showTime = ref();
 const clockShow = ref(false)
 const clockStyle = ref(1)
 const visible = ref(false)
-const themeMode1 = ref('dark')
+const themeMode = ref(false)
 const themeColor = ref(null)
 const menuIndex = ref('basicSetting')
 const currentLanguage = ref('zh_cn')
@@ -355,14 +355,7 @@ const changeLanguage = (lang) => {
 const handleOpen = (item) => {
   menuIndex.value = item.key;
 }
-const changeThemeMode = (bool) => {
-  let mode = bool ? "dark" : "light";
-  emits('changeThemeMode', mode);
-//   // this.$store.dispatch('settings/changeSetting',{
-//   //   key: 'themeMode',
-//   //   value: mode
-//   // })
-}
+
 
 const changeClock = (bool) => {
   clockShow.value = bool
@@ -426,7 +419,10 @@ const selectThemeColor = (value) => {
   });
   localStorage.setItem("theme",value)
 }
-
+const changeThemeMode = (bool) => {
+  localStorage.setItem("themeMode",bool)
+  emits("changeThemeMode", bool?'dark':'light');
+}
 const saveDateSetting = () => {
   localStorage.setItem('dateTimeConfig', JSON.stringify(dateTimeConfig));
   emits("changeDateTime", dateTimeConfig)

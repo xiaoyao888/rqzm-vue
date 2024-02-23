@@ -67,9 +67,11 @@ const initHotRank = () => {
   let hot = localStorage.getItem(url);
   if(hot){
     let h = JSON.parse(hot);
-    if(dayjs().valueOf() - h.expiryTime< 1000*60*60*2 && h.data.data){
-      hotrank[activeKey.value].data = h.data.data
-      return;
+    if(h.data.data){
+      hotrank[activeKey.value].data = h.data.data.slice(0, 5)
+      if(dayjs().valueOf() - h.expiryTime< 1000*60*60*2){
+        return;
+      }
     }
   }
   axios.get("https://tenapi.cn/v2/"+url).then((res) => {
@@ -78,7 +80,9 @@ const initHotRank = () => {
       let jsonStr = JSON.stringify({expiryTime: dayjs().valueOf(), data: res.data});
       localStorage.setItem(url,jsonStr);
     }
-  });
+  }).catch(error=>{
+    console.log(error)
+  });;
 }
 defineExpose({
   showModal

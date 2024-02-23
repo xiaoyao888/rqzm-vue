@@ -176,6 +176,18 @@
         "backgroundColor": "linear-gradient(180deg, var(--ant-primary-2) 0%, var(--ant-primary-1) 26%, #fffefd 100%)"
       },
       {
+        "name": "AI助手",
+        "nameEn": "AI assistant",
+        "component": "AIAssistant",
+        "src": "ai-assistant.svg",
+        "type": "component",
+        "size": "1x1",
+        "sizeList": ["1x1","2x2"],
+        "id": "96eb2b756ec8793443d2a5d32f13311a",
+        "view": null,
+        "backgroundColor": "#0ea27e"
+      },
+      {
         "name": "待办事项",
         "nameEn": "Todo List",
         "component": "icon",

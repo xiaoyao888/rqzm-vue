@@ -1,6 +1,5 @@
 <template>
-  <div id="fullpage" class="fullpage " :class="themeMode"
-       :style="bgWallpaper" @contextmenu.prevent="openMenu($event)">
+  <div id="fullpage" class="fullpage " :class="themeMode" :style="bgWallpaper" @contextmenu.prevent="openMenu($event)">
     <a-layout style="height:100vh">
       <a-layout-header style="height:125px;">
         <div class="toolsBar">
@@ -15,13 +14,13 @@
               <Icon class="icon" icon="SettingOutlined"/>{{ $t('common.setting') }}
             </div>
             <div @click="showDialog('userLogin')">
-          <span v-if="userInfo.nickName" @click="drawer('person')">
-            <a>{{ userInfo.nickName }}</a>
-          </span>
+              <span v-if="userInfo.nickName" @click="drawer('person')">
+                <a>{{ userInfo.nickName }}</a>
+              </span>
               <span v-else>
-            <Icon class="icon" icon="UserOutlined"/>
-            <span>{{ $t('common.login') }}</span>
-          </span>
+                <Icon class="icon" icon="UserOutlined"/>
+                <span>{{ $t('common.login') }}</span>
+              </span>
             </div>
             <a>
               <Icon class="leftBarPlus" icon="PlusCircleOutlined"/>
@@ -31,7 +30,8 @@
         <div class="search-container">
           <div class="search-box">
             <div class="search">
-              <a-select v-model:value="searchEngine" style="width:30%;" @change="changeSearchEngine()">
+              <a-select v-model:value="searchEngine" style="width:30%;"
+                        @change="changeSearchEngine">
                 <a-select-option v-for="(item,index) in searchEngineList" :key="index"
                                  :label="locale ==='zh_cn'?item.name:item.nameEn"
                                  :value="locale ==='zh_cn'?item.name:item.nameEn">
@@ -105,7 +105,9 @@
                       <today-poetry-widget v-else-if="element.type==='component' && element.component==='todayPoetry'"
                                            :size="element.size?element.size:'1x1'"/>
                       <hotrank-widget v-else-if="element.type==='component' && element.component==='hotRank'"
-                                           :widgetProps="element"/>
+                                      :widgetProps="element"/>
+                      <ai-assistant-widget v-else-if="element.type==='component' && element.component==='AIAssistant'"
+                                      :widgetProps="element"/>
                     </div>
                     <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
                   </div>
@@ -193,7 +195,7 @@
     <wall-paper ref="wallpaperModal" @ok="initWallPaper"></wall-paper>
     <today-poetry ref="todayPoetryModal"></today-poetry>
     <hotrank ref="hotRankModal"></hotrank>
-
+    <ai-assistant ref="aiModal"></ai-assistant>
     <!--		<person ref="person" :user-info="userInfo"></person>-->
   </div>
 </template>
@@ -231,23 +233,25 @@ import calendarWidget from "@/views/widgets/calendarWidget";
 import AppStore from "@/views/widgets/appStore";
 import todayEnglishWidget from "@/views/widgets/todayEnglishWidget";
 import todaySentenceWidget from "@/views/widgets/todaySentenceWidget";
+import TodayPoetry from "@/views/widgets/todayPoetry";
 import todayPoetryWidget from "@/views/widgets/todayPoetryWidget";
 import nightClockWidget from "@/views/widgets/nightClockWidget";
+import Hotrank from "@/views/widgets/hotrank";
+import HotrankWidget from "@/views/widgets/hotrankWidget";
+import AiAssistant from "@/views/widgets/aiAssistant";
+import AiAssistantWidget from "@/views/widgets/aiAssistantWidget";
+import wallPaper from "@/views/desktop/wallPaper";
 
 // import themePicker from "@/components/ThemePicker";
 // import crypto from "@/utils/crypto";
 import {useI18n} from "vue-i18n";
 import Icon from "@/components/icon"
 import {Modal, message} from "ant-design-vue";
-import wallPaper from "@/views/desktop/wallPaper";
-import TodayPoetry from "@/views/widgets/todayPoetry";
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/keyboard'
 import 'swiper/css/mousewheel'
 import 'swiper/css/pagination';
-import HotrankWidget from "@/views/widgets/hotrankWidget";
-import Hotrank from "@/views/widgets/hotrank";
 
 defineComponent({
   Swiper,
@@ -268,6 +272,7 @@ const todoListModal = ref(null)
 const wallpaperModal = ref(null)
 const todayPoetryModal = ref(null)
 const hotRankModal = ref(null)
+const aiModal = ref(null)
 
 const clockOption = reactive({
   showClock: false,
@@ -320,117 +325,7 @@ const currentDay = ref('')
 const currentIconPage = ref(0)
 const iconDefaultData = reactive([])
 const searchEngine = ref('')
-const searchEngineList = reactive(
-    [
-    {
-  "key": "baidu",
-  "name": "百度",
-  "nameEn": "Baidu",
-  "url": "https://www.baidu.com/s?wd="
-},
-  {
-    "key": "bing",
-    "name": "必应",
-    "nameEn": "Bing",
-    "url": "https://cn.bing.com/search?q="
-  },
-  {
-    "key": "google",
-    "name": "谷歌",
-    "nameEn": "Google",
-    "url": "https://www.google.com/search?q="
-  },
-  {
-    "key": "github",
-    "name": "Github",
-    "nameEn": "Github",
-    "url": "https://github.com/search?q="
-  },
-  {
-    "key": "gitee",
-    "name": "Gitee",
-    "nameEn": "Gitee",
-    "url": "https://search.gitee.com/?skin=rec&type=repository&q="
-  },
-  {
-    "key": "douyin",
-    "name": "抖音",
-    "nameEn": "DouYin",
-    "url": "https://www.douyin.com/search/"
-  },
-  {
-    "key": "kuaishou",
-    "name": "快手",
-    "nameEn": "Kwai",
-    "url": "https://kuaishou.cn/search/video?searchKey="
-  },
-  {
-    "key": "xiaohongshu",
-    "name": "小红书",
-    "nameEn": "RedBook",
-    "href": "https://www.xiaohongshu.com/search_result/?&m_source=itab&keyword="
-  },
-  {
-    "key": "duckduckgo",
-    "name": "DuckDuckGo",
-    "nameEn": "DuckDuckGo",
-    "href": "https://duckduckgo.com/?q="
-  },
-  {
-    "key": "zhihu",
-    "name": "知乎",
-    "nameEn": "ZhiHu",
-    "href": "https://www.zhihu.com/search?type=content&q="
-  },
-  {
-    "key": "sougou",
-    "name": "搜狗",
-    "nameEn": "Sogou",
-    "href": "https://www.sogou.com/sogou?query="
-  },
-  {
-    "key": "360",
-    "name": "360",
-    "nameEn": "360",
-    "href": "https://www.so.com/s?q="
-  },
-  {
-    "key": "stackoverflow",
-    "name": "StackOverflow",
-    "nameEn": "StackOverflow",
-    "href": "https://stackoverflow.com/nocaptcha?s="
-  },
-  {
-    "key": "toutiao",
-    "name": "头条搜索",
-    "nameEn": "TouTiao",
-    "href": "https://so.toutiao.com/search?dvpf=pc&keyword="
-  },
-  {
-    "key": "douban",
-    "name": "豆瓣",
-    "nameEn": "DouBan",
-    "href": "https://www.douban.com/search?q="
-  },
-  {
-    "key": "bilibili",
-    "name": "哔哩哔哩",
-    "nameEn": "BiLiBiLi",
-    "href": "https://search.bilibili.com/all?keyword="
-  },
-  {
-    "key": "kaifabaidu",
-    "name": "开发者搜索",
-    "nameEn": "DevSearch",
-    "href": "https://kaifa.baidu.com/searchPage?wd="
-  },
-  {
-    "key": "mdn",
-    "name": "MDN",
-    "nameEn": "MDN",
-    "href": "https://developer.mozilla.org/zh-CN/search?q="
-  }
-])
+const searchEngineList = reactive(require('@/assets/json/searchEngineData.json'))
 const translateList = reactive(require('@/assets/json/translate.json'))
 const selectSectionAppItem = ref({})
 const selectSectionAppItemSectionIndex = ref(0)
@@ -581,11 +476,8 @@ const initWallPaper = () => {
     bgWallpaper.value = 'background: url(' + bg + ');background-color:rgb(0,0,0,0.5);background-size:100% 100%;'
   }
 }
-const selectDesktop = (item, index) => {
-  currentIconPage.value = index
-}
 const changeThemeMode = (mode) => {
-  this.themeMode = mode;
+  themeMode.value = mode;
 }
 const changeDateTime = () => {
   initDateTime()
@@ -729,27 +621,25 @@ const initSearchEngine = () => {
   let defaultSearchEngine = localStorage.getItem("defaultSearchEngine")
   if (defaultSearchEngine) {
     defaultSearchEngine = JSON.parse(defaultSearchEngine);
-    searchEngine.value = locale.value === 'zh_cn' ? defaultSearchEngine.name :
-        defaultSearchEngine.nameEn
+    searchEngine.value = locale.value === 'zh_cn'?defaultSearchEngine.name : defaultSearchEngine.nameEn
   }
   if (!searchEngine.value) {
-    searchEngine.value = locale.value === 'zh_cn' ? '百度' : 'Baidu'
+    searchEngine.value = locale.value === 'zh_cn'?searchEngineList[0].name : searchEngineList[0].nameEn
   }
 }
-const changeSearchEngine = () => {
+const changeSearchEngine = (value) => {
   for (let engine of searchEngineList) {
-    const name = locale.value === 'zh_cn' ? engine.name : engine.nameEn
-    if (name === searchEngine.value) {
-      localStorage.setItem("defaultSearchEngine", JSON.stringify(engine));
-      break;
-    }
+      if (engine.name === value || engine.nameEn === value) {
+        localStorage.setItem("defaultSearchEngine", JSON.stringify(engine));
+        break;
+      }
   }
 }
 const search = () => {
   if (searchEngine.value && keyword.value) {
     let url = '';
     for (let engine of searchEngineList) {
-      if (engine.name === searchEngine.value) {
+      if (engine.name === searchEngine.value || engine.nameEn === searchEngine.value) {
         url = engine.url;
         break;
       }
@@ -787,6 +677,8 @@ const appClick = (item, sectionIndex) => {
       nightClockWidgetModal.value.showModal()
     } else if (item.id === 'a5f51a862bfd408ba456b8d6c7afcd78') {
       todayPoetryModal.value.showModal()
+    } else if (item.id === '96eb2b756ec8793443d2a5d32f13311a') {
+      aiModal.value.showModal()
     }
   }
 }
@@ -839,8 +731,13 @@ const initClock = (show, style) => {
     }
   }
 }
-
-
+const initThemeMode = ()=>{
+  let themeMode = localStorage.getItem("themeMode");
+  if(themeMode){
+    changeThemeMode(themeMode)
+  }
+}
+initThemeMode();
 initDateTime();
 initIconList();
 initUserInfo();
