@@ -178,10 +178,10 @@
       {
         "name": "AI助手",
         "nameEn": "AI assistant",
-        "component": "AIAssistant",
+        "component": "icon",
         "src": "ai-assistant.svg",
         "type": "component",
-        "size": "1x1",
+        "size": "2x2",
         "sizeList": ["1x1","2x2"],
         "id": "96eb2b756ec8793443d2a5d32f13311a",
         "view": null,

@@ -74,6 +74,8 @@
               <today-sentence-widget v-else-if="item.component==='todaySentence'" :size="item.size"/>
               <today-poetry-widget v-else-if="item.component==='todayPoetry'" :size="item.size"/>
               <hotrank-widget v-else-if="item.component==='hotRank'" :widgetProps="item"></hotrank-widget>
+              <ai-assistant-widget v-else-if="item.component==='AIAssistant'"
+                                   :widgetProps="item"/>
             </div>
             <div style="margin-top:10px;">{{item.name}}</div>
           </div>

@@ -7,9 +7,10 @@
         class="custom-class"
         :title="t('common.setting')"
         placement="right"
-        @after-visible-change="afterVisibleChange">
+        @after-visible-change="afterVisibleChange"
+        :get-container="()=>$refs.settingDrawer">
       <a-row :gutter="20" style="margin:0;height:100%">
-        <a-col :span="8" :style="'border-right:1px solid #ccc;padding-right:0;padding-left:0;overflow-x:hidden'">
+        <a-col :span="8" :style="'padding-right:0;padding-left:0;overflow-x:hidden'">
           <a-menu
               default-active="basicSetting"
               class="a-menu-vertical-demo"
@@ -156,7 +157,10 @@
             </div>
             <div v-if="menuIndex==='themeWallpaper'">
               <div class="settingItem">
-                 <a-switch v-model="themeMode" :inactive-text="$t('action.darkMode')" @change="changeThemeMode"></a-switch>
+                <span class="title">{{ $t("action.darkMode") }}</span>
+                <div class="content">
+                  <a-switch v-model:checked="themeModeShow" @change="changeThemeMode"></a-switch>
+                </div>
               </div>
               <div class="settingItem">
                 <span class="title">{{ $t("action.changeThemeColor") }}</span>
@@ -258,7 +262,7 @@ let showTime = ref();
 const clockShow = ref(false)
 const clockStyle = ref(1)
 const visible = ref(false)
-const themeMode = ref(false)
+const themeModeShow = ref(false)
 const themeColor = ref(null)
 const menuIndex = ref('basicSetting')
 const currentLanguage = ref('zh_cn')
@@ -324,6 +328,10 @@ const initConfig = () => {
   let language = localStorage.getItem('language');
   if(language){
     currentLanguage.value = language;
+  }
+  let themeMode = localStorage.getItem('themeMode')
+  if (themeMode) {
+    themeModeShow.value = JSON.parse(themeMode).themeMode
   }
 }
 
@@ -420,7 +428,7 @@ const selectThemeColor = (value) => {
   localStorage.setItem("theme",value)
 }
 const changeThemeMode = (bool) => {
-  localStorage.setItem("themeMode",bool)
+  localStorage.setItem("themeMode", JSON.stringify({themeMode: bool}))
   emits("changeThemeMode", bool?'dark':'light');
 }
 const saveDateSetting = () => {
@@ -482,22 +490,16 @@ const emits = defineEmits(['changeDateTime','changeThemeMode','changeNavbar','ch
 
 </script>
 <style lang="less" scoped>
-:deep .a-menu {
-  border-right: none;
+
+:deep(.ant-drawer-content) {
+  background-color: var(--drawer-bg)!important;
+}
+:deep(.ant-menu){
   background: none !important;
-
-  .a-menu-item:not(.is-active) {
-    color: rgba(var(--img-text), 1);
-    padding: 0 0 0 5px !important;
-  }
-
-  .a-menu-item.is-active {
-    //color: var(--color-primary);
-  }
-
-  .a-menu-item:hover, .a-menu-item:focus {
-    background-color: var(--bg-hover);
-  }
+  color: rgba(var(--img-text), 1);
+}
+:deep(.ant-menu-vertical){
+  border-right: 1px solid var(--drawer-item-bg);
 }
 </style>
 <style lang="less">
@@ -510,13 +512,9 @@ const emits = defineEmits(['changeDateTime','changeThemeMode','changeNavbar','ch
   }
 }
 
-.a-drawer {
-  // background: url("background.jpg");
-}
 
 .ant-drawer-body {
   padding: 0 !important;
-  background-color: rgba(var(--alpha-bg), var(--sidebar-opacity, .9));
 }
 
 .ant-menu-vertical .ant-menu-item {
@@ -524,9 +522,9 @@ const emits = defineEmits(['changeDateTime','changeThemeMode','changeNavbar','ch
 }
 
 .settingItem {
-  padding: 0 10px;
+  padding: 10px 10px;
   margin-top: 10px;
-  background-color: var(--bg-info);
+  background-color: var(--drawer-item-bg);
   border-radius: 10px;
   margin-right: 10px;
 

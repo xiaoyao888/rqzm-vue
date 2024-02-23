@@ -92,22 +92,17 @@
                            :class="'img-'+(element.size?element.size:'1x1')">
                       <img v-else-if="element.type==='component' && element.component==='icon'"
                            :src="getImgUrl(element)" class="icon" :class="'img-'+(element.size?element.size:'1x1')">
-                      <countdown-widget
-                          v-else-if="element.type==='component' && (element.component==='countdown'||element.component==='countdownTime')"
+                      <countdown-widget v-else-if="element.component==='countdown'||element.component==='countdownTime'"
                           :size="element.size?element.size:'1x1'" :form="element"></countdown-widget>
-                      <calendar-widget v-else-if="element.type==='component' && element.component==='calendar'"
+                      <calendar-widget v-else-if="element.component==='calendar'"
                                        :size="element.size?element.size:'1x1'"></calendar-widget>
-
-                      <today-english-widget v-else-if="element.type==='component' && element.component==='todayEnglish'"
+                      <today-english-widget v-else-if="element.component==='todayEnglish'"
                                             :size="element.size?element.size:'1x1'"/>
-                      <today-sentence-widget v-else-if="element.type==='component' && element.component==='todaySentence'"
+                      <today-sentence-widget v-else-if="element.component==='todaySentence'"
                                              :size="element.size?element.size:'1x1'"/>
-                      <today-poetry-widget v-else-if="element.type==='component' && element.component==='todayPoetry'"
+                      <today-poetry-widget v-else-if="element.component==='todayPoetry'"
                                            :size="element.size?element.size:'1x1'"/>
-                      <hotrank-widget v-else-if="element.type==='component' && element.component==='hotRank'"
-                                      :widgetProps="element"/>
-                      <ai-assistant-widget v-else-if="element.type==='component' && element.component==='AIAssistant'"
-                                      :widgetProps="element"/>
+                      <hotrank-widget v-else-if="element.component==='hotRank'" :widgetProps="element"/>
                     </div>
                     <div class="app-title">{{ $i18n.locale === 'zh_cn' ? element.name : element.nameEn }}</div>
                   </div>
@@ -239,7 +234,6 @@ import nightClockWidget from "@/views/widgets/nightClockWidget";
 import Hotrank from "@/views/widgets/hotrank";
 import HotrankWidget from "@/views/widgets/hotrankWidget";
 import AiAssistant from "@/views/widgets/aiAssistant";
-import AiAssistantWidget from "@/views/widgets/aiAssistantWidget";
 import wallPaper from "@/views/desktop/wallPaper";
 
 // import themePicker from "@/components/ThemePicker";
@@ -734,7 +728,7 @@ const initClock = (show, style) => {
 const initThemeMode = ()=>{
   let themeMode = localStorage.getItem("themeMode");
   if(themeMode){
-    changeThemeMode(themeMode)
+    changeThemeMode(JSON.parse(themeMode).themeMode === true?'dark':'light')
   }
 }
 initThemeMode();
@@ -1095,6 +1089,7 @@ document.body.addEventListener('click', closeMenu)
       line-height: 30px;
       display: inline-block;
       background-color: rgba(var(--alpha-bg), 0.6);
+      color:rgba(var(--img-text), 1);
       padding: 0 10px;
       border-radius: 15px;
       float: right;
