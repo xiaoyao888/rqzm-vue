@@ -434,7 +434,6 @@ const initDateTime = () => {
   }
 }
 const initIconList = () => {
-  //鍒ゆ柇icon鍒楄〃鏄惁鏈夋暟鎹
   let defaultData = localStorage.getItem('iconDefaultData') || []
   if (defaultData) {
     if (defaultData.length > 0) {

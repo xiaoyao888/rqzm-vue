@@ -1288,24 +1288,6 @@
         "backgroundColor": "#1c0b1a"
       },
       {
-        "id": "bd7d45152b59405d9e110ad65066331b",
-        "url": "http://meiriyiwen.com",
-        "type": "icon",
-        "name": "每日一文",
-        "nameEn": "Daily Article",
-        "src": "meiriyiwen.svg",
-        "backgroundColor": "#29505b"
-      },
-      {
-        "id": "8bbfa15f578740fdaede07f07e73f553",
-        "url": "https://web.okjike.com",
-        "type": "icon",
-        "name": "即刻网页版",
-        "nameEn": "okjike",
-        "src": "okjike.svg",
-        "backgroundColor": "#f3db2b"
-      },
-      {
         "id": "33e9d2b1133f4bed9658d3a1b07dcbdb",
         "url": "https://www.yikm.net/",
         "type": "icon",
@@ -1432,13 +1414,13 @@
         "backgroundColor": "#fff"
       },
       {
-        "id": "a304852bb57642c8bbae4d2908718a8a",
-        "url": "http://www.mop.com/",
+        "id": "ab34be9a3b9f40b380bdbcb519fd0ae9",
+        "url": "http://www.smzdm.com/?from=rqzm.cn",
         "type": "icon",
-        "name": "猫扑",
-        "nameEn": "Mop",
-        "src": "mop.svg",
-        "backgroundColor": "#fbe036"
+        "name": "什么值得买",
+        "nameEn": "smzdm",
+        "src": "smzdm.svg",
+        "backgroundColor": "#ed1c24"
       },
       {
         "id": "cb9619152da74df9ac9c17342f529b12",
@@ -1450,15 +1432,6 @@
         "backgroundColor": "#ff3333"
       },
       {
-        "id": "ab34be9a3b9f40b380bdbcb519fd0ae9",
-        "url": "http://www.smzdm.com/?from=rqzm.cn",
-        "type": "icon",
-        "name": "什么值得买",
-        "nameEn": "smzdm",
-        "src": "smzdm.svg",
-        "backgroundColor": "#ed1c24"
-      },
-      {
         "id": "902c6e355f6d4b228f0964b20c3c7be4",
         "url": "https://weread.qq.com/",
         "type": "icon",
@@ -1466,15 +1439,6 @@
         "nameEn": "Wechat Read",
         "src": "weread-qq.svg",
         "backgroundColor": "#fff"
-      },
-      {
-        "id": "75d841ef5d4c4562962841a76be90259",
-        "url": "http://www.tianya.cn",
-        "type": "icon",
-        "name": "天涯",
-        "nameEn": "Tianya",
-        "src": "tianyacn.svg",
-        "backgroundColor": "#2fadf3"
       },
       {
         "id": "a74ededf409845c6a55be1dd2ee0801b",
@@ -1513,26 +1477,6 @@
         "backgroundColor": "#fff"
       },
       {
-        "id": "385c0826934a4a5c858d9965701d3dff",
-        "insetType": "iframe",
-        "component": "2048",
-        "type": "icon",
-        "name": "2048",
-        "nameEn": "2048",
-        "size": "1x1",
-        "src": "2048.svg"
-      },
-      {
-        "id": "c5457a6c89644471b7f87e04f75e9a88",
-        "insetType": "iframe",
-        "component": "dino",
-        "type": "icon",
-        "name": "恐龙快跑",
-        "nameEn": "Dino",
-        "size": "1x1",
-        "src": "dino.svg"
-      },
-      {
         "id": "2c34b619d8e140e0a6a4c897fdf40021",
         "url": "https://www.cikeee.com/?u_sour=rqzm",
         "type": "icon",
@@ -1540,15 +1484,6 @@
         "nameEn": "Cikeee",
         "src": "cikeee.svg",
         "backgroundColor": "#2c2f30"
-      },
-      {
-        "url": "https://jikipedia.com/",
-        "type": "icon",
-        "name": "小鸡词典",
-        "nameEn": "Jiki Pedia",
-        "src": "jikipedia.svg",
-        "backgroundColor": "#fdd502",
-        "id": "e531c212f20d4344bdf72db0dcafb924"
       }
     ],
     "id": "9035f5b66f274627ae8acab69b1379cc"
