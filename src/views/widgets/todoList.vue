@@ -4,7 +4,7 @@
       <a-input
           ref="inputRef"
           v-model:value="data.inputValue"
-          style="width:600px;"
+          style="width:50%;"
           type="text"
           placeholder="请输入最新待办事务"
           @keyup.enter.native="addItem"
@@ -271,33 +271,8 @@ defineExpose({
 </script>
 
 <style lang="less" scoped>
-:deep .el-dialog {
-  .el-dialog__title {
-    color: rgba(var(--img-text), 1);
-  }
-}
-
-:deep .el-dialog__body {
-  padding: 5px 20px;
-}
-
-.el-menu {
-  border-right: none;
-  background: none;
-
-  .el-menu-item {
-    color: rgba(var(--img-text), 1);
-  }
-
-  .el-menu-item.is-active {
-    color: #1890ff;
-  }
-
-  .el-menu-item:hover, .el-menu-item:focus {
-    color: rgba(var(--img-text), 1);
-    background-color: var(--bg-hover);
-  }
-
+.ant-menu{
+  background: none!important;
 }
 
 .container {

@@ -1,5 +1,5 @@
-// import XLSX from 'xlsx'
-// import fs from 'file-saver'
+import {utils, write} from 'xlsx'
+import fs from 'file-saver'
 export function randomNumber() {
   // 生成 最小值 到 最大值 区间的随机数
   const random = (min, max) => {
@@ -33,9 +33,6 @@ export function uuid(isSample) {
     });
   }
 }
-/**
- * Created by PanJiaChen on 16/11/18.
- */
 export function diff(startDate, endDate) {
 	let millisecond = (startDate.getTime() - endDate.getTime())
 	millisecond = Math.ceil(Math.abs(millisecond))
@@ -470,8 +467,45 @@ export function removeClass(ele, cls) {
     ele.className = ele.className.replace(reg, ' ')
   }
 }
+export function exportExcel(json, fields, filename = '.xlsx', wscols) { // 导出xlsx
+  if (json.length === 0 || fields.length === 0) {
+    return
+  }
+  json.forEach(item => {
+    for (const x in item) {
+      if (fields.hasOwnProperty(x)) {
+        item[fields[x]] = item[x]
+      }
+      delete item[x] // 删除原先的对象属性
+    }
+  })
+  const sheetName = filename // excel的文件名称
+  const wb = utils.book_new() // 工作簿对象包含一SheetNames数组，以及一个表对象映射表名称到表对象。XLSX.utils.book_new实用函数创建一个新的工作簿对象。
+  const ws = utils.json_to_sheet(json, { header: Object.values(fields) }) // 将JS对象数组转换为工作表。
 
-
+  // workbook.SheetNames[0]获取到到是文件里的到第一个表格
+  ws['!cols'] = wscols
+  wb.SheetNames.push(sheetName)
+  wb.Sheets[sheetName] = ws
+  const defaultCellStyle = { font: { name: '微软雅黑', sz: 12, color: 'FF00FF88' }, fill: { fgColor: { rgb: 'FFFFAA00' }}}// 设置表格的样式
+  const wopts = { bookType: 'xlsx', bookSST: false, type: 'binary', cellStyles: true, defaultCellStyle: defaultCellStyle, showGridLines: false } // 写入的样式
+  const wbout = write(wb, wopts)
+  const blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' })
+  fs.saveAs(blob, filename + '.xlsx')
+}
+const s2ab = s => {
+  var buf
+  if (typeof ArrayBuffer !== 'undefined') {
+    buf = new ArrayBuffer(s.length)
+    var view = new Uint8Array(buf)
+    for (var i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff
+    return buf
+  } else {
+    buf = new Array(s.length)
+    for (var x = 0; x !== s.length; ++x) buf[x] = s.charCodeAt(x) & 0xFF
+    return buf
+  }
+}
 export function strFormat(url,arg){
   if (arg===null || arg === '' || arg.length == 0){
     return arg;
