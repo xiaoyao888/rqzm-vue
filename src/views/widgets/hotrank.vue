@@ -68,7 +68,7 @@ const initHotRank = () => {
   if(hot){
     let h = JSON.parse(hot);
     if(h.data.data){
-      hotrank[activeKey.value].data = h.data
+      hotrank[activeKey.value].data = h.data.data
       if(dayjs().valueOf() - h.expiryTime< 1000*60*60*2){
         return;
       }
