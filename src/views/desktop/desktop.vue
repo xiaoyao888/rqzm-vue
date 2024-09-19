@@ -113,7 +113,7 @@
     <!--图标应用右键菜单-->
     <ul class="contextmenu" id="menuhome_section" v-show="rightKeyMenuVisible"
         :style="{left:rightKeyMenuLeft+'px',top:rightKeyMenuTop+'px'}">
-      <li class="contextmenu-item hover" @click="addAppItem()">
+      <li class="contextmenu-item hover" @click="addAppItemModal.showModal()">
         <Icon class="icon" icon="PlusCircleOutlined"/>
         {{ $t("action.addIcon") }}
       </li>
@@ -326,7 +326,7 @@ const iconRightMenuVisible = ref(false)
 const rightKeyMenuTop = ref(0)
 const rightKeyMenuLeft = ref(0)
 const dragNav = reactive({})
-const batchDeleteAppItemVisible = ref(false)
+let batchDeleteAppItemVisible = ref(false)
 const userInfo = reactive({
   nickName: "",
   avatarUrl: "",
@@ -335,10 +335,7 @@ const userInfo = reactive({
 })
 
 const swpierDragIsEnable = ref(0)
-const state = reactive({
-  drag: false,
-  list: [1, 2, 3, 4, 5, 6]
-})
+
 // themePicker.themeChange(data.themeColor);
 
 let timer = null

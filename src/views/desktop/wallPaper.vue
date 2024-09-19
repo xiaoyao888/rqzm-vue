@@ -83,6 +83,7 @@ div /deep/ .ant-modal-body{
 }
 .wallpaper-checked-icon-container{
   background:#0006;width:40px;height:40px;border-radius: 20px;margin: 0 auto;margin-top:20%;
+  text-align: center;
 }
 .wallpaper-checked-icon{
   color:#ffffff;
