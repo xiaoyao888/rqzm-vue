@@ -22,9 +22,6 @@
                 <span>{{ $t('common.login') }}</span>
               </span>
             </div>
-            <a>
-              <Icon class="leftBarPlus" icon="PlusCircleOutlined"/>
-            </a>
           </div>
         </div>
         <div class="search-container">
