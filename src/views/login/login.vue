@@ -27,7 +27,7 @@
 					if (bool && new Date().getTime() - data.generateTime.value < 300000) {
 						return;
 					}
-					serviceApi.generateLoginImg({
+					/*serviceApi.generateLoginImg({
 						"var": data.generateKey.value
 					}).then(res => {
 						if (res.success) {
@@ -37,7 +37,7 @@
 						} else {
 							// this.$api.msg("登录码生成失败！")
 						}
-					})
+					})*/
 				},
 				scan: () => {
 					// serviceApi.isScanLogin({
