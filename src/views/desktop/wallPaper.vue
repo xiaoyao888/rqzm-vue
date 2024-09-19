@@ -14,8 +14,8 @@
         </a-collapse-panel>
         <a-collapse-panel key="2" header="必应壁纸">
           <div class="wallpaper-list">
-            <div class="wallpaper-item" :style="'background:url(https://tenapi.cn/v2/bing);background-size:100% 100%;'">
-              <div class="wallpaper-checked-icon-container" @click="changeWallpaper({fullSrc:'https://tenapi.cn/v2/bing'},2)">
+            <div class="wallpaper-item" :style="'background:url(https://api.vvhan.com/api/bing);background-size:100% 100%;'">
+              <div class="wallpaper-checked-icon-container" @click="changeWallpaper({fullSrc:'https://api.vvhan.com/api/bing'},2)">
                 <Icon class="wallpaper-checked-icon" icon="CheckOutlined"/>
               </div>
             </div>
